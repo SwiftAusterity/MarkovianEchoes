@@ -13,4 +13,10 @@
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cache\Cottontail.Cache.csproj" />
+    <ProjectReference Include="..\FileSystem\Cottontail.FileSystem.csproj" />
+    <ProjectReference Include="..\Structure\Cottontail.Structure.csproj" />
+    <ProjectReference Include="..\Utility\Cottontail.Utility.csproj" />
+  </ItemGroup>
 </Project>
