@@ -1,13 +1,12 @@
 ﻿using Echoes.DataStructure.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Echoes.DataStructure.Entity
 {
-    public interface IPlace : IEntity
+    public interface IPlace : IEntity, ILookable
     {
+        /// <summary>
+        /// Mobiles (NPC, Players) in the room
+        /// </summary>
+        IEntityContainer<IEntity> Contents { get; set; }
     }
 }
