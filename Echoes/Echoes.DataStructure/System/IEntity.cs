@@ -18,7 +18,7 @@ namespace Echoes.DataStructure.System
         /// <summary>
         /// List of descriptors this objects knows
         /// </summary>
-        IEnumerable<IContext> FullContext { get; set; }
+        IList<IContext> FullContext { get; set; }
 
         /// <summary>
         /// Transfer context from one entity to this one

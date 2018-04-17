@@ -7,6 +7,6 @@ namespace Echoes.DataStructure.Entity
         /// <summary>
         /// Mobiles (NPC, Players) in the room
         /// </summary>
-        IEntityContainer<IEntity> Contents { get; set; }
+        IEntityContainer Contents { get; set; }
     }
 }

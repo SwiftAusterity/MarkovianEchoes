@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,11 +43,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contextual\Context.cs" />
+    <Compile Include="Contextual\Descriptor.cs" />
+    <Compile Include="Contextual\Verb.cs" />
+    <Compile Include="Entity\Person.cs" />
+    <Compile Include="Entity\Place.cs" />
+    <Compile Include="Entity\Thing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\EntityContainer.cs" />
+    <Compile Include="System\EntityPartial.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Cache\Cottontail.Cache.csproj">
+      <Project>{EC6ED52E-7F08-4F14-9FF5-064332175CA8}</Project>
+      <Name>Cottontail.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Echoes.DataStructure\Echoes.DataStructure.csproj">
+      <Project>{57886759-D433-4C4F-9BF2-3EA178250BAB}</Project>
+      <Name>Echoes.DataStructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileSystem\Cottontail.FileSystem.csproj">
+      <Project>{13943448-4008-4C37-9F5C-F1793E773314}</Project>
+      <Name>Cottontail.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Structure\Cottontail.Structure.csproj">
+      <Project>{CF2AD084-BEA7-47CD-B934-38BFF7598937}</Project>
+      <Name>Cottontail.Structure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Cottontail.Utility.csproj">
+      <Project>{192B043D-E34F-44E2-B59F-10378C6096D3}</Project>
+      <Name>Cottontail.Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Contextual\" />
-    <Folder Include="Entity\" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -46,6 +46,7 @@
     <Compile Include="Data\DataRandomizer.cs" />
     <Compile Include="Data\DBUtility.cs" />
     <Compile Include="Data\EnumUtility.cs" />
+    <Compile Include="Data\SerializableDataPartial.cs" />
     <Compile Include="Data\Serialization.cs" />
     <Compile Include="Data\StringUtility.cs" />
     <Compile Include="Data\TypeUtility.cs" />

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Cottontail.Structure;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -11,6 +13,11 @@ namespace Utility
     public static class Serialization
     {
         #region Json
+        /// <summary>
+        /// Serialize an object into a json string
+        /// </summary>
+        /// <param name="thing">the object to seralize</param>
+        /// <returns>json string as a string</returns>
         public static string SerializeToJson(object thing)
         {
             var serializer = GetSerializer();
@@ -21,6 +28,20 @@ namespace Utility
             serializer.Serialize(writer, thing);
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Deserialize a json string into a class type
+        /// </summary>
+        /// <param name="jsonData">string to deserialize</param>
+        /// <returns>the class object</returns>
+        public static IFileStored Deserialize(string jsonData, Type type)
+        {
+            var serializer = GetSerializer();
+
+            var reader = new StringReader(jsonData);
+
+            return serializer.Deserialize(reader, type) as IFileStored;
         }
 
         private static JsonSerializer GetSerializer()
