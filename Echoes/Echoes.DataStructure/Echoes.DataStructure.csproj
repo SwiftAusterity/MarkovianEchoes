@@ -45,7 +45,8 @@
   <ItemGroup>
     <Compile Include="Contextual\IContext.cs" />
     <Compile Include="Contextual\IVerb.cs" />
-    <Compile Include="Entity\IPerson.cs" />
+    <Compile Include="Contextual\IAkashicEntry.cs" />
+    <Compile Include="Entity\IPersona.cs" />
     <Compile Include="Entity\IPlace.cs" />
     <Compile Include="Entity\IThing.cs" />
     <Compile Include="Contextual\IDescriptor.cs" />
@@ -53,8 +54,8 @@
     <Compile Include="System\IContains.cs" />
     <Compile Include="System\IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="System\IEntityContainer.cs" />
     <Compile Include="System\ILookable.cs" />
+    <Compile Include="System\IObserve.cs" />
     <Compile Include="System\IRenderInLocation.cs" />
   </ItemGroup>
   <ItemGroup>

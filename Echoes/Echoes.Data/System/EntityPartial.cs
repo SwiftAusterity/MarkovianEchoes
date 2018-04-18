@@ -4,13 +4,11 @@ using Cottontail.FileSystem.Logging;
 using Cottontail.Structure;
 using Cottontail.Utility.Data;
 using Echoes.DataStructure.Contextual;
+using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Echoes.Data.System
 {
@@ -30,31 +28,35 @@ namespace Echoes.Data.System
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public virtual bool WriteTo(IEnumerable<string> input)
+        public virtual bool WriteTo(string input, IEntity originator)
         {
-            var strings = input.ToArray();
-
-            return TriggerAIAction(strings);
+            return TriggerAIAction(input);
         }
-
-        public bool IsAI => true;
 
         public IList<IContext> FullContext { get; set; }
         public long ID { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastRevised { get; set; }
         public string Name { get; set; }
+        public IContains Position { get; set; }
 
         /// <summary>
         /// Spawn this new into the live world
         /// </summary>
-        public abstract void SpawnNewInWorld();
+        public virtual void SpawnNewInWorld()
+        {
+            SpawnNewInWorld(GetBaseSpawn());
+        }
 
         /// <summary>
         /// Spawn this new into the live world into a specified container
         /// </summary>
         /// <param name="spawnTo">the location/container this should spawn into</param>
-        public abstract void SpawnNewInWorld(IContains spawnTo);
+        public virtual void SpawnNewInWorld(IContains spawnTo)
+        {
+            spawnTo.MoveInto(this);
+            UpsertToLiveWorldCache();
+        }
 
         /// <summary>
         /// Move this inside of something
@@ -63,7 +65,7 @@ namespace Echoes.Data.System
         /// <returns>was this thing moved?</returns>
         public virtual bool TryMoveInto(IContains container)
         {
-            return false;
+            return container.MoveInto(this);
         }
         
         /// <summary>
@@ -80,35 +82,45 @@ namespace Echoes.Data.System
         /// <param name="input">the output strings</param>
         /// <param name="trigger">the methodology type (heard, seen, etc)</param>
         /// <returns></returns>
-        public bool TriggerAIAction(IEnumerable<string> input, AITriggerType trigger = AITriggerType.Seen)
+        public bool TriggerAIAction(string input, AITriggerType trigger = AITriggerType.Seen)
         {
             //TODO: Actual AI code
             return true;
         }
 
         /// <summary>
-        /// Render this to a look command (what something sees when it 'look's at this
+        /// Render this to a look command in a container this is in
         /// </summary>
         /// <returns>the output strings</returns>
-        public abstract IEnumerable<string> RenderToLook(IEntity actor);
+        public abstract IEnumerable<string> RenderToLocation();
+
+        /// <summary>
+        /// Render this to a look command (what something sees when it 'look's at this)
+        /// </summary>
+        /// <returns>the output strings</returns>
+        public abstract IEnumerable<string> RenderToLook();
 
         public bool ConveyMeaning(IContext context)
         {
-            if (!FullContext.Any(ctx => ctx.Name.Equals(context.Name)))
-                FullContext.Add(context);
-            else
-            {
-                //Echoes.ContextEngine.Merge(FullContext, context);
-            }
+            //return Echoes.MarkovianEngine.Merge(FullContext, context);
 
             return true;
         }
 
         public bool ConveyMeaning(IEnumerable<IContext> context)
         {
-            //Echoes.ContextEngine.Merge(FullContext, context);
+            //return Echoes.MarkovianEngine.Merge(FullContext, context);
 
             return true;
+        }
+
+        /// <summary>
+        /// Find the emergency we dont know where to spawn this guy spawn location
+        /// </summary>
+        /// <returns>The emergency spawn location</returns>
+        internal IContains GetBaseSpawn()
+        {
+            return StoredDataCache.GetAll<IPlace>().FirstOrDefault();
         }
 
         #region Data Functions

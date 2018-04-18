@@ -1,12 +1,13 @@
-﻿using Echoes.DataStructure.System;
+﻿using Cottontail.Structure;
+using Echoes.DataStructure.System;
 
 namespace Echoes.DataStructure.Entity
 {
-    public interface IPlace : IEntity, ILookable
+    public interface IPlace : IEntity, ILookable, IContains
     {
         /// <summary>
         /// Mobiles (NPC, Players) in the room
         /// </summary>
-        IEntityContainer Contents { get; set; }
+        ICacheContainer<IEntity> Inventory { get; set; }
     }
 }

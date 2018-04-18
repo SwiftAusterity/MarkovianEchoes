@@ -46,6 +46,7 @@
     <Compile Include="CacheType.cs" />
     <Compile Include="ICacheKey.cs" />
     <Compile Include="IData.cs" />
+    <Compile Include="ICacheContainer.cs" />
     <Compile Include="IFileStored.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 namespace Echoes.DataStructure.Entity
 {
-    public interface IPerson : IEntity, ILookable, IRenderInLocation
+    public interface IPersona : IEntity, ILookable,IObserve
     {
     }
 }

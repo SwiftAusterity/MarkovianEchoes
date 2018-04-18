@@ -8,17 +8,17 @@ namespace Echoes.DataStructure.System
     /// <summary>
     /// The basis for anything that shows up in game
     /// </summary>
-    public interface IEntity : IData, IComparable<IEntity>, IEquatable<IEntity>
+    public interface IEntity : IData, IRenderInLocation, ILookable, IComparable<IEntity>, IEquatable<IEntity>
     {
-        /// <summary>
-        /// is this an AI or not
-        /// </summary>
-        bool IsAI { get; }
-
         /// <summary>
         /// List of descriptors this objects knows
         /// </summary>
         IList<IContext> FullContext { get; set; }
+
+        /// <summary>
+        /// Where this is in the world
+        /// </summary>
+        IContains Position { get; set;  }
 
         /// <summary>
         /// Transfer context from one entity to this one
@@ -40,12 +40,12 @@ namespace Echoes.DataStructure.System
         /// <param name="input">the output strings</param>
         /// <param name="trigger">the methodology type (heard, seen, etc)</param>
         /// <returns></returns>
-        bool TriggerAIAction(IEnumerable<string> input, AITriggerType trigger = AITriggerType.Seen);
+        bool TriggerAIAction(string input, AITriggerType trigger = AITriggerType.Seen);
 
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        bool WriteTo(IEnumerable<string> input);
+        bool WriteTo(string input, IEntity originator);
 
         /// <summary>
         /// Update this to the live cache

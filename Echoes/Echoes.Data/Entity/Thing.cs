@@ -9,24 +9,22 @@ namespace Echoes.Data.Entity
     [Serializable]
     public class Thing : EntityPartial, IThing
     {
-        public IEnumerable<string> RenderToLocation(IEntity actor)
+        public override IEnumerable<string> RenderToLocation()
         {
-            throw new NotImplementedException();
+            var sb = new List<string>();
+
+            sb.Add(string.Format("{0} is here", Name));
+
+            return sb;
         }
 
-        public override IEnumerable<string> RenderToLook(IEntity actor)
+        public override IEnumerable<string> RenderToLook()
         {
-            throw new NotImplementedException();
-        }
+            var sb = new List<string>();
 
-        public override void SpawnNewInWorld()
-        {
-            throw new NotImplementedException();
-        }
+            sb.Add(string.Format("<s>{0}</s>", Name));
 
-        public override void SpawnNewInWorld(IContains spawnTo)
-        {
-            throw new NotImplementedException();
+            return sb;
         }
     }
 }

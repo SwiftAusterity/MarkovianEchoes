@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheContainer.cs" />
     <Compile Include="StoredDataCache.cs" />
     <Compile Include="CacheAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
