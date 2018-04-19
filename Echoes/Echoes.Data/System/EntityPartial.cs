@@ -6,6 +6,8 @@ using Cottontail.Utility.Data;
 using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
+using Echoes.Interpretation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +20,42 @@ namespace Echoes.Data.System
     [Serializable]
     public abstract class EntityPartial : SerializableDataPartial, IEntity
     {
+        [JsonIgnore]
+        internal MarkovianEngine markovEngine { get; }
+
         #region Live tracking properties
         /// <summary>
         /// When this entity was born to the world
         /// </summary>
         public DateTime Birthdate { get; set; }
         #endregion
+
+        public IList<IContext> FullContext { get; set; }
+        public long ID { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime LastRevised { get; set; }
+        public string Name { get; set; }
+
+        [JsonProperty("Position")]
+        private long _position { get; set; }
+
+        [JsonIgnore]
+        public IContains Position
+        {
+            get
+            {
+                return StoredDataCache.Get<IContains>(_position);
+            }
+            set
+            {
+                _position = value.ID;
+            }
+        }
+
+        public EntityPartial()
+        {
+            markovEngine = new MarkovianEngine();
+        }
 
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
@@ -32,13 +64,6 @@ namespace Echoes.Data.System
         {
             return TriggerAIAction(input);
         }
-
-        public IList<IContext> FullContext { get; set; }
-        public long ID { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime LastRevised { get; set; }
-        public string Name { get; set; }
-        public IContains Position { get; set; }
 
         /// <summary>
         /// Spawn this new into the live world
@@ -136,6 +161,7 @@ namespace Echoes.Data.System
             {
                 //reset this guy's ID to the next one in the list
                 GetNextId();
+                Birthdate = DateTime.Now;
 
                 StoredDataCache.Add(this);
                 accessor.WriteEntity(this);

@@ -3,7 +3,7 @@ using Echoes.DataStructure.System;
 
 namespace Echoes.DataStructure.Entity
 {
-    public interface IPlace : IEntity, ILookable, IContains
+    public interface IPlace : ILookable, IContains
     {
         /// <summary>
         /// Mobiles (NPC, Players) in the room

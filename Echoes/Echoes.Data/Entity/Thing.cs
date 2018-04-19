@@ -1,6 +1,5 @@
 ﻿using Echoes.Data.System;
 using Echoes.DataStructure.Entity;
-using Echoes.DataStructure.System;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +8,15 @@ namespace Echoes.Data.Entity
     [Serializable]
     public class Thing : EntityPartial, IThing
     {
+        /// <summary>
+        /// Spawn this new into the live world
+        /// </summary>
+        public override void SpawnNewInWorld()
+        {
+            //Things dont "need" to be spawned anywhere
+            UpsertToLiveWorldCache();
+        }
+
         public override IEnumerable<string> RenderToLocation()
         {
             var sb = new List<string>();

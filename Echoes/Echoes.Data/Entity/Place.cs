@@ -2,6 +2,7 @@
 using Echoes.Data.System;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +12,7 @@ namespace Echoes.Data.Entity
     public class Place : EntityPartial, IPlace
     {
         #region Container
+        [JsonIgnore]
         public ICacheContainer<IEntity> Inventory { get; set; }
 
         /// <summary>

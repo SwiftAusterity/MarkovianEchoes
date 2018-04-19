@@ -5,7 +5,7 @@ namespace Echoes.DataStructure.System
     /// <summary>
     /// Framework for entities that can hold other entities
     /// </summary>
-    public interface IContains
+    public interface IContains : IEntity
     {
         /// <summary>
         /// Move an entity into this

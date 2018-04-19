@@ -25,10 +25,9 @@ namespace Echoes.Data.Entity
 
         public void Observe(string observance, IEntity actor)
         {
-            var newContext = new Context();
-            //= Echoes.MarkovianEngine.Experience(this, actor, observance);
+            var newContext = markovEngine.Experience(this, actor, observance);
 
-            //Echoes.MarkovianEngine.Merge(FullContext, newContext);
+            markovEngine.Merge(FullContext, newContext);
 
             AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, actor, newContext));
         }

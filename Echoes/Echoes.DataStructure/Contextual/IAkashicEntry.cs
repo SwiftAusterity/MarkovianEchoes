@@ -1,5 +1,6 @@
 ﻿using Echoes.DataStructure.System;
 using System;
+using System.Collections.Generic;
 
 namespace Echoes.DataStructure.Contextual
 {
@@ -26,6 +27,6 @@ namespace Echoes.DataStructure.Contextual
         /// <summary>
         /// The context generated for the observer from the occurance
         /// </summary>
-        IContext Context { get; }
+        IEnumerable<IContext> Context { get; }
     }
 }
