@@ -26,6 +26,18 @@ body {
     margin: 15px;
 }
 
+ul.animated-list {
+    display: inline;
+    padding: unset;
+    margin: unset;
+}
+
+    ul.animated-list li {
+        display: inline;
+        padding: unset;
+        margin: unset;
+    }
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

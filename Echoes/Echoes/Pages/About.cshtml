@@ -4,6 +4,19 @@
     ViewData["Title"] = "About";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@Model.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<div style="margin-top: 50px;">
+    <p>Markovian Echoes is a game; experiment; experience about existence itself. Exist and shape existence.</p>
+
+    <p>Markovian Echoes knows of three things:</p>
+
+    <p>Persona - The guise you assume to be. You are not unique. Others may choose to exist with the same guise when you exist; when you do not exist. You must share existence with others and be enriched by the echoes.</p>
+    <p>Thing - There are other elements to existence. They are things. Things can be described and acted upon. Your actions give birth to and shape the things that exist.</p>
+    <p>Place - Existence is segmented and where you exist is a singular concept at any given time. Echoes may reach to other Places you do not exist in. They may reach Places you do not know about or understand. Sometimes the echoes link Places together and that knowledge may be shared.</p>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('p').each.textillate({ in: { effect: 'fadeIn' } });
+    </script>
+}

@@ -4,16 +4,13 @@
     ViewData["Title"] = "Contact";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@Model.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<div style="margin-top: 50px;">
+    <p data-in-effect="fadeIn">Markovian Echoes is made and maintained by SwiftAusterity for the MUD Coders Guild 2018 Gamejam. Exist in the guild and share your echoes with us, https://mudcoders.slack.com/</p>
+</div>
 
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+@section Scripts {
+    <script type="text/javascript">
+        $('p').each.textillate({ in: { effect: 'fadeIn' } });
+    </script>
+}
