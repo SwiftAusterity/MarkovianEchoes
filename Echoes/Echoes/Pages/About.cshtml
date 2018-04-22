@@ -6,17 +6,24 @@
 <h2>@ViewData["Title"]</h2>
 
 <div style="margin-top: 50px;">
-    <p>Markovian Echoes is a game; experiment; experience about existence itself. Exist and shape existence.</p>
+    <p>Markovian Echoes is a game; experiment; experience about existence itself.</p>
+    <p>Exist and shape existence.</p>
 
     <p>Markovian Echoes knows of three things:</p>
 
-    <p>Persona - The guise you assume to be. You are not unique. Others may choose to exist with the same guise when you exist; when you do not exist. You must share existence with others and be enriched by the echoes.</p>
-    <p>Thing - There are other elements to existence. They are things. Things can be described and acted upon. Your actions give birth to and shape the things that exist.</p>
-    <p>Place - Existence is segmented and where you exist is a singular concept at any given time. Echoes may reach to other Places you do not exist in. They may reach Places you do not know about or understand. Sometimes the echoes link Places together and that knowledge may be shared.</p>
+    <h3>Persona</h3>
+    <p>The guise you assume to be. You are not unique. Others may choose to exist with the same guise when you exist; when you do not exist. You must share existence with others and be enriched by the echoes.</p>
+    
+    <h3>Thing</h3>
+    <p>There are other elements to existence. They are things. Things can be described and acted upon. Your actions give birth to and shape the things that exist.</p>
+    
+    <h3>Place</h3>
+    <p>Existence is segmented and where you exist is a singular concept at any given time. Echoes may reach to other Places you do not exist in. They may reach Places you do not know about or understand. Sometimes the echoes link Places together and that knowledge may be shared.</p>
 </div>
 
 @section Scripts {
     <script type="text/javascript">
-        $('p').each.textillate({ in: { effect: 'fadeIn' } });
+        $('p').textillate({ in: { effect: 'fadeIn' } });
+        $('h3').textillate({ in: { effect: 'fadeIn' }, initialDelay: 1500 });
     </script>
 }

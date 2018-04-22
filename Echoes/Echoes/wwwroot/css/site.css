@@ -3,6 +3,7 @@ body {
     padding-bottom: 20px;
 }
 
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -24,6 +25,17 @@ body {
 /* QR code generator */
 #qrCode {
     margin: 15px;
+}
+
+.textParserClient {
+    height: 750px;
+    width: 910px;
+    margin-top: 50px;
+    position: relative;
+}
+
+.text-output {
+    position: absolute;
 }
 
 ul.animated-list {

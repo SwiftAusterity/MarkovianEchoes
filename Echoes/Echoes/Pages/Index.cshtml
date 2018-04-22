@@ -1,65 +1,58 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "The Void";
 }
 
-<div style="margin-top: 50px;">
-    <p class="animate-1">Existence</p>
+<div class="textParserClient">
+    <span class="animate-1 h1">Existence</span>
 
-    <p class="animate-2">
-        <ul class="animated-list">
-            <li>Persists</li>
-            <li>Combines</li>
-            <li>Evolves</li>
-        </ul>
-    </p>
+    <ul class="animated-list animate-2">
+        <li>Persists</li>
+        <li>Combines</li>
+        <li>Evolves</li>
+    </ul>
 
-    <div>
-        <span class="animate-3">That which exists creates echoes that all which will exist</span> <ul class="animated-list animate-4"><li>experience</li><li>feel</li><li>are shaped by</li></ul>
-    </div>
+    <span class="animate-3">That which exists creates echoes that all which will exist</span>
+
+    <ul class="animated-list animate-4"><li>experience</li><li>feel</li><li>are shaped by</li></ul>
 
     <div class="animate-final" style="display:none;">
-        <p>
+        <h3>
             <a href="/existence">Exist</a>
-        </p>
+        </h3>
     </div>
 </div>
 
 @section Scripts {
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('.animate-1').textillate({
-                in: { effect: 'fadeIn' },
-                out: {
-                    callback: function () {
-                        $('.animate-2').textillate({
-                            in: { effect: 'fadeIn' },
-                            out: {
-                                effect: 'fadeOutDown',
-                                callback: function () {
-                                    $('.animate-3').textillate({
-                                        in: { effect: 'fadeIn' },
-                                        out: {
-                                            callback: function () {
-                                                $('.animate-4').textillate({
-                                                    in: { effect: 'fadeIn' },
-                                                    out: {
-                                                        effect: 'fadeOutDown',
-                                                        callback: function () {
-                                                            $('.animate-final').show();
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }
-                }
-            });
+
+        PositionOutput(undefined, $('.textParserClient'), $('.animate-1'), {
+            in: { effect: 'fadeIn' }
         });
+
+        PositionOutput(undefined, $('.textParserClient'), $('.animate-2'), {
+            in: { effect: 'fadeIn' },
+            out: { effect: 'fadeOutDown' }
+        });
+
+        PositionOutput(undefined, $('.textParserClient'), $('.animate-3'), {
+            in: { effect: 'fadeIn' },
+            initialDelay: 8000
+        });
+
+        PositionOutput(undefined, $('.textParserClient'), $('.animate-4'), {
+            in: { effect: 'fadeIn' },
+            out: { effect: 'fadeOutDown' },
+            initialDelay: 9500
+        });
+
+        var quote = '"The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion." - Albert Camus';
+        var quote2 = '"As far as we can discern, the sole purpose of human existence is to kindle a light in the darkness of mere being." - Carl Jung';
+
+        PositionOutput(quote, $('.textParserClient'), undefined, { in: { effect: 'fadeIn' }, initialDelay: 5000 });
+        PositionOutput(quote2, $('.textParserClient'), undefined, { in: { effect: 'fadeIn' }, initialDelay: 3000 });
+
+        $('.animate-final').delay(35000).show(1000);
     </script>
 }
