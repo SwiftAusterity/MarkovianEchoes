@@ -1,0 +1,15 @@
+﻿@model Echoes.Web.Models.ExistenceModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="textParserClient">
+    <div id="OutputArea" class="parserOutput"></div>
+    <form method="post">
+        @Html.DisplayFor(model => model.Input)
+    </form>
+</div>
+<div>
+    <a href="./existence" id="clientReload">Blink</a>
+</div>
