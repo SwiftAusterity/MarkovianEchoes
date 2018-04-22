@@ -36,7 +36,7 @@ function PositionOutput(text, parent, child, textEffects) {
         });
     } else if (writingChance >= 0.6) {
         child.width(height);
-        child.height(width);
+        child.height(width + 10);
 
         child.css({
             'writing-mode': 'vertical-lr',
@@ -45,7 +45,7 @@ function PositionOutput(text, parent, child, textEffects) {
         });
     } else if (writingChance >= 0.4) {
         child.width(height);
-        child.height(width);
+        child.height(width + 10);
 
         child.css({
             'writing-mode': 'vertical-rl',
@@ -69,14 +69,18 @@ function PositionOutput(text, parent, child, textEffects) {
         textEffects = { in: { effect: 'fadeIn' } };
     }
 
-    child.textillate(textEffects);
-
-    child.mouseover(function () {
-        $(this).hide({
-            duration: 1000,
-            complete: function () {
-                $(this).remove();
-            }
-        });
+    $.extend(textEffects, {
+        callback: function () {
+            child.mouseover(function () {
+                $(this).hide({
+                    duration: 1000,
+                    complete: function () {
+                        $(this).remove();
+                    }
+                });
+            });
+        }
     });
+
+    child.textillate(textEffects);
 };
