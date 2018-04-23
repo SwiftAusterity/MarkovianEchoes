@@ -1,0 +1,16 @@
+﻿@model Echoes.Web.Models.ExistenceModel
+
+@{
+    ViewData["Title"] = "EXIST";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<div class="textParserClient">
+    <div id="OutputArea" class="parserOutput"></div>
+    <form method="post">
+        <input type="text" id="Input" name="Input" class="parserInput" />
+    </form>
+</div>
+<div>
+    <a href="./existence" id="clientReload">Blink</a>
+</div>
