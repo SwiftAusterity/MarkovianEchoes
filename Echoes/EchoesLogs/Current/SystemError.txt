@@ -1,0 +1,16 @@
+[2018/04/28 16:28:51]:  KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Cottontail.Cache.CacheAccessor.GetAll[T]() in C:\Dev\MarkovianEchoes\Echoes\Cache\CacheAccessor.cs:line 109
+[2018/04/28 16:28:59]:  KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Cottontail.Cache.CacheAccessor.GetAll[T]() in C:\Dev\MarkovianEchoes\Echoes\Cache\CacheAccessor.cs:line 109
+[2018/04/28 17:49:01]:  KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Cottontail.Cache.CacheAccessor.GetAll[T]() in C:\Dev\MarkovianEchoes\Echoes\Cache\CacheAccessor.cs:line 109
+[2018/04/28 17:51:02]:  KeyNotFoundException: The given key was not present in the dictionary.
+   at System.ThrowHelper.ThrowKeyNotFoundException()
+   at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Cottontail.Cache.CacheAccessor.GetAll[T]() in C:\Dev\MarkovianEchoes\Echoes\Cache\CacheAccessor.cs:line 109

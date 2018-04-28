@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cottontail.FileSystem.Logging;
 using Echoes.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,8 @@ namespace Echoes.Web.Pages.Logs
 {
     public class LogsModel : PageModel
     {
+        private IHostingEnvironment _env;
+
         public UserManager<ApplicationUser> _userManager { get; set; }
 
         [BindProperty]
@@ -21,17 +24,18 @@ namespace Echoes.Web.Pages.Logs
         [BindProperty]
         public string SelectedLog { get; set; }
 
-        public LogsModel(UserManager<ApplicationUser> userManager)
+        public LogsModel(UserManager<ApplicationUser> userManager, IHostingEnvironment env)
         {
             _userManager = userManager;
+            _env = env;
         }
 
         public void OnGet()
         {
-            ChannelNames = LoggingUtility.GetCurrentLogNames();
+            ChannelNames = LoggingUtility.GetCurrentLogNames(_env.ContentRootPath);
 
             if (!String.IsNullOrWhiteSpace(SelectedLog))
-                SelectedLogContent = LoggingUtility.GetCurrentLogContent(SelectedLog);
+                SelectedLogContent = LoggingUtility.GetCurrentLogContent(_env.ContentRootPath, SelectedLog);
         }
 
         public void OnPost()
@@ -40,11 +44,11 @@ namespace Echoes.Web.Pages.Logs
 
             if (!String.IsNullOrWhiteSpace(SelectedLog))
             {
-                if (!LoggingUtility.RolloverLog(SelectedLog))
+                if (!LoggingUtility.RolloverLog(_env.ContentRootPath, SelectedLog))
                     message = "Error rolling over log.";
                 else
                 {
-                    LoggingUtility.LogAdminCommandUsage("*WEB* - RolloverLog[" + SelectedLog + "]", _userManager.GetUserName(User));
+                    LoggingUtility.LogAdminCommandUsage(_env.ContentRootPath, "*WEB* - RolloverLog[" + SelectedLog + "]", _userManager.GetUserName(User));
                     message = "Rollover Successful.";
                 }
             }

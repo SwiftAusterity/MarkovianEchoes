@@ -19,11 +19,24 @@ namespace Cottontail.Cache
         /// </summary>
         private List<long> IDKeys;
 
+        private StoredDataCache dataCache;
+
         int ICollection<T>.Count => IDKeys.Count;
 
         public bool IsReadOnly => false;
 
-        public T this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public T this[int index]
+        {
+            get
+            {
+                return Contents().ElementAt(index);
+            }
+            set
+            {
+                IDKeys.RemoveAt(index);
+                IDKeys.Insert(index, value.ID);
+            }
+        }
 
         /// <summary>
         /// New up an empty container
@@ -34,13 +47,19 @@ namespace Cottontail.Cache
             IDKeys = new List<long>();
         }
 
+        public CacheContainer(string baseDirectory)
+        {
+            dataCache = new StoredDataCache(baseDirectory);
+            IDKeys = new List<long>();
+        }
+
         /// <summary>
         /// Restful list of entities contained (it needs to never store its own objects, only cache references)
         /// </summary>
         public IEnumerable<T> Contents()
         {
             if (this.Count() > 0)
-                return StoredDataCache.GetMany<T>(IDKeys);
+                return dataCache.GetMany<T>(IDKeys);
 
             return Enumerable.Empty<T>();
         }

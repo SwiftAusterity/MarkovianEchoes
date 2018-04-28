@@ -9,13 +9,7 @@ namespace Cottontail.FileSystem
         /// <summary>
         /// The base directory for these files, should be overriden
         /// </summary>
-        public virtual string BaseDirectory
-        {
-            get
-            {
-                return "/FileStore/";
-            }
-        }
+        public virtual string BaseDirectory { get; }
 
         /// <summary>
         /// Directory name for whatever is "current", should probably be left alone
@@ -56,6 +50,12 @@ namespace Cottontail.FileSystem
                                         , DateTime.Now.Minute
                                         , DateTime.Now.Second);
             }
+        }
+
+        public FileAccessor(string rootDirectory)
+        {
+            if (VerifyDirectory(rootDirectory, false))
+                BaseDirectory = rootDirectory + "/FileStore/";
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Cottontail.FileSystem
             catch (Exception ex)
             {
                 //Log any filesystem errors
-                LoggingUtility.LogError(ex);
+                LoggingUtility.LogError(BaseDirectory, ex);
             }
 
             return false;
@@ -160,7 +160,7 @@ namespace Cottontail.FileSystem
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(ex);
+                LoggingUtility.LogError(BaseDirectory, ex);
             }
             finally
             {

@@ -1,10 +1,13 @@
-﻿using Cottontail.Structure;
+﻿using Cottontail.Cache;
+using Cottontail.FileSystem.Logging;
+using Cottontail.Structure;
 using Echoes.Data.System;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Echoes.Data.Entity
 {
@@ -15,6 +18,8 @@ namespace Echoes.Data.Entity
         [JsonIgnore]
         public ICacheContainer<IEntity> Inventory { get; set; }
 
+        public Place(string baseDirectory) : base(baseDirectory) { }
+
         /// <summary>
         /// Get all of the entities matching a type inside this
         /// </summary>
@@ -23,6 +28,17 @@ namespace Echoes.Data.Entity
         public IEnumerable<IEntity> GetContents()
         {
             return Inventory.Contents();
+        }
+
+        /// <summary>
+        /// Method by which this entity has output (from commands and events) "shown" to it
+        /// </summary>
+        public override bool WriteTo(string input, IEntity originator)
+        {
+            //Hacky "Each" to write output to everything inside this place
+            GetContents().Select(entity => entity.WriteTo(input, originator));
+
+            return TriggerAIAction(input);
         }
 
         /// <summary>
@@ -101,6 +117,29 @@ namespace Echoes.Data.Entity
             //Places are containers, they don't spawn to anything
 
             UpsertToLiveWorldCache();
+        }
+
+        /// <summary>
+        /// Remove this object from the db permenantly
+        /// </summary>
+        /// <returns>success status</returns>
+        public override bool Remove()
+        {
+            try
+            {
+                //Remove from cache first
+                DataCache.Remove<IPlace>(new BackingDataCacheKey(this.GetType(), this.ID));
+
+                //Remove it from the file system.
+                DataStore.ArchiveEntity(this);
+            }
+            catch (Exception ex)
+            {
+                LoggingUtility.LogError(BaseDirectory, ex);
+                return false;
+            }
+
+            return true;
         }
     }
 }

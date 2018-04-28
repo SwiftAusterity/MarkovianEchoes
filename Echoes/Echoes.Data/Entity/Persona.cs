@@ -1,4 +1,7 @@
-﻿using Echoes.Data.Contextual;
+﻿using Cottontail.Cache;
+using Cottontail.FileSystem;
+using Cottontail.FileSystem.Logging;
+using Echoes.Data.Contextual;
 using Echoes.Data.System;
 using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
@@ -13,6 +16,8 @@ namespace Echoes.Data.Entity
     {
         public IList<IAkashicEntry> AkashicRecord { get; set; }
 
+        public Persona(string baseDirectory) : base(baseDirectory) { }
+
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
@@ -25,11 +30,11 @@ namespace Echoes.Data.Entity
 
         public void Observe(string observance, IEntity actor)
         {
-            var newContext = markovEngine.Experience(this, actor, observance);
+            var newContext = MarkovEngine.Experience(this, actor, observance);
 
-            markovEngine.Merge(FullContext, newContext);
+            MarkovEngine.Merge(FullContext, newContext);
 
-            AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, actor, newContext));
+            AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, actor, newContext, BaseDirectory));
         }
 
         public override IEnumerable<string> RenderToLocation()
@@ -48,6 +53,31 @@ namespace Echoes.Data.Entity
             sb.Add(string.Format("<s>{0}</s>", Name));
 
             return sb;
+        }
+
+        /// <summary>
+        /// Remove this object from the db permenantly
+        /// </summary>
+        /// <returns>success status</returns>
+        public override bool Remove()
+        {
+            var accessor = new StoredData(BaseDirectory);
+
+            try
+            {
+                //Remove from cache first
+                DataCache.Remove<IThing>(new BackingDataCacheKey(this.GetType(), this.ID));
+
+                //Remove it from the file system.
+                accessor.ArchiveEntity(this);
+            }
+            catch (Exception ex)
+            {
+                LoggingUtility.LogError(BaseDirectory, ex);
+                return false;
+            }
+
+            return true;
         }
     }
 }

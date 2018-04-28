@@ -8,30 +8,25 @@ namespace Cottontail.Cache
     /// <summary>
     /// Storage and access for live entities in game (including players)
     /// </summary>
-    public static class StoredDataCache
+    public class StoredDataCache
     {
-        private static CacheAccessor BackingCache = new CacheAccessor(CacheType.Stored);
+        private CacheAccessor BackingCache;
+
+        public StoredDataCache(string baseDirectory)
+        {
+            BackingCache = new CacheAccessor(CacheType.Stored, baseDirectory);
+        }
 
         /// <summary>
         /// Adds a single entity into the cache
         /// </summary>
         /// <param name="objectToCache">the entity to cache</param>
-        public static void Add<T>(T objectToCache) where T : IData
+        public void Add<T>(T objectToCache) where T : IData
         {
             var entityToCache = (IData)objectToCache;
             var cacheKey = new BackingDataCacheKey(objectToCache.GetType(), entityToCache.ID);
 
-            BackingCache.Add(objectToCache, cacheKey);
-        }
-
-        /// <summary>
-        /// Adds a non-entity to the cache
-        /// </summary>
-        /// <param name="objectToCache">the object to cache</param>
-        /// <param name="cacheKey">the string key to cache it under</param>
-        public static void Add(object objectToCache, string cacheKey)
-        {
-            BackingCache.Add(objectToCache, cacheKey);
+            BackingCache.Add<T>(objectToCache, cacheKey);
         }
 
         /// <summary>
@@ -40,7 +35,7 @@ namespace Cottontail.Cache
         /// <typeparam name="T">the system type for the entity</typeparam>
         /// <param name="birthmarks">the birthmarks to retrieve</param>
         /// <returns>a list of the entities from the cache</returns>
-        public static IEnumerable<T> GetMany<T>(IEnumerable<long> ids) where T : IData
+        public IEnumerable<T> GetMany<T>(IEnumerable<long> ids) where T : IData
         {
             return BackingCache.GetMany<T>(ids);
         }
@@ -50,7 +45,7 @@ namespace Cottontail.Cache
         /// </summary>
         /// <typeparam name="T">the system type for the entity</typeparam>
         /// <returns>a list of the entities from the cache</returns>
-        public static IEnumerable<T> GetAll<T>()
+        public IEnumerable<T> GetAll<T>()
         {
             return BackingCache.GetAll<T>();
         }
@@ -59,7 +54,7 @@ namespace Cottontail.Cache
         /// Only for the hotbackup procedure
         /// </summary>
         /// <returns>All entities in the entire system</returns>
-        public static IEnumerable<IData> GetAll()
+        public IEnumerable<IData> GetAll()
         {
             return BackingCache.GetAll<IData>();
         }
@@ -70,7 +65,7 @@ namespace Cottontail.Cache
         /// <typeparam name="T">the type of the entity</typeparam>
         /// <param name="key">the key it was cached with</param>
         /// <returns>the entity requested</returns>
-        public static T GetByName<T>(string name) where T : IData
+        public T GetByName<T>(string name) where T : IData
         {
             var cacheItems = BackingCache.GetAll<T>();
 
@@ -83,7 +78,7 @@ namespace Cottontail.Cache
         /// <typeparam name="T">the type of the entity</typeparam>
         /// <param name="key">the key it was cached with</param>
         /// <returns>the entity requested</returns>
-        public static T Get<T>(string key)
+        public T Get<T>(string key)
         {
             return BackingCache.Get<T>(key);
         }
@@ -94,7 +89,7 @@ namespace Cottontail.Cache
         /// <typeparam name="T">the type of the entity</typeparam>
         /// <param name="key">the key it was cached with</param>
         /// <returns>the entity requested</returns>
-        public static T Get<T>(BackingDataCacheKey key) where T : IData
+        public T Get<T>(BackingDataCacheKey key) where T : IData
         {
             return BackingCache.Get<T>(key);
         }
@@ -105,7 +100,7 @@ namespace Cottontail.Cache
         /// <typeparam name="T">the type of the entity</typeparam>
         /// <param name="id">the id</param>
         /// <returns>the entity requested</returns>
-        public static T Get<T>(long id) where T : IData
+        public T Get<T>(long id) where T : IData
         {
             var key = new BackingDataCacheKey(typeof(T), id);
 
@@ -116,9 +111,9 @@ namespace Cottontail.Cache
         /// Removes an entity from the cache by its key
         /// </summary>
         /// <param name="key">the key of the entity to remove</param>
-        public static void Remove(BackingDataCacheKey key)
+        public void Remove<T>(BackingDataCacheKey key)
         {
-            BackingCache.Remove(key);
+            BackingCache.Remove<T>(key);
         }
 
         /// <summary>
@@ -126,7 +121,7 @@ namespace Cottontail.Cache
         /// </summary>
         /// <param name="key">the key of the entity</param>
         /// <returns>if it is in the cache of not</returns>
-        public static bool Exists(BackingDataCacheKey key)
+        public bool Exists(BackingDataCacheKey key)
         {
             return BackingCache.Exists(key);
         }

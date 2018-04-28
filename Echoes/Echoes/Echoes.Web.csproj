@@ -5,7 +5,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" PrivateAssets="All" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
@@ -16,8 +18,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cache\Cottontail.Cache.csproj" />
+    <ProjectReference Include="..\Echoes.DataStructure\Echoes.DataStructure.csproj" />
+    <ProjectReference Include="..\Echoes.Data\Echoes.Data.csproj" />
+    <ProjectReference Include="..\Echoes.Interpretation\Echoes.Interpretation.csproj" />
     <ProjectReference Include="..\FileSystem\Cottontail.FileSystem.csproj" />
     <ProjectReference Include="..\Structure\Cottontail.Structure.csproj" />
     <ProjectReference Include="..\Utility\Cottontail.Utility.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logs\Current\" />
   </ItemGroup>
 </Project>

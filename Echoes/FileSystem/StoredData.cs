@@ -2,7 +2,6 @@
 using Cottontail.Structure;
 using System;
 using System.IO;
-using System.Web.Hosting;
 
 namespace Cottontail.FileSystem
 {
@@ -15,7 +14,7 @@ namespace Cottontail.FileSystem
         {
             get
             {
-                return HostingEnvironment.MapPath(base.BaseDirectory + "BackingData/");
+                return base.BaseDirectory + "BackingData/";
             }
         }
 
@@ -35,6 +34,8 @@ namespace Cottontail.FileSystem
                                         , DateTime.Now.Minute);
             }
         }
+
+        public StoredData(string rootPath) : base(rootPath) { }
 
         public IData ReadEntity(FileInfo file, Type entityType)
         {
@@ -70,7 +71,7 @@ namespace Cottontail.FileSystem
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(ex);
+                LoggingUtility.LogError(BaseDirectory, ex);
             }
         }
 
@@ -99,7 +100,7 @@ namespace Cottontail.FileSystem
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(ex);
+                LoggingUtility.LogError(BaseDirectory, ex);
             }
         }
 

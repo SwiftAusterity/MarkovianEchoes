@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web.Hosting;
 
 namespace Cottontail.FileSystem.Logging
 {
@@ -31,11 +30,11 @@ namespace Cottontail.FileSystem.Logging
         /// Log an exception
         /// </summary>
         /// <param name="ex">the exception</param>
-        public static void LogError(Exception ex)
+        public static void LogError(string rootPath, Exception ex)
         {
             var errorContent = String.Format("{0}: {1}{2}{3}", ex.GetType().Name, ex.Message, Environment.NewLine, ex.StackTrace);
 
-            CommitLog(errorContent, "SystemError");
+            CommitLog(rootPath, errorContent, "SystemError");
         }
 
         /// <summary>
@@ -43,20 +42,20 @@ namespace Cottontail.FileSystem.Logging
         /// </summary>
         /// <param name="commandString">the command being used</param>
         /// <param name="accountName">the account using it (user not character)</param>
-        public static void LogAdminCommandUsage(string commandString, string accountName)
+        public static void LogAdminCommandUsage(string rootPath, string commandString, string accountName)
         {
             var content = String.Format("{0}: {1}", accountName, commandString);
 
-            CommitLog(content, "AdminCommandUse");
+            CommitLog(rootPath, content, "AdminCommandUse");
         }
 
         /// <summary>
         /// Gets all the current log file names in Current
         /// </summary>
         /// <returns>a list of the log file names</returns>
-        public static IEnumerable<string> GetCurrentLogNames()
+        public static IEnumerable<string> GetCurrentLogNames(string rootPath)
         {
-            var logger = new Logger();
+            var logger = new Logger(rootPath);
 
             return logger.GetCurrentLogNames();
         }
@@ -66,9 +65,9 @@ namespace Cottontail.FileSystem.Logging
         /// </summary>
         /// <param name="channel">the log file name</param>
         /// <returns>the content</returns>
-        public static string GetCurrentLogContent(string channel)
+        public static string GetCurrentLogContent(string rootPath, string channel)
         {
-            var logger = new Logger();
+            var logger = new Logger(rootPath);
 
             return logger.GetCurrentLogContent(channel);
         }
@@ -79,9 +78,9 @@ namespace Cottontail.FileSystem.Logging
         /// <param name="content">the content to log</param>
         /// <param name="channel">which log to append it to</param>
         /// <param name="keepItQuiet">Announce it in game or not</param>
-        public static void Log(string content, LogChannels channel)
+        public static void Log(string rootPath, string content, LogChannels channel)
         {
-            CommitLog(content, channel.ToString());
+            CommitLog(rootPath, content, channel.ToString());
         }
 
         /// <summary>
@@ -89,9 +88,9 @@ namespace Cottontail.FileSystem.Logging
         /// </summary>
         /// <param name="channel">the log file to archive</param>
         /// <returns>success status</returns>
-        public static bool RolloverLog(string channel)
+        public static bool RolloverLog(string rootPath, string channel)
         {
-            var logger = new Logger();
+            var logger = new Logger(rootPath);
 
             return logger.RolloverLog(channel);
         }
@@ -102,9 +101,9 @@ namespace Cottontail.FileSystem.Logging
         /// <param name="content">the content to log</param>
         /// <param name="channel">which log to append it to</param>
         /// <param name="keepItQuiet">Announce it in game or not</param>
-        private static void CommitLog(string content, string channel)
+        private static void CommitLog(string rootPath, string content, string channel)
         {
-            var logger = new Logger();
+            var logger = new Logger(rootPath);
 
             logger.WriteToLog(content, channel);
         }
@@ -122,9 +121,11 @@ namespace Cottontail.FileSystem.Logging
         {
             get
             {
-                return HostingEnvironment.MapPath(base.BaseDirectory + "Logs/");
+                return base.BaseDirectory + "Logs/";
             }
         }
+
+        public Logger(string rootPath) : base(rootPath) { }
 
         /// <summary>
         /// Write to a log

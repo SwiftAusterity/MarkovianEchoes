@@ -10,6 +10,8 @@ namespace Echoes.Data.Contextual
     [Serializable]
     public class AkashicEntry : IAkashicEntry
     {
+        private StoredDataCache dataCache;
+
         public DateTime Timestamp { get; private set; }
 
         public string Observance { get; private set; }
@@ -22,7 +24,7 @@ namespace Echoes.Data.Contextual
         {
             get
             {
-                return StoredDataCache.Get<IEntity>(_actor);
+                return dataCache.Get<IEntity>(_actor);
             }
             private set
             {
@@ -32,12 +34,14 @@ namespace Echoes.Data.Contextual
 
         public IEnumerable<IContext> Context { get; private set; }
 
-        public AkashicEntry(DateTime timestamp, string observance, IEntity actor, IEnumerable<IContext> context)
+        public AkashicEntry(DateTime timestamp, string observance, IEntity actor, IEnumerable<IContext> context, string baseDirectory)
         {
             Timestamp = timestamp;
             Observance = observance;
             Actor = actor;
             Context = context;
+
+            dataCache = new StoredDataCache(baseDirectory);
         }
     }
 }

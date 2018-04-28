@@ -21,7 +21,16 @@ namespace Echoes.Data.System
     public abstract class EntityPartial : SerializableDataPartial, IEntity
     {
         [JsonIgnore]
-        internal MarkovianEngine markovEngine { get; }
+        internal MarkovianEngine MarkovEngine { get; }
+
+        [JsonIgnore]
+        internal StoredDataCache DataCache { get; }
+
+        [JsonIgnore]
+        internal StoredData DataStore { get; }
+
+        [JsonIgnore]
+        internal string BaseDirectory { get; }
 
         #region Live tracking properties
         /// <summary>
@@ -44,7 +53,7 @@ namespace Echoes.Data.System
         {
             get
             {
-                return StoredDataCache.Get<IContains>(_position);
+                return DataCache.Get<IContains>(_position);
             }
             set
             {
@@ -52,9 +61,12 @@ namespace Echoes.Data.System
             }
         }
 
-        public EntityPartial()
+        public EntityPartial(string baseDirectory)
         {
-            markovEngine = new MarkovianEngine();
+            BaseDirectory = baseDirectory;
+            DataStore = new StoredData(BaseDirectory);
+            DataCache = new StoredDataCache(BaseDirectory);
+            MarkovEngine = new MarkovianEngine();
         }
 
         /// <summary>
@@ -98,7 +110,7 @@ namespace Echoes.Data.System
         /// </summary>
         public void UpsertToLiveWorldCache()
         {
-            StoredDataCache.Add(this);
+            DataCache.Add(this);
         }
 
         /// <summary>
@@ -145,7 +157,7 @@ namespace Echoes.Data.System
         /// <returns>The emergency spawn location</returns>
         internal IContains GetBaseSpawn()
         {
-            return StoredDataCache.GetAll<IPlace>().FirstOrDefault();
+            return DataCache.GetAll<IPlace>().FirstOrDefault();
         }
 
         #region Data Functions
@@ -155,20 +167,18 @@ namespace Echoes.Data.System
         /// <returns>the object with ID and other db fields set</returns>
         public virtual IData Create()
         {
-            var accessor = new StoredData();
-
             try
             {
                 //reset this guy's ID to the next one in the list
                 GetNextId();
                 Birthdate = DateTime.Now;
 
-                StoredDataCache.Add(this);
-                accessor.WriteEntity(this);
+                DataCache.Add(this);
+                DataStore.WriteEntity(this);
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(ex);
+                LoggingUtility.LogError(BaseDirectory, ex);
                 return null;
             }
 
@@ -179,26 +189,7 @@ namespace Echoes.Data.System
         /// Remove this object from the db permenantly
         /// </summary>
         /// <returns>success status</returns>
-        public virtual bool Remove()
-        {
-            var accessor = new StoredData();
-
-            try
-            {
-                //Remove from cache first
-                StoredDataCache.Remove(new BackingDataCacheKey(this.GetType(), this.ID));
-
-                //Remove it from the file system.
-                accessor.ArchiveEntity(this);
-            }
-            catch (Exception ex)
-            {
-                LoggingUtility.LogError(ex);
-                return false;
-            }
-
-            return true;
-        }
+        public abstract bool Remove();
 
         /// <summary>
         /// Update the field data for this object to the db
@@ -206,15 +197,13 @@ namespace Echoes.Data.System
         /// <returns>success status</returns>
         public virtual bool Save()
         {
-            var accessor = new StoredData();
-
             try
             {
-                accessor.WriteEntity(this);
+                DataStore.WriteEntity(this);
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(ex);
+                LoggingUtility.LogError(BaseDirectory, ex);
                 return false;
             }
 
@@ -226,7 +215,7 @@ namespace Echoes.Data.System
         /// </summary>
         internal void GetNextId()
         {
-            IEnumerable<IData> allOfMe = StoredDataCache.GetAll().Where(bdc => bdc.GetType() == this.GetType());
+            IEnumerable<IData> allOfMe = DataCache.GetAll().Where(bdc => bdc.GetType() == this.GetType());
 
             //Zero ordered list
             if (allOfMe.Count() > 0)
@@ -261,7 +250,7 @@ namespace Echoes.Data.System
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.LogError(ex);
+                    LoggingUtility.LogError(BaseDirectory, ex);
                 }
             }
 
@@ -283,7 +272,7 @@ namespace Echoes.Data.System
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.LogError(ex);
+                    LoggingUtility.LogError(BaseDirectory, ex);
                 }
             }
 
@@ -306,7 +295,7 @@ namespace Echoes.Data.System
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.LogError(ex);
+                    LoggingUtility.LogError(BaseDirectory, ex);
                 }
             }
 
@@ -323,7 +312,7 @@ namespace Echoes.Data.System
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.LogError(ex);
+                    LoggingUtility.LogError(BaseDirectory, ex);
                 }
             }
 

@@ -1,4 +1,6 @@
-﻿using Echoes.Data.System;
+﻿using Cottontail.Cache;
+using Cottontail.FileSystem.Logging;
+using Echoes.Data.System;
 using Echoes.DataStructure.Entity;
 using System;
 using System.Collections.Generic;
@@ -8,6 +10,8 @@ namespace Echoes.Data.Entity
     [Serializable]
     public class Thing : EntityPartial, IThing
     {
+        public Thing(string baseDirectory) : base(baseDirectory) { }
+
         /// <summary>
         /// Spawn this new into the live world
         /// </summary>
@@ -33,6 +37,29 @@ namespace Echoes.Data.Entity
             sb.Add(string.Format("<s>{0}</s>", Name));
 
             return sb;
+        }
+
+        /// <summary>
+        /// Remove this object from the db permenantly
+        /// </summary>
+        /// <returns>success status</returns>
+        public override bool Remove()
+        {
+            try
+            {
+                //Remove from cache first
+                DataCache.Remove<IThing>(new BackingDataCacheKey(this.GetType(), this.ID));
+
+                //Remove it from the file system.
+                DataStore.ArchiveEntity(this);
+        }
+            catch (Exception ex)
+            {
+                LoggingUtility.LogError(BaseDirectory, ex);
+                return false;
+            }
+
+            return true;
         }
     }
 }
