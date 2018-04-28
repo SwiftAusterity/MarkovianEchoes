@@ -83,3 +83,29 @@
 
     child.textillate(textEffects);
 };
+
+function rememberPersona(personaName, personaSetter) {
+    if (personaSetter == undefined) {
+        personaSetter = $('#personaLabel');
+    }
+
+    personaSetter.addClass('activated');
+    Cookies.set('persona', personaName);
+}
+
+function forgetPersona(personaSetter) {
+    if (personaSetter == undefined) {
+        personaSetter = $('#personaLabel');
+    }
+
+    personaSetter.removeClass('activated');
+    Cookies.set('persona', '');
+}
+
+function setAkashicDate(currentDate) {
+    if (currentDate == undefined) {
+        currentDate = moment();
+    }
+
+    Cookies.set('lastSeenDate', currentDate);
+}

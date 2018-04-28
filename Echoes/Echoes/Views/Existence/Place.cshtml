@@ -7,10 +7,23 @@
 
 <div class="textParserClient">
     <div id="OutputArea" class="parserOutput"></div>
-    <form method="post">
+    <form method="post" id="inputForm" name="inputForm">
         <input type="text" id="Input" name="Input" class="parserInput" />
     </form>
 </div>
 <div>
     <a href="./existence" id="clientReload">Blink</a>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('#inputForm').submit(function () {
+            //Ensure we have value
+            if ($('#Input').val() == '') {
+                return false;
+            }
+
+            setAkashicDate();
+        });
+    </script>
+}
