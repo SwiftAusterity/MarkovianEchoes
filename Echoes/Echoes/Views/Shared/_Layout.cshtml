@@ -59,6 +59,7 @@
         <script src="~/lib/jquery-textillate/assets/jquery.lettering.js"></script>
         <script src="~/lib/jquery-textillate/jquery.textillate.js"></script>
 
+        <script src="~/js/js-cookie.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
@@ -79,9 +80,41 @@
         <script src="~/lib/jquery-textillate/assets/jquery.lettering.js"></script>
         <script src="~/lib/jquery-textillate/jquery.textillate.js"></script>
 
+        <script src="~/js/js-cookie.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
+
+    <script type="text/javascript">
+        $('#personaLabel').click(function () {
+            var $this = $(this);
+
+            if ($this.hasClass('activated')) {
+                $this.removeClass('activated');
+                Cookies.set('persona', '');
+            } else {
+                $this.addClass('activated');
+                Cookies.set('persona', $('#PersonaName').val());
+            }
+
+            return false;
+        });
+
+        $('ul.nav li input').on('keydown', function () {
+            var key = event.keyCode || event.charCode;
+            var $labels = $('#personaLabel');
+            var currentValue = this.value;
+
+            $labels.addClass('button');
+
+            ///Deleting
+            if (key == 8 || key == 46) {
+                if (currentValue.length <= 1) {
+                    $labels.removeClass('button');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -8,6 +8,12 @@
     <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
+                <a href="#" title="Who are you?" id="personaLabel" name="personaLabel">I Am</a>
+            </li>
+            <li>
+                <input name="PersonaName" id="PersonaName" />
+            </li>
+            <li>
                 <a asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>
             <li>
@@ -19,6 +25,12 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="#" title="Who are you?" id="personaLabel" name="personaLabel">I Am</a>
+        </li>
+        <li>
+            <input name="PersonaName" id="PersonaName" />
+        </li>
         <li><a asp-page="/Account/Login">Admin Login</a></li>
     </ul>
 }

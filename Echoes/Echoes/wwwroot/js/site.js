@@ -1,5 +1,4 @@
-﻿// Write your Javascript code.
-function PositionOutput(text, parent, child, textEffects) {
+﻿function PositionOutput(text, parent, child, textEffects) {
     var writingChance = Math.random();
     var width = 0;
     var height = 20;
