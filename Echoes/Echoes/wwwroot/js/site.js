@@ -1,16 +1,16 @@
-﻿function PositionOutput(text, parent, child, textEffects) {
+﻿function PositionOutput(text, parent, child, textEffects, additionalCss) {
     var writingChance = Math.random();
     var width = 0;
     var height = 20;
 
-    if (parent == undefined) {
+    if (parent === undefined) {
         parent = $(document);
     }
 
-    if (child == undefined) {
+    if (child === undefined) {
         child = $('<div/>').text(text);
 
-        width = (text.length * 3) + 10;
+        width = text.length * 3 + 10;
 
         child.css({
             'width': width + 'px',
@@ -31,7 +31,7 @@
         child.css({
             'writing-mode': 'horizontal-tb',
             '-webkit-writing-mode': 'horizontal-tb',
-            '-ms-writing-mode': 'horizontal-tb',
+            '-ms-writing-mode': 'horizontal-tb'
         });
     } else if (writingChance >= 0.6) {
         child.width(height);
@@ -40,7 +40,7 @@
         child.css({
             'writing-mode': 'vertical-lr',
             '-webkit-writing-mode': 'vertical-lr',
-            '-ms-writing-mode': 'vertical-lr',
+            '-ms-writing-mode': 'vertical-lr'
         });
     } else if (writingChance >= 0.4) {
         child.width(height);
@@ -49,7 +49,7 @@
         child.css({
             'writing-mode': 'vertical-rl',
             '-webkit-writing-mode': 'vertical-rl',
-            '-ms-writing-mode': 'vertical-rl',
+            '-ms-writing-mode': 'vertical-rl'
         });
     }
 
@@ -62,9 +62,13 @@
         'top': posy + 'px'
     });
 
+    if (additionalCss !== undefined) {
+        child.css(additionalCss);
+    }
+
     child.appendTo(parent);
 
-    if (textEffects == undefined) {
+    if (textEffects === undefined) {
         textEffects = { in: { effect: 'fadeIn' } };
     }
 
@@ -82,10 +86,10 @@
     });
 
     child.textillate(textEffects);
-};
+}
 
 function rememberPersona(personaName, personaSetter) {
-    if (personaSetter == undefined) {
+    if (personaSetter === undefined) {
         personaSetter = $('#personaLabel');
     }
 
@@ -94,7 +98,7 @@ function rememberPersona(personaName, personaSetter) {
 }
 
 function forgetPersona(personaSetter) {
-    if (personaSetter == undefined) {
+    if (personaSetter === undefined) {
         personaSetter = $('#personaLabel');
     }
 
@@ -103,7 +107,7 @@ function forgetPersona(personaSetter) {
 }
 
 function setAkashicDate(currentDate) {
-    if (currentDate == undefined) {
+    if (currentDate === undefined) {
         currentDate = moment();
     }
 

@@ -13,5 +13,10 @@ namespace Echoes.Web.Models
         public IPersona CurrentPersona { get; set; }
         public IPlace CurrentPlace { get; set; }
         public IEnumerable<IAkashicEntry> NewToYou { get; set; }
+
+        public ExistenceModel()
+        {
+            NewToYou = new List<IAkashicEntry>();
+        }
     }
 }

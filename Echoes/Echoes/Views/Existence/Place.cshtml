@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "EXIST";
     Layout = "~/Pages/_Layout.cshtml";
+    var newRecords = Model.NewToYou;
 }
 
 <div class="textParserClient">
@@ -16,7 +17,16 @@
 </div>
 
 @section Scripts {
-    <script type="text/javascript">
+<script type="text/javascript">
+        PositionOutput('@Model.Errors', $('.textParserClient'), undefined, { in: { effect: 'fadeIn' } }, { 'color': 'red' });
+
+       @foreach (var record in Model.NewToYou)
+       {
+          <text>
+            PositionOutput('@record.Observance', $('.textParserClient'), undefined);
+          </text>
+       }
+
         $('#inputForm').submit(function () {
             //Ensure we have value
             if ($('#Input').val() == '') {

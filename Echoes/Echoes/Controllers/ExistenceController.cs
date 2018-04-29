@@ -44,6 +44,9 @@ namespace Echoes.Web.Controllers
                 viewModel.Errors = "You must choose a persona first.";
             else
             {
+                if (!persona.Position.Equals(viewModel.CurrentPlace))
+                    viewModel.CurrentPlace.MoveInto(persona);
+
                 viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item2);
                 viewModel.CurrentPersona = persona;
             }
@@ -63,6 +66,9 @@ namespace Echoes.Web.Controllers
                 viewModel.Errors = "You must choose a persona first.";
             else
             {
+                if (!persona.Position.Equals(viewModel.CurrentPlace))
+                    viewModel.CurrentPlace.MoveInto(persona);
+
                 viewModel.CurrentPlace.WriteTo(input, persona);
                 viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item2);
                 viewModel.CurrentPersona = persona;

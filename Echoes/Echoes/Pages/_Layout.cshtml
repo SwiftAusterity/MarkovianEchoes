@@ -89,11 +89,21 @@
     @RenderSection("Scripts", required: false)
 
     <script type="text/javascript">
+        if (Cookies.get('persona') != '' && $('#PersonaName').val() == '') {
+            $('#PersonaName').val(Cookies.get('persona'));
+            rememberPersona($('#PersonaName').val());
+            $('#personaLabel').addClass('button');
+        }
+
+        $('#PersonaName').val(Cookies.get('persona'));
+
         $('#personaLabel').click(function () {
+            var $this = $(this);
+
             if ($this.hasClass('activated')) {
                 forgetPersona();
             } else {
-                remeberPersona($('#PersonaName').val());
+                rememberPersona($('#PersonaName').val());
             }
 
             return false;

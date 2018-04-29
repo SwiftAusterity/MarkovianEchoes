@@ -3,6 +3,7 @@ using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
 using Cottontail.Structure;
 using Cottontail.Utility.Data;
+using Echoes.Data.Entity;
 using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
@@ -32,13 +33,6 @@ namespace Echoes.Data.System
         [JsonIgnore]
         internal string BaseDirectory { get; private set; }
 
-        #region Live tracking properties
-        /// <summary>
-        /// When this entity was born to the world
-        /// </summary>
-        public DateTime Birthdate { get; set; }
-        #endregion
-
         public IList<IContext> FullContext { get; set; }
         public long ID { get; set; }
         public DateTime Created { get; set; }
@@ -53,7 +47,7 @@ namespace Echoes.Data.System
         {
             get
             {
-                return DataCache.Get<IContains>(_position);
+                return DataCache.Get<Place>(_position);
             }
             set
             {
@@ -65,6 +59,7 @@ namespace Echoes.Data.System
         public EntityPartial()
         {
             MarkovEngine = new MarkovianEngine();
+            FullContext = new List<IContext>();
         }
 
         public EntityPartial(StoredData storedData, StoredDataCache storedDataCache)
@@ -72,10 +67,12 @@ namespace Echoes.Data.System
             BaseDirectory = storedData.RootDirectory;
             DataStore = storedData;
             DataCache = storedDataCache;
+
             MarkovEngine = new MarkovianEngine();
+            FullContext = new List<IContext>();
         }
 
-        public void SetAccessors(StoredData storedData, StoredDataCache storedDataCache)
+        public virtual void SetAccessors(StoredData storedData, StoredDataCache storedDataCache)
         {
             BaseDirectory = storedData.RootDirectory;
             DataStore = storedData;
@@ -95,7 +92,12 @@ namespace Echoes.Data.System
         /// </summary>
         public virtual void SpawnNewInWorld()
         {
-            SpawnNewInWorld(GetBaseSpawn());
+            var placement = Position;
+
+            if (placement == null)
+                placement = GetBaseSpawn();
+
+            SpawnNewInWorld(placement);
         }
 
         /// <summary>
@@ -104,7 +106,6 @@ namespace Echoes.Data.System
         /// <param name="spawnTo">the location/container this should spawn into</param>
         public virtual void SpawnNewInWorld(IContains spawnTo)
         {
-            spawnTo.MoveInto(this);
             UpsertToLiveWorldCache();
         }
 
@@ -115,15 +116,15 @@ namespace Echoes.Data.System
         /// <returns>was this thing moved?</returns>
         public virtual bool TryMoveInto(IContains container)
         {
-            return container.MoveInto(this);
+            return false;
         }
         
         /// <summary>
         /// Update this entry to the live world cache
         /// </summary>
-        public void UpsertToLiveWorldCache()
+        public virtual void UpsertToLiveWorldCache()
         {
-            DataCache.Add(this);
+            DataCache.Add(this as IEntity);
         }
 
         /// <summary>
@@ -184,10 +185,11 @@ namespace Echoes.Data.System
             {
                 //reset this guy's ID to the next one in the list
                 GetNextId();
-                Birthdate = DateTime.Now;
+                Created = DateTime.Now;
+                LastRevised = DateTime.Now;
 
-                DataCache.Add(this);
                 DataStore.WriteEntity(this);
+                UpsertToLiveWorldCache();
             }
             catch (Exception ex)
             {
@@ -212,6 +214,8 @@ namespace Echoes.Data.System
         {
             try
             {
+                LastRevised = DateTime.Now;
+
                 DataStore.WriteEntity(this);
             }
             catch (Exception ex)

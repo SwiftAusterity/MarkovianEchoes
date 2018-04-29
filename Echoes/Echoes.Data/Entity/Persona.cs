@@ -18,9 +18,15 @@ namespace Echoes.Data.Entity
         public IList<IAkashicEntry> AkashicRecord { get; set; }
 
         [JsonConstructor]
-        public Persona() : base() { }
+        public Persona() : base()
+        {
+            AkashicRecord = new List<IAkashicEntry>();
+        }
 
-        public Persona(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache) { }
+        public Persona(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache)
+        {
+            AkashicRecord = new List<IAkashicEntry>();
+        }
 
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
@@ -43,20 +49,51 @@ namespace Echoes.Data.Entity
 
         public override IEnumerable<string> RenderToLocation()
         {
-            var sb = new List<string>();
-
-            sb.Add(string.Format("{0} is here", Name));
+            var sb = new List<string>
+            {
+                string.Format("{0} is here", Name)
+            };
 
             return sb;
         }
 
         public override IEnumerable<string> RenderToLook()
         {
-            var sb = new List<string>();
-
-            sb.Add(string.Format("<s>{0}</s>", Name));
+            var sb = new List<string>
+            {
+                string.Format("<s>{0}</s>", Name)
+            };
 
             return sb;
+        }
+
+
+        /// <summary>
+        /// Spawn this new into the live world into a specified container
+        /// </summary>
+        /// <param name="spawnTo">the location/container this should spawn into</param>
+        public override void SpawnNewInWorld(IContains spawnTo)
+        {
+            spawnTo.MoveInto(this);
+            UpsertToLiveWorldCache();
+        }
+
+        /// <summary>
+        /// Update this entry to the live world cache
+        /// </summary>
+        public override void UpsertToLiveWorldCache()
+        {
+            DataCache.Add(this as IPersona);
+        }
+
+        /// <summary>
+        /// Move this inside of something
+        /// </summary>
+        /// <param name="container">The container to move into</param>
+        /// <returns>was this thing moved?</returns>
+        public override bool TryMoveInto(IContains container)
+        {
+            return container.MoveInto(this);
         }
 
         /// <summary>

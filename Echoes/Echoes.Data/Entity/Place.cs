@@ -17,33 +17,58 @@ namespace Echoes.Data.Entity
     {
         #region Container
         [JsonIgnore]
-        public ICacheContainer<IEntity> Inventory { get; set; }
+        public ICacheContainer<IPersona> PersonaInventory { get; set; }
+
+        [JsonIgnore]
+        public ICacheContainer<IThing> ThingInventory { get; set; }
 
         [JsonConstructor]
-        public Place() : base() { }
+        public Place() : base()
+        {
+        }
 
         public Place(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache) 
         {
-            Inventory = new CacheContainer<IEntity>(storedDataCache);
+            PersonaInventory = new CacheContainer<IPersona>(storedDataCache);
+            ThingInventory = new CacheContainer<IThing>(storedDataCache);
+        }
+
+        public override void SetAccessors(StoredData storedData, StoredDataCache storedDataCache)
+        {
+            PersonaInventory = new CacheContainer<IPersona>(storedDataCache);
+            ThingInventory = new CacheContainer<IThing>(storedDataCache);
+
+            base.SetAccessors(storedData, storedDataCache);
         }
 
         /// <summary>
         /// Get all of the entities matching a type inside this
         /// </summary>
-        /// <typeparam name="T">the type</typeparam>
         /// <returns>the contained entities</returns>
-        public IEnumerable<IEntity> GetContents()
+        public IEnumerable<IPersona> GetPersonas()
         {
-            return Inventory.Contents();
+            return PersonaInventory.Contents();
+        }
+
+        /// <summary>
+        /// Get all of the entities matching a type inside this
+        /// </summary>
+        /// <returns>the contained entities</returns>
+        public IEnumerable<IThing> GetThings()
+        {
+            return ThingInventory.Contents();
         }
 
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
         public override bool WriteTo(string input, IEntity originator)
-        {
-            //Hacky "Each" to write output to everything inside this place
-            GetContents().Select(entity => entity.WriteTo(input, originator));
+        { 
+            foreach(var entity in GetThings())
+                entity.WriteTo(input, originator);
+
+            foreach (var entity in GetPersonas())
+                entity.WriteTo(input, originator);
 
             return TriggerAIAction(input);
         }
@@ -51,15 +76,31 @@ namespace Echoes.Data.Entity
         /// <summary>
         /// Move an entity into a named container in this
         /// </summary>
-        /// <typeparam name="T">the type of the entity to add</typeparam>
         /// <param name="thing">the entity to add</param>
         /// <returns>errors</returns>
-        public bool MoveInto(IEntity thing)
+        public bool MoveInto(IPersona thing)
         {
-            if (Inventory.Contains(thing))
+            if (PersonaInventory.Contains(thing))
                 return false;
 
-            Inventory.Add(thing);
+            PersonaInventory.Add(thing);
+            thing.Position = this;
+            UpsertToLiveWorldCache();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Move an entity into a named container in this
+        /// </summary>
+        /// <param name="thing">the entity to add</param>
+        /// <returns>errors</returns>
+        public bool MoveInto(IThing thing)
+        {
+            if (ThingInventory.Contains(thing))
+                return false;
+
+            ThingInventory.Add(thing);
             thing.Position = this;
             UpsertToLiveWorldCache();
 
@@ -69,16 +110,27 @@ namespace Echoes.Data.Entity
         /// <summary>
         /// Move an entity out of this' named container
         /// </summary>
-        /// <typeparam name="T">the type of entity to remove</typeparam>
         /// <param name="thing">the entity</param>
         /// <param name="containerName">the name of the container</param>
         /// <returns>errors</returns>
-        public bool MoveFrom(IEntity thing)
+        public bool MoveFrom(IPersona thing)
         {
-            if (!Inventory.Contains(thing))
+            if (!PersonaInventory.Contains(thing))
                 return false;
 
-            Inventory.Remove(thing);
+            PersonaInventory.Remove(thing);
+            thing.Position = null;
+            UpsertToLiveWorldCache();
+
+            return true;
+        }
+
+        public bool MoveFrom(IThing thing)
+        {
+            if (!ThingInventory.Contains(thing))
+                return false;
+
+            ThingInventory.Remove(thing);
             thing.Position = null;
             UpsertToLiveWorldCache();
 
@@ -92,7 +144,10 @@ namespace Echoes.Data.Entity
 
             output.AddRange(RenderSelf());
 
-            foreach (var thing in Inventory)
+            foreach (var thing in ThingInventory)
+                output.AddRange(thing.RenderToLocation());
+
+            foreach (var thing in PersonaInventory)
                 output.AddRange(thing.RenderToLocation());
 
             return output;
@@ -100,10 +155,11 @@ namespace Echoes.Data.Entity
 
         private IEnumerable<string> RenderSelf()
         {
-            var sb = new List<string>();
-
-            sb.Add(string.Format("<H3>{0}</H3>", Name));
-            sb.Add(string.Empty.PadLeft(Name.Length, '-'));
+            var sb = new List<string>
+            {
+                string.Format("<H3>{0}</H3>", Name),
+                string.Empty.PadLeft(Name.Length, '-')
+            };
 
             return sb;
         }
@@ -122,8 +178,15 @@ namespace Echoes.Data.Entity
         public override void SpawnNewInWorld(IContains spawnTo)
         {
             //Places are containers, they don't spawn to anything
-
             UpsertToLiveWorldCache();
+        }
+
+        /// <summary>
+        /// Update this entry to the live world cache
+        /// </summary>
+        public override void UpsertToLiveWorldCache()
+        {
+            DataCache.Add(this as IPlace);
         }
 
         /// <summary>

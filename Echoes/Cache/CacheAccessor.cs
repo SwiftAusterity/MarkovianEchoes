@@ -72,16 +72,15 @@ namespace Cottontail.Cache
         /// fills a list of entities from the cache of a single type that match the birthmarks sent in
         /// </summary>
         /// <typeparam name="T">the system type for the entity</typeparam>
-        /// <param name="birthmarks">the birthmarks to retrieve</param>
         /// <returns>a list of the entities from the cache</returns>
-        public IEnumerable<T> GetMany<T>(IEnumerable<long> ids) where T : IData
+        public IEnumerable<T> GetMany<T>(IEnumerable<ICacheKey> ids) where T : IData
         {
             try
             {
                 var returnList = new List<T>();
 
                 foreach (var id in ids)
-                    returnList.Add(_globalCache.Get<T>(id));
+                    returnList.Add(_globalCache.Get<T>(id.KeyHash()));
 
                 return returnList;
             }

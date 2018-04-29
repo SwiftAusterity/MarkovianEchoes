@@ -68,3 +68,34 @@
 [2018/04/28 21:32:44]:  NullReferenceException: Object reference not set to an instance of an object.
    at Echoes.Data.Entity.Place.GetContents() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 37
    at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147
+[2018/04/28 21:44:05]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Place.GetContents() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 37
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147
+[2018/04/28 22:10:07]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Place.GetContents() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 37
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147
+[2018/04/28 22:12:07]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Place.GetContents() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 37
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147
+[2018/04/28 22:16:38]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Place.GetContents() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 37
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147
+[2018/04/28 22:19:05]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Place.GetContents() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 37
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147
+[2018/04/28 22:43:44]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 112
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 103
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/04/28 22:45:15]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 112
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 103
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/04/28 22:46:08]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 113
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 104
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/04/28 22:48:01]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Backup.HotBackup.<>c.<RestoreLiveBackup>b__6_4(IEntity ent) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147
+   at System.Linq.Enumerable.WhereListIterator`1.MoveNext()
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147

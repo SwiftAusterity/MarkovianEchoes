@@ -8,6 +8,8 @@ namespace Echoes.DataStructure.Entity
         /// <summary>
         /// Mobiles (NPC, Players) in the room
         /// </summary>
-        ICacheContainer<IEntity> Inventory { get; set; }
+        ICacheContainer<IPersona> PersonaInventory { get; set; }
+
+        ICacheContainer<IThing> ThingInventory { get; set; }
     }
 }

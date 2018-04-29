@@ -37,7 +37,8 @@ namespace Cottontail.Cache
         /// <returns>a list of the entities from the cache</returns>
         public IEnumerable<T> GetMany<T>(IEnumerable<long> ids) where T : IData
         {
-            return BackingCache.GetMany<T>(ids);
+            var idKeys = ids.Select(id => new BackingDataCacheKey(typeof(T), id));
+            return BackingCache.GetMany<T>(idKeys);
         }
 
         /// <summary>

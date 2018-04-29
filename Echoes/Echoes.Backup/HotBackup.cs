@@ -134,30 +134,11 @@ namespace Echoes.Backup
 
                 //Shove them all into the live system first
                 foreach (var entity in entitiesToLoad.OrderBy(ent => ent.Created))
-                    entity.UpsertToLiveWorldCache();
+                    entity.SpawnNewInWorld();
 
                 //Check we found actual data
                 if (!entitiesToLoad.Any(ent => ent.GetType() == typeof(Place)))
                     throw new Exception("No places found, failover.");
-
-                //We have the containers contents and the birthmarks from the deserial
-                //I don't know how we can even begin to do this type agnostically since the collections are held on type specific objects without some super ugly reflection
-                foreach (Place entity in entitiesToLoad.Where(ent => ent.GetType() == typeof(Place)))
-                {
-                    foreach (var obj in entity.GetContents().Where(ent => ent.GetType().GetInterfaces().Contains(typeof(IThing))))
-                    {
-                        var fullObj = DataCache.Get<IThing>(new BackingDataCacheKey(typeof(IThing), obj.ID));
-                        entity.MoveFrom(obj);
-                        entity.MoveInto(fullObj);
-                    }
-
-                    foreach (var obj in entity.GetContents().Where(ent => ent.GetType().GetInterfaces().Contains(typeof(IPersona))))
-                    {
-                        var fullObj = DataCache.Get<IPersona>(new BackingDataCacheKey(typeof(IPersona), obj.ID));
-                        entity.MoveFrom(obj);
-                        entity.MoveInto(fullObj);
-                    }
-                }
 
                 LoggingUtility.Log(DataStore.RootDirectory, "World restored from current live.", LogChannels.Backup);
                 return true;

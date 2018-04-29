@@ -54,6 +54,17 @@ namespace Echoes.DataStructure.System
         /// </summary>
         void UpsertToLiveWorldCache();
 
+        /// <summary>
+        /// Spawn this new into the live world
+        /// </summary>
+        void SpawnNewInWorld();
+
+        /// <summary>
+        /// Spawn this new into the live world into a specified container
+        /// </summary>
+        /// <param name="spawnTo">the location/container this should spawn into</param>
+        void SpawnNewInWorld(IContains spawnTo);
+
         void SetAccessors(StoredData storedData, StoredDataCache storedDataCache);
     }
 }
