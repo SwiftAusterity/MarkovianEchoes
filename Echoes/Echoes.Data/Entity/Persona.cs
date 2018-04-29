@@ -31,7 +31,7 @@ namespace Echoes.Data.Entity
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public override IEnumerable<IContext> WriteTo(string input, IEntity originator)
+        public override IEnumerable<IContext> WriteTo(string input, IPersona originator)
         {
             var newContext = base.WriteTo(input, originator);
 
@@ -42,7 +42,7 @@ namespace Echoes.Data.Entity
             return newContext;
         }
 
-        public void Observe(string observance, IEntity actor, IEnumerable<IContext> newContext)
+        public void Observe(string observance, IPersona actor, IEnumerable<IContext> newContext)
         {
             AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, actor, newContext, DataCache));
         }

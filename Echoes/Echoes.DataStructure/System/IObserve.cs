@@ -1,4 +1,5 @@
 ﻿using Echoes.DataStructure.Contextual;
+using Echoes.DataStructure.Entity;
 using System.Collections.Generic;
 
 namespace Echoes.DataStructure.System
@@ -18,6 +19,6 @@ namespace Echoes.DataStructure.System
         /// </summary>
         /// <param name="observance">The raw input</param>
         /// <param name="actor">Who originated it</param>
-        void Observe(string observance, IEntity actor, IEnumerable<IContext> newContext);
+        void Observe(string observance, IPersona actor, IEnumerable<IContext> newContext);
     }
 }

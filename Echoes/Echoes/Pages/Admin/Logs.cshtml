@@ -2,7 +2,29 @@
 @model Echoes.Web.Pages.Logs.LogsModel
 @{
     ViewData["Title"] = "Logs";
+    var channelNames = Model.ChannelNames.Select(name => new SelectListItem() { Text = name, Value = name });
 }
 
-<h2>Logs</h2>
+<div style="padding-top: 50px;">
+    <h4>Live Channels</h4>
+    <hr />
+    <div class="form-group one-column">
+        <form method="get">
+            @Html.AntiForgeryToken()
+            <div>
+                <label asp-for="SelectedLog"></label>
+                <select asp-for="SelectedLog" class="form-control" asp-items='@(new SelectList(channelNames, "Text", "Value"))'></select>
+                <input type="submit" value="Load" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
 
+    @if (!String.IsNullOrWhiteSpace(Model.SelectedLogContent))
+    {
+        <form method="post">
+            <textarea id="logContent" name="logContent" readonly="readonly" class="logDisplay">@Model.SelectedLogContent</textarea>
+            <br />
+            <input type="submit" value="Rollover" class="btn btn-default" style="margin-top: 15px; color: orangered;" />
+        </form>
+    }
+</div>

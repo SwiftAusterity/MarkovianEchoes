@@ -9,7 +9,6 @@ using Echoes.DataStructure.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Echoes.Data.Entity
 {
@@ -63,7 +62,7 @@ namespace Echoes.Data.Entity
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public override IEnumerable<IContext> WriteTo(string input, IEntity originator)
+        public override IEnumerable<IContext> WriteTo(string input, IPersona originator)
         { 
             foreach(var entity in GetThings())
                 entity.WriteTo(input, originator);

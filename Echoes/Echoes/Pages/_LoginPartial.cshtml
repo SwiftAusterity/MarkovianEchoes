@@ -14,7 +14,18 @@
                 <input name="PersonaName" id="PersonaName" />
             </li>
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                <div style="padding:20px;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Explore<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li><a asp-page="/Account/Manage/Index" class="navLink" id="loginLink">Manage</a></li>
+                        <li class="divider"></li>
+                        <li class="dropdown-header" style="color: mediumvioletred">Administrative</li>
+                        <li><a asp-page="/Admin/Dashboard" class="navLink" id="loginLink">Dashboard</a></li>
+                        <li><a asp-page="/Admin/Logs" class="navLink" id="loginLink">Logs</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                    </ul>
+                </div>
             </li>
         </ul>
     </form>

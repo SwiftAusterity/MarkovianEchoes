@@ -4,7 +4,6 @@ using Echoes.Data.Entity;
 using Echoes.DataStructure.Entity;
 using Echoes.Web.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -17,11 +16,9 @@ namespace Echoes.Web.Controllers
     {
         private StoredDataCache _dataCache;
         private StoredData _data;
-        private IHostingEnvironment _env;
 
-        public ExistenceController(IHostingEnvironment env, StoredData storedData, StoredDataCache storedDataCache)
+        public ExistenceController(StoredData storedData, StoredDataCache storedDataCache)
         {
-            _env = env;
             _dataCache = storedDataCache;
             _data = storedData;
         }

@@ -2,6 +2,7 @@
 using Cottontail.FileSystem;
 using Cottontail.Structure;
 using Echoes.DataStructure.Contextual;
+using Echoes.DataStructure.Entity;
 using System;
 using System.Collections.Generic;
 
@@ -39,7 +40,7 @@ namespace Echoes.DataStructure.System
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        IEnumerable<IContext> WriteTo(string input, IEntity originator);
+        IEnumerable<IContext> WriteTo(string input, IPersona originator);
 
         /// <summary>
         /// Update this to the live cache

@@ -1,4 +1,4 @@
-﻿using Echoes.DataStructure.System;
+﻿using Echoes.DataStructure.Entity;
 using System;
 using System.Collections.Generic;
 
@@ -22,7 +22,7 @@ namespace Echoes.DataStructure.Contextual
         /// <summary>
         /// The originator of the occurance
         /// </summary>
-        IEntity Actor { get; }
+        IPersona Actor { get; }
 
         /// <summary>
         /// The context generated for the observer from the occurance

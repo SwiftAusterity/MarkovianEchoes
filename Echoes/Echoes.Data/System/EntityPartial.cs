@@ -82,7 +82,7 @@ namespace Echoes.Data.System
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public virtual IEnumerable<IContext> WriteTo(string input, IEntity originator)
+        public virtual IEnumerable<IContext> WriteTo(string input, IPersona originator)
         {
             var newContext = MarkovEngine.Experience(this, originator, input);
 

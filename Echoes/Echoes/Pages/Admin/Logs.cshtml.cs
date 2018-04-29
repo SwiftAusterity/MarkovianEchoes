@@ -30,16 +30,18 @@ namespace Echoes.Web.Pages.Logs
             _env = env;
         }
 
-        public void OnGet()
+        public void OnGet(string selectedLog = "")
         {
             ChannelNames = LoggingUtility.GetCurrentLogNames(_env.ContentRootPath);
 
-            if (!String.IsNullOrWhiteSpace(SelectedLog))
-                SelectedLogContent = LoggingUtility.GetCurrentLogContent(_env.ContentRootPath, SelectedLog);
+            if (!String.IsNullOrWhiteSpace(selectedLog))
+                SelectedLogContent = LoggingUtility.GetCurrentLogContent(_env.ContentRootPath, selectedLog);
         }
 
         public void OnPost()
         {
+            ChannelNames = LoggingUtility.GetCurrentLogNames(_env.ContentRootPath);
+
             var message = String.Empty;
 
             if (!String.IsNullOrWhiteSpace(SelectedLog))
