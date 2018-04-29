@@ -14,9 +14,6 @@
                 <input name="PersonaName" id="PersonaName" />
             </li>
             <li>
-                <a asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li>
-            <li>
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
             </li>
         </ul>
@@ -31,6 +28,6 @@ else
         <li>
             <input name="PersonaName" id="PersonaName" />
         </li>
-        <li><a asp-page="/Account/Login">Admin Login</a></li>
+        <li><a asp-page="/Account/Login" class="navLink" id="loginLink"><img src="~/images/hatch_lock.svg" title="Admin Login" /></a></li>
     </ul>
 }

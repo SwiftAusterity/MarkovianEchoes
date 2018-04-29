@@ -12,22 +12,53 @@
         <input type="text" id="Input" name="Input" class="parserInput" />
     </form>
 </div>
-<div>
-    <a href="#" id="clientReload">Blink</a>
+<div id="parserControls">
+    <a href="#" id="switchAct"><img src="~/images/hatch_tap.svg" title="Act" /></a>
+    <a href="#" id="switchSpeech"><img src="~/images/hatch_broadcast.svg" title="Speak" /></a>
+    <a href="#" id="clientReload" style="float: right;"><img src="~/images/hatch_hide.svg" title="Blink" /></a>
 </div>
 
 @section Scripts {
     <script type="text/javascript">
+        $('#existLink').addClass('selected');
+
+        if (Cookies.get('modality') != undefined && Cookies.get('modality') == 'speak') {
+            $('#switchSpeech').addClass('selected');
+            $('#switchAct').removeClass('selected');
+       } else {
+            $('#switchAct').addClass('selected');
+            $('#switchSpeech').removeClass('selected');
+            setMode(true);
+        }
+
         PositionOutput('@Model.Errors', $('.parserOutput'), undefined, { in: { effect: 'fadeIn' } }, { 'color': 'red' });
 
         var timer = 0;
        @foreach (var record in Model.NewToYou)
        {
           <text>
-        PositionOutput('@record.Observance', $('.parserOutput'), undefined, { initialDelay: timer });
+            PositionOutput('@record.Observance', $('.parserOutput'), undefined, { initialDelay: timer });
             timer += 1250;
           </text>
        }
+
+        $('#switchAct').click(function () {
+            setMode(true);
+
+            $('#switchAct').addClass('selected');
+            $('#switchSpeech').removeClass('selected');
+
+            return false;
+        });
+
+        $('#switchSpeech').click(function () {
+            setMode(false);
+
+            $('#switchSpeech').addClass('selected');
+            $('#switchAct').removeClass('selected');
+
+            return false;
+        });
 
         $('#inputForm').submit(function () {
             //Ensure we have value
@@ -39,7 +70,7 @@
         });
 
         $('#clientReload').click(function () {
-            location.reload();
+            window.location = window.location.href;
             return false;
         });
     </script>

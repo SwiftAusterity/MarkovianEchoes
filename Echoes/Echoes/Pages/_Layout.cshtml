@@ -33,11 +33,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="/Existence">EXIST</a></li>
-                    <li> | </li>
-                    <li><a asp-page="/Index">Home</a></li>
-                    <li><a asp-page="/About">About</a></li>
-                    <li><a asp-page="/Contact">Contact</a></li>
+                    <li><a href="/Existence" class="navLink" id="existLink"><img src="~/images/hatch_be.svg" title="EXIST" /></a></li>
+                    <li><a asp-page="/Index" class="navLink" id="homeLink"><img src="~/images/hatch_home.svg" title="Home" /></a></li>
+                    <li><a asp-page="/About" class="navLink" id="aboutLink"><img src="~/images/hatch_ask.svg" title="About" /></a></li>
+                    <li><a asp-page="/Contact" class="navLink" id="contactLink"><img src="~/images/hatch_send.svg" title="Contact" /></a></li>
                 </ul>
                 @await Html.PartialAsync("./_LoginPartial.cshtml")
             </div>
@@ -47,7 +46,8 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - SwiftAusterity</p>
+            <p>This site and its contents &copy; 2018 - SwiftAusterity</p>
+            <p>Many of the icons used are shamelessly taken from and &copy; <a href="http://www.toicon.com/" target="_blank">The Artificial</a>.</p>
         </footer>
     </div>
 
@@ -85,6 +85,10 @@
         <script src="~/js/moment.js"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+
+    <script type="text/javascript">
+        $('.navLink').removeClass('selected');
+    </script>
 
     @RenderSection("Scripts", required: false)
 

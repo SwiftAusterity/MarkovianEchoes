@@ -113,3 +113,11 @@ function setAkashicDate(currentDate) {
 
     Cookies.set('lastSeenDate', currentDate);
 }
+
+function setMode(acting) {
+    if (acting) {
+        Cookies.set('modality', 'act');
+    } else {
+        Cookies.set('modality', 'speak');
+    }
+}

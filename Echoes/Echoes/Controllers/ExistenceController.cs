@@ -47,7 +47,7 @@ namespace Echoes.Web.Controllers
                 if (!persona.Position.Equals(viewModel.CurrentPlace))
                     viewModel.CurrentPlace.MoveInto(persona);
 
-                viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item2);
+                viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item3);
                 viewModel.CurrentPersona = persona;
             }
 
@@ -70,7 +70,7 @@ namespace Echoes.Web.Controllers
                     viewModel.CurrentPlace.MoveInto(persona);
 
                 viewModel.CurrentPlace.WriteTo(input, persona);
-                viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item2);
+                viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item3);
                 viewModel.CurrentPersona = persona;
             }
 
@@ -128,18 +128,23 @@ namespace Echoes.Web.Controllers
             return persona;
         }
 
-        public Tuple<string, DateTime> GetPersonaValues()
+        public Tuple<string, bool, DateTime> GetPersonaValues()
         {
             var personaName = string.Empty;
             var lastSeenDate = DateTime.MinValue;
+            var acting = true;
 
             if (HttpContext.Request.Cookies.ContainsKey("persona"))
                 personaName = HttpContext.Request.Cookies["persona"];
 
+            if (HttpContext.Request.Cookies.ContainsKey("modality"))
+                bool.TryParse(HttpContext.Request.Cookies["modality"], out acting);
+
             if (HttpContext.Request.Cookies.ContainsKey("lastSeenDate"))
                 DateTime.TryParse(HttpContext.Request.Cookies["lastSeenDate"], out lastSeenDate);
 
-            return new Tuple<string, DateTime>(personaName, lastSeenDate);
+
+            return new Tuple<string, bool, DateTime>(personaName, acting, lastSeenDate);
         }
     }
 }
