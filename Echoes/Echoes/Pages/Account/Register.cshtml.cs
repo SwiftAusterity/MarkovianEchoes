@@ -61,6 +61,7 @@ namespace Echoes.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            /* Register is disabled
             ReturnUrl = returnUrl;
             if (ModelState.IsValid)
             {
@@ -84,6 +85,8 @@ namespace Echoes.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
+            */
+
             return Page();
         }
     }
