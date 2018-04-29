@@ -89,7 +89,7 @@
     @RenderSection("Scripts", required: false)
 
     <script type="text/javascript">
-        if (Cookies.get('persona') != '' && $('#PersonaName').val() == '') {
+        if (Cookies.get('persona') != undefined && Cookies.get('persona') != '' && $('#PersonaName').val() == '') {
             $('#PersonaName').val(Cookies.get('persona'));
             rememberPersona($('#PersonaName').val());
             $('#personaLabel').addClass('button');

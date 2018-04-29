@@ -82,9 +82,15 @@ namespace Echoes.Data.System
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public virtual bool WriteTo(string input, IEntity originator)
+        public virtual IEnumerable<IContext> WriteTo(string input, IEntity originator)
         {
-            return TriggerAIAction(input);
+            var newContext = MarkovEngine.Experience(this, originator, input);
+
+            MarkovEngine.Merge(FullContext, newContext);
+
+            Save();
+
+            return newContext;
         }
 
         /// <summary>
@@ -125,18 +131,6 @@ namespace Echoes.Data.System
         public virtual void UpsertToLiveWorldCache()
         {
             DataCache.Add(this as IEntity);
-        }
-
-        /// <summary>
-        /// For non-player entities - accepts output "shown" to it by the parser as a result of commands and events
-        /// </summary>
-        /// <param name="input">the output strings</param>
-        /// <param name="trigger">the methodology type (heard, seen, etc)</param>
-        /// <returns></returns>
-        public bool TriggerAIAction(string input, AITriggerType trigger = AITriggerType.Seen)
-        {
-            //TODO: Actual AI code
-            return true;
         }
 
         /// <summary>

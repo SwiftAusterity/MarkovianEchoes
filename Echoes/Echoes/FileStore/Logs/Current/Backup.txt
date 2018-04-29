@@ -72,3 +72,13 @@
 [2018/04/28 23:36:39]:  World restored from current live.
 [2018/04/28 23:39:30]:  World restored from current live INITIATED.
 [2018/04/28 23:39:31]:  World restored from current live.
+[2018/04/29 07:55:33]:  World restored from current live INITIATED.
+[2018/04/29 07:55:34]:  World restored from current live.
+[2018/04/29 07:57:43]:  World restored from current live INITIATED.
+[2018/04/29 07:57:44]:  World restored from current live.
+[2018/04/29 07:59:51]:  World restored from current live INITIATED.
+[2018/04/29 07:59:51]:  World restored from current live.
+[2018/04/29 08:12:38]:  World restored from current live INITIATED.
+[2018/04/29 08:12:39]:  World restored from data fallback.
+[2018/04/29 08:17:46]:  World restored from current live INITIATED.
+[2018/04/29 08:17:47]:  World restored from current live.

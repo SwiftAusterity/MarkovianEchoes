@@ -3,6 +3,7 @@ using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
 using Cottontail.Structure;
 using Echoes.Data.System;
+using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
 using Newtonsoft.Json;
@@ -62,7 +63,7 @@ namespace Echoes.Data.Entity
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public override bool WriteTo(string input, IEntity originator)
+        public override IEnumerable<IContext> WriteTo(string input, IEntity originator)
         { 
             foreach(var entity in GetThings())
                 entity.WriteTo(input, originator);
@@ -70,7 +71,7 @@ namespace Echoes.Data.Entity
             foreach (var entity in GetPersonas())
                 entity.WriteTo(input, originator);
 
-            return TriggerAIAction(input);
+            return base.WriteTo(input, originator);
         }
 
         /// <summary>

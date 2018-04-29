@@ -31,19 +31,19 @@ namespace Echoes.Data.Entity
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public override bool WriteTo(string input, IEntity originator)
+        public override IEnumerable<IContext> WriteTo(string input, IEntity originator)
         {
-            Observe(input, originator);
+            var newContext = base.WriteTo(input, originator);
 
-            return true;
+            Observe(input, originator, newContext);
+
+            Save();
+
+            return newContext;
         }
 
-        public void Observe(string observance, IEntity actor)
+        public void Observe(string observance, IEntity actor, IEnumerable<IContext> newContext)
         {
-            var newContext = MarkovEngine.Experience(this, actor, observance);
-
-            MarkovEngine.Merge(FullContext, newContext);
-
             AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, actor, newContext, DataCache));
         }
 

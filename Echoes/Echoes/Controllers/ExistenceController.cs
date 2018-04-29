@@ -131,7 +131,7 @@ namespace Echoes.Web.Controllers
         public Tuple<string, DateTime> GetPersonaValues()
         {
             var personaName = string.Empty;
-            var lastSeenDate = DateTime.Now;
+            var lastSeenDate = DateTime.MinValue;
 
             if (HttpContext.Request.Cookies.ContainsKey("persona"))
                 personaName = HttpContext.Request.Cookies["persona"];

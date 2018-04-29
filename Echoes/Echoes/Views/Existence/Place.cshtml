@@ -13,17 +13,19 @@
     </form>
 </div>
 <div>
-    <a href="." id="clientReload">Blink</a>
+    <a href="#" id="clientReload">Blink</a>
 </div>
 
 @section Scripts {
-<script type="text/javascript">
-        PositionOutput('@Model.Errors', $('.textParserClient'), undefined, { in: { effect: 'fadeIn' } }, { 'color': 'red' });
+    <script type="text/javascript">
+        PositionOutput('@Model.Errors', $('.parserOutput'), undefined, { in: { effect: 'fadeIn' } }, { 'color': 'red' });
 
+        var timer = 0;
        @foreach (var record in Model.NewToYou)
        {
           <text>
-            PositionOutput('@record.Observance', $('.textParserClient'), undefined);
+        PositionOutput('@record.Observance', $('.parserOutput'), undefined, { initialDelay: timer });
+            timer += 1250;
           </text>
        }
 
@@ -34,6 +36,11 @@
             }
 
             setAkashicDate();
+        });
+
+        $('#clientReload').click(function () {
+            location.reload();
+            return false;
         });
     </script>
 }

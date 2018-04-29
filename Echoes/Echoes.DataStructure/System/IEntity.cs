@@ -37,17 +37,9 @@ namespace Echoes.DataStructure.System
         bool ConveyMeaning(IEnumerable<IContext> context);
 
         /// <summary>
-        /// For non-player entities - accepts output "shown" to it by the parser as a result of commands and events
-        /// </summary>
-        /// <param name="input">the output strings</param>
-        /// <param name="trigger">the methodology type (heard, seen, etc)</param>
-        /// <returns></returns>
-        bool TriggerAIAction(string input, AITriggerType trigger = AITriggerType.Seen);
-
-        /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        bool WriteTo(string input, IEntity originator);
+        IEnumerable<IContext> WriteTo(string input, IEntity originator);
 
         /// <summary>
         /// Update this to the live cache

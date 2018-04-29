@@ -18,6 +18,6 @@ namespace Echoes.DataStructure.System
         /// </summary>
         /// <param name="observance">The raw input</param>
         /// <param name="actor">Who originated it</param>
-        void Observe(string observance, IEntity actor);
+        void Observe(string observance, IEntity actor, IEnumerable<IContext> newContext);
     }
 }

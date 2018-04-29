@@ -108,7 +108,7 @@ function forgetPersona(personaSetter) {
 
 function setAkashicDate(currentDate) {
     if (currentDate === undefined) {
-        currentDate = moment();
+        currentDate = moment().format();
     }
 
     Cookies.set('lastSeenDate', currentDate);
