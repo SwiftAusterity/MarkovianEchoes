@@ -1,4 +1,5 @@
 ﻿using Cottontail.Cache;
+using Cottontail.FileSystem;
 using Echoes.Data.Entity;
 using Echoes.DataStructure.Entity;
 using Echoes.Web.Models;
@@ -14,13 +15,15 @@ namespace Echoes.Web.Controllers
     [Route("[controller]")]
     public class ExistenceController : Controller
     {
-        private StoredDataCache dataCache;
+        private StoredDataCache _dataCache;
+        private StoredData _data;
         private IHostingEnvironment _env;
 
-        public ExistenceController(IHostingEnvironment env)
+        public ExistenceController(IHostingEnvironment env, StoredData storedData, StoredDataCache storedDataCache)
         {
             _env = env;
-            dataCache = new StoredDataCache(_env.ContentRootPath);
+            _dataCache = storedDataCache;
+            _data = storedData;
         }
 
         [HttpGet("", Name = "Existence_Index")]
@@ -70,7 +73,7 @@ namespace Echoes.Web.Controllers
 
         public IPlace GetPlace(string placeName)
         {
-            var places = dataCache.GetAll<IPlace>();
+            var places = _dataCache.GetAll<Place>();
             IPlace currentPlace = null;
 
             //Find a default place
@@ -88,7 +91,7 @@ namespace Echoes.Web.Controllers
             //Create one
             if (currentPlace == null)
             {
-                currentPlace = new Place(_env.ContentRootPath)
+                currentPlace = new Place(_data, _dataCache)
                 {
                     Name = placeName
                 };
@@ -104,12 +107,12 @@ namespace Echoes.Web.Controllers
             if (String.IsNullOrWhiteSpace(personaName))
                 return null;
 
-            var persona  = dataCache.GetAll<IPersona>().FirstOrDefault(per => per.Name.Equals(personaName, StringComparison.InvariantCultureIgnoreCase));
+            var persona  = _dataCache.GetAll<Persona>().FirstOrDefault(per => per.Name.Equals(personaName, StringComparison.InvariantCultureIgnoreCase));
 
             //Make a new one
             if(persona == null)
             {
-                persona = new Persona(_env.ContentRootPath)
+                persona = new Persona(_data, _dataCache)
                 {
                     Name = personaName
                 }; 

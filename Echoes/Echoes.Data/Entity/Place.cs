@@ -1,4 +1,5 @@
 ﻿using Cottontail.Cache;
+using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
 using Cottontail.Structure;
 using Echoes.Data.System;
@@ -18,7 +19,13 @@ namespace Echoes.Data.Entity
         [JsonIgnore]
         public ICacheContainer<IEntity> Inventory { get; set; }
 
-        public Place(string baseDirectory) : base(baseDirectory) { }
+        [JsonConstructor]
+        public Place() : base() { }
+
+        public Place(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache) 
+        {
+            Inventory = new CacheContainer<IEntity>(storedDataCache);
+        }
 
         /// <summary>
         /// Get all of the entities matching a type inside this

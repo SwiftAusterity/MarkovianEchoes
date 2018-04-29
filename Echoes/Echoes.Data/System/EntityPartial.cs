@@ -21,16 +21,16 @@ namespace Echoes.Data.System
     public abstract class EntityPartial : SerializableDataPartial, IEntity
     {
         [JsonIgnore]
-        internal MarkovianEngine MarkovEngine { get; }
+        internal MarkovianEngine MarkovEngine { get; private set; }
 
         [JsonIgnore]
-        internal StoredDataCache DataCache { get; }
+        internal StoredDataCache DataCache { get; private set; }
 
         [JsonIgnore]
-        internal StoredData DataStore { get; }
+        internal StoredData DataStore { get; private set; }
 
         [JsonIgnore]
-        internal string BaseDirectory { get; }
+        internal string BaseDirectory { get; private set; }
 
         #region Live tracking properties
         /// <summary>
@@ -61,12 +61,25 @@ namespace Echoes.Data.System
             }
         }
 
-        public EntityPartial(string baseDirectory)
+        [JsonConstructor]
+        public EntityPartial()
         {
-            BaseDirectory = baseDirectory;
-            DataStore = new StoredData(BaseDirectory);
-            DataCache = new StoredDataCache(BaseDirectory);
             MarkovEngine = new MarkovianEngine();
+        }
+
+        public EntityPartial(StoredData storedData, StoredDataCache storedDataCache)
+        {
+            BaseDirectory = storedData.RootDirectory;
+            DataStore = storedData;
+            DataCache = storedDataCache;
+            MarkovEngine = new MarkovianEngine();
+        }
+
+        public void SetAccessors(StoredData storedData, StoredDataCache storedDataCache)
+        {
+            BaseDirectory = storedData.RootDirectory;
+            DataStore = storedData;
+            DataCache = storedDataCache;
         }
 
         /// <summary>

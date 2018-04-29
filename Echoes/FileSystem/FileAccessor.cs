@@ -4,8 +4,10 @@ using System.IO;
 
 namespace Cottontail.FileSystem
 {
-    public abstract class FileAccessor
+    public abstract class FileAccessor : IDisposable
     {
+        public string RootDirectory { get; }
+
         /// <summary>
         /// The base directory for these files, should be overriden
         /// </summary>
@@ -54,8 +56,10 @@ namespace Cottontail.FileSystem
 
         public FileAccessor(string rootDirectory)
         {
-            if (VerifyDirectory(rootDirectory, false))
-                BaseDirectory = rootDirectory + "/FileStore/";
+            if (Directory.Exists(rootDirectory))
+                RootDirectory = rootDirectory;
+
+            BaseDirectory = rootDirectory + "/FileStore/";
         }
 
         /// <summary>
@@ -213,6 +217,11 @@ namespace Cottontail.FileSystem
 
             File.Move(currentFileName, archiveFileName);
             return true;
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

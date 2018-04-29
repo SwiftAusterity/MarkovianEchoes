@@ -64,10 +64,8 @@ namespace Cottontail.Cache
             if (Exists(cacheKey))
                 Remove<T>(cacheKey);
 
-            var newEntry = _globalCache.CreateEntry(cacheKey.KeyHash());
-            newEntry.Value = objectToCache;
-
             AddKey(objectToCache.GetType(), cacheKey);
+            _globalCache.Set(cacheKey.KeyHash(), objectToCache);
         }
 
         /// <summary>
@@ -107,7 +105,7 @@ namespace Cottontail.Cache
                 var returnList = new List<T>();
 
                 foreach (var key in GetKeys(typeof(T)))
-                    returnList.Add(_globalCache.Get<T>(key));
+                    returnList.Add(_globalCache.Get<T>(key.KeyHash()));
 
                 return returnList;
             }
@@ -195,15 +193,19 @@ namespace Cottontail.Cache
             var currentList = new HashSet<ICacheKey>();
 
             if (_keysByType.ContainsKey(type))
+            {
                 currentList = _keysByType[type];
+                _keysByType.Remove(type);
+            }
 
             currentList.Add(key);
+            _keysByType.Add(type, currentList);
         }
 
         private void RemoveKey(Type type, ICacheKey key)
         {
             //Doesn't exist just leave
-            if (_keysByType.ContainsKey(type))
+            if (!_keysByType.ContainsKey(type))
                 return;
 
             var currentList = _keysByType[type];

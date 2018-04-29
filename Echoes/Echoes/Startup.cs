@@ -8,14 +8,20 @@ using Echoes.Data;
 using Echoes.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Echoes.Backup;
+using Cottontail.FileSystem;
+using Cottontail.Cache;
 
 namespace Echoes
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IHostingEnvironment HostingEnvironment { get; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            HostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -35,7 +41,9 @@ namespace Echoes
             // Register no-op EmailSender used by account confirmation and password reset during development
             // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
             services.AddSingleton<IEmailSender, EmailSender>();
-            //services.AddSingleton<IHostingEnvironment>(new HostingEnvironment());
+
+            services.AddSingleton(new StoredData(HostingEnvironment.ContentRootPath));
+            services.AddSingleton(new StoredDataCache(HostingEnvironment.ContentRootPath));
 
             services.AddMvc(config =>
             {
@@ -47,7 +55,7 @@ namespace Echoes
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoredData storedData, StoredDataCache storedDataCache)
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +73,12 @@ namespace Echoes
             app.UseAuthentication();
 
             app.UseMvc();
+
+            var dataStorage = new HotBackup(storedData, storedDataCache);
+
+            //Our live data restore failed, reload the entire world from backing data
+            if (!dataStorage.RestoreLiveBackup())
+                dataStorage.NewWorldFallback();
         }
     }
 }

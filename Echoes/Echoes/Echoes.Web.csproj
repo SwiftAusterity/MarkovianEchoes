@@ -4,6 +4,20 @@
     <UserSecretsId>aspnet-Echoes-7D7D45E6-A74F-4313-9798-FE86E256F088</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="BackingData\**" />
+    <Compile Remove="FileStore\**" />
+    <Compile Remove="Logs\**" />
+    <Content Remove="BackingData\**" />
+    <Content Remove="FileStore\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="BackingData\**" />
+    <EmbeddedResource Remove="FileStore\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="BackingData\**" />
+    <None Remove="FileStore\**" />
+    <None Remove="Logs\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" PrivateAssets="All" />
@@ -18,14 +32,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cache\Cottontail.Cache.csproj" />
+    <ProjectReference Include="..\Echoes.Backup\Echoes.Backup.csproj" />
     <ProjectReference Include="..\Echoes.DataStructure\Echoes.DataStructure.csproj" />
     <ProjectReference Include="..\Echoes.Data\Echoes.Data.csproj" />
     <ProjectReference Include="..\Echoes.Interpretation\Echoes.Interpretation.csproj" />
     <ProjectReference Include="..\FileSystem\Cottontail.FileSystem.csproj" />
     <ProjectReference Include="..\Structure\Cottontail.Structure.csproj" />
     <ProjectReference Include="..\Utility\Cottontail.Utility.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logs\Current\" />
   </ItemGroup>
 </Project>

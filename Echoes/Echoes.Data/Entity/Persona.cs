@@ -6,6 +6,7 @@ using Echoes.Data.System;
 using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +17,10 @@ namespace Echoes.Data.Entity
     {
         public IList<IAkashicEntry> AkashicRecord { get; set; }
 
-        public Persona(string baseDirectory) : base(baseDirectory) { }
+        [JsonConstructor]
+        public Persona() : base() { }
+
+        public Persona(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache) { }
 
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
@@ -34,7 +38,7 @@ namespace Echoes.Data.Entity
 
             MarkovEngine.Merge(FullContext, newContext);
 
-            AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, actor, newContext, BaseDirectory));
+            AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, actor, newContext, DataCache));
         }
 
         public override IEnumerable<string> RenderToLocation()
@@ -61,15 +65,13 @@ namespace Echoes.Data.Entity
         /// <returns>success status</returns>
         public override bool Remove()
         {
-            var accessor = new StoredData(BaseDirectory);
-
             try
             {
                 //Remove from cache first
                 DataCache.Remove<IThing>(new BackingDataCacheKey(this.GetType(), this.ID));
 
                 //Remove it from the file system.
-                accessor.ArchiveEntity(this);
+                DataStore.ArchiveEntity(this);
             }
             catch (Exception ex)
             {

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echoes.Web", "Echoes\Echoes.Web.csproj", "{B666F9E1-9532-491B-8421-5E799A5AC358}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Echoes.Web", "Echoes\Echoes.Web.csproj", "{B666F9E1-9532-491B-8421-5E799A5AC358}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cottontail.Cache", "Cache\Cottontail.Cache.csproj", "{EC6ED52E-7F08-4F14-9FF5-064332175CA8}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echoes.Data", "Echoes.Data\Echoes.Data.csproj", "{6D46845D-EE57-431B-9394-BD6F1C7F538A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echoes.Interpretation", "Echoes.Interpretation\Echoes.Interpretation.csproj", "{C2E2E765-9A8E-4975-AF4A-32BCAABF3033}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Echoes.Backup", "Echoes.Backup\Echoes.Backup.csproj", "{55869029-B0CA-4B30-B222-309F7AF160B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{C2E2E765-9A8E-4975-AF4A-32BCAABF3033}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2E2E765-9A8E-4975-AF4A-32BCAABF3033}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2E2E765-9A8E-4975-AF4A-32BCAABF3033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55869029-B0CA-4B30-B222-309F7AF160B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55869029-B0CA-4B30-B222-309F7AF160B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55869029-B0CA-4B30-B222-309F7AF160B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55869029-B0CA-4B30-B222-309F7AF160B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

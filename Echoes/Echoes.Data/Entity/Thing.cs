@@ -1,7 +1,9 @@
 ﻿using Cottontail.Cache;
+using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
 using Echoes.Data.System;
 using Echoes.DataStructure.Entity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +12,10 @@ namespace Echoes.Data.Entity
     [Serializable]
     public class Thing : EntityPartial, IThing
     {
-        public Thing(string baseDirectory) : base(baseDirectory) { }
+        [JsonConstructor]
+        public Thing() : base() { }
+
+        public Thing(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache) { }
 
         /// <summary>
         /// Spawn this new into the live world

@@ -1,0 +1,70 @@
+[2018/04/28 19:51:11]:  MissingMethodException: No parameterless constructor defined for this object.
+   at System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean& canBeCached, RuntimeMethodHandleInternal& ctor)
+   at System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic)
+   at System.Activator.CreateInstance(Type type)
+   at Cottontail.FileSystem.StoredData.ReadEntity(FileInfo file, Type entityType) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 43
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 128
+[2018/04/28 19:59:12]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Place.GetContents() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 30
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 143
+[2018/04/28 20:57:57]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Place' not found.
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at Cottontail.FileSystem.StoredData.ReadEntity(FileInfo file, Type entityType) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 45
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 126
+[2018/04/28 21:00:24]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Place' not found.
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at Cottontail.FileSystem.StoredData.ReadEntity(FileInfo file, Type entityType) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 45
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 126
+[2018/04/28 21:06:38]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Place' not found.
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at Cottontail.FileSystem.StoredData.ReadEntity(FileInfo file, Type entityType) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 45
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 126
+[2018/04/28 21:12:00]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.System.EntityPartial..ctor(StoredData storedData, StoredDataCache storedDataCache) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 66
+   at Echoes.Data.Entity.Place..ctor(StoredData storedData, StoredDataCache storedDataCache) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 22
+   at lambda_method(Closure , Object[] )
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObjectUsingCreatorWithParameters(JsonReader reader, JsonObjectContract contract, JsonProperty containerProperty, ObjectConstructor`1 creator, String id)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Utility.Serialization.Deserialize(String jsonData, Type type) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\Serialization.cs:line 44
+   at Cottontail.Utility.Data.SerializableDataPartial.DeSerialize(String jsonData) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\SerializableDataPartial.cs:line 25
+   at Cottontail.Utility.Data.SerializableDataPartial.FromBytes(Byte[] bytes) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\SerializableDataPartial.cs:line 46
+   at Cottontail.FileSystem.StoredData.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 45
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 128
+[2018/04/28 21:15:44]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.System.EntityPartial..ctor(StoredData storedData, StoredDataCache storedDataCache) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 66
+   at Echoes.Data.Entity.Place..ctor(StoredData storedData, StoredDataCache storedDataCache) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 22
+   at lambda_method(Closure , Object[] )
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObjectUsingCreatorWithParameters(JsonReader reader, JsonObjectContract contract, JsonProperty containerProperty, ObjectConstructor`1 creator, String id)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Utility.Serialization.Deserialize(String jsonData, Type type) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\Serialization.cs:line 44
+   at Cottontail.Utility.Data.SerializableDataPartial.DeSerialize(String jsonData) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\SerializableDataPartial.cs:line 25
+   at Cottontail.Utility.Data.SerializableDataPartial.FromBytes(Byte[] bytes) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\SerializableDataPartial.cs:line 46
+   at Cottontail.FileSystem.StoredData.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 45
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 128
+[2018/04/28 21:29:21]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.System.EntityPartial..ctor(StoredData storedData, StoredDataCache storedDataCache) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 72
+   at Echoes.Data.Entity.Place..ctor(StoredData storedData, StoredDataCache storedDataCache) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 22
+   at lambda_method(Closure , Object[] )
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObjectUsingCreatorWithParameters(JsonReader reader, JsonObjectContract contract, JsonProperty containerProperty, ObjectConstructor`1 creator, String id)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)
+   at Utility.Serialization.Deserialize(String jsonData, Type type) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\Serialization.cs:line 44
+   at Cottontail.Utility.Data.SerializableDataPartial.DeSerialize(String jsonData) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\SerializableDataPartial.cs:line 25
+   at Cottontail.Utility.Data.SerializableDataPartial.FromBytes(Byte[] bytes) in C:\Dev\MarkovianEchoes\Echoes\Utility\Data\SerializableDataPartial.cs:line 46
+   at Cottontail.FileSystem.StoredData.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 45
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 129
+[2018/04/28 21:32:44]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Place.GetContents() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 37
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 147

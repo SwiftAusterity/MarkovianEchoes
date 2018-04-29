@@ -38,18 +38,9 @@ namespace Cottontail.Cache
             }
         }
 
-        /// <summary>
-        /// New up an empty container
-        /// </summary>
-        [JsonConstructor]
-        public CacheContainer()
+        public CacheContainer(StoredDataCache storedDataCache)
         {
-            IDKeys = new List<long>();
-        }
-
-        public CacheContainer(string baseDirectory)
-        {
-            dataCache = new StoredDataCache(baseDirectory);
+            dataCache = storedDataCache;
             IDKeys = new List<long>();
         }
 

@@ -8,7 +8,7 @@ namespace Cottontail.Cache
     /// <summary>
     /// Storage and access for live entities in game (including players)
     /// </summary>
-    public class StoredDataCache
+    public class StoredDataCache : IDisposable
     {
         private CacheAccessor BackingCache;
 
@@ -124,6 +124,10 @@ namespace Cottontail.Cache
         public bool Exists(BackingDataCacheKey key)
         {
             return BackingCache.Exists(key);
+        }
+
+        public void Dispose()
+        {
         }
     }
 

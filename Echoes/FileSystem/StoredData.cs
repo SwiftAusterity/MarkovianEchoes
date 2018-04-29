@@ -37,12 +37,14 @@ namespace Cottontail.FileSystem
 
         public StoredData(string rootPath) : base(rootPath) { }
 
-        public IData ReadEntity(FileInfo file, Type entityType)
+        public IData ReadEntity(FileInfo file, Type entityType, object[] args)
         {
             var fileData = ReadFile(file);
-            var blankEntity = Activator.CreateInstance(entityType) as IData;
+            var blankEntity = Activator.CreateInstance(entityType, args) as IData;
 
-            return blankEntity.FromBytes(fileData) as IData;
+            blankEntity = blankEntity.FromBytes(fileData) as IData;
+
+            return blankEntity;
         }
 
         /// <summary>

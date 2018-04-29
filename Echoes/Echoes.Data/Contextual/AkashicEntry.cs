@@ -34,14 +34,14 @@ namespace Echoes.Data.Contextual
 
         public IEnumerable<IContext> Context { get; private set; }
 
-        public AkashicEntry(DateTime timestamp, string observance, IEntity actor, IEnumerable<IContext> context, string baseDirectory)
+        public AkashicEntry(DateTime timestamp, string observance, IEntity actor, IEnumerable<IContext> context, StoredDataCache storedDataCache)
         {
             Timestamp = timestamp;
             Observance = observance;
             Actor = actor;
             Context = context;
 
-            dataCache = new StoredDataCache(baseDirectory);
+            dataCache = storedDataCache;
         }
     }
 }

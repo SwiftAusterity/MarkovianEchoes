@@ -1,4 +1,6 @@
-﻿using Cottontail.Structure;
+﻿using Cottontail.Cache;
+using Cottontail.FileSystem;
+using Cottontail.Structure;
 using Echoes.DataStructure.Contextual;
 using System;
 using System.Collections.Generic;
@@ -51,5 +53,7 @@ namespace Echoes.DataStructure.System
         /// Update this to the live cache
         /// </summary>
         void UpsertToLiveWorldCache();
+
+        void SetAccessors(StoredData storedData, StoredDataCache storedDataCache);
     }
 }
