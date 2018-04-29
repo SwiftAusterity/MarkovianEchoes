@@ -6,6 +6,31 @@
     var newRecords = Model.NewToYou;
 }
 
+<div class="parserClientLeft">
+    <div>
+        <h3>@Model.CurrentPlace.Name</h3>
+        <div>
+            <p>@String.Join(" ", Model.CurrentPlace.RenderToLook())</p>
+        </div>
+        <div>
+            @foreach (var thing in Model.CurrentPlace.ThingInventory)
+            {
+                <p>@String.Join(" ", thing.RenderToLocation())</p>
+            }
+        </div>
+    </div>
+</div>
+<div class="parserClientRight">
+    <div>
+        <h3>Whomst</h3>
+        <div>
+            @foreach (var persona in Model.CurrentPlace.PersonaInventory)
+            {
+                <p>@String.Join(" ", persona.RenderToLocation())</p>
+            }
+        </div>
+    </div>
+</div>
 <div class="textParserClient">
     <div id="OutputArea" class="parserOutput"></div>
     <form method="post" id="inputForm" name="inputForm">

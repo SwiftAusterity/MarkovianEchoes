@@ -140,25 +140,13 @@ namespace Echoes.Data.Entity
 
         public override IEnumerable<string> RenderToLook()
         {
-            var output = new List<string>();
-
-            output.AddRange(RenderSelf());
-
-            foreach (var thing in ThingInventory)
-                output.AddRange(thing.RenderToLocation());
-
-            foreach (var thing in PersonaInventory)
-                output.AddRange(thing.RenderToLocation());
-
-            return output;
+            return RenderSelf();
         }
 
         private IEnumerable<string> RenderSelf()
         {
             var sb = new List<string>
             {
-                string.Format("<H3>{0}</H3>", Name),
-                string.Empty.PadLeft(Name.Length, '-')
             };
 
             return sb;

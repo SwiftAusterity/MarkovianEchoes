@@ -81,6 +81,24 @@ body {
         padding-top: 5px;
     }
 
+div.parserClientLeft {
+    left: 25px;
+    top: 75px;
+    position: absolute;
+    max-width: 200px;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+}
+
+div.parserClientRight {
+    left: 1300px;
+    top: 75px;
+    position: absolute;
+    max-width: 200px;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+}
+
 ul.nav li a img {
     width: 28px;
     height: 28px;
