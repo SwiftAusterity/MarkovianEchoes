@@ -1,6 +1,5 @@
 ﻿using Cottontail.Cache;
 using Cottontail.FileSystem;
-using Echoes.Data.Entity;
 using Echoes.DataStructure.Entity;
 using Echoes.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -66,7 +65,7 @@ namespace Echoes.Web.Controllers
                 if (!persona.Position.Equals(viewModel.CurrentPlace))
                     viewModel.CurrentPlace.MoveInto(persona);
 
-                viewModel.CurrentPlace.WriteTo(input, persona);
+                viewModel.CurrentPlace.WriteTo(input, persona, self.Item2);
                 viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item3);
                 viewModel.CurrentPersona = persona;
             }
@@ -76,7 +75,7 @@ namespace Echoes.Web.Controllers
 
         public IPlace GetPlace(string placeName)
         {
-            var places = _dataCache.GetAll<Place>();
+            var places = _dataCache.GetAll<IPlace>();
             IPlace currentPlace = null;
 
             //Find a default place
@@ -94,11 +93,9 @@ namespace Echoes.Web.Controllers
             //Create one
             if (currentPlace == null)
             {
-                currentPlace = new Place(_data, _dataCache)
-                {
-                    Name = placeName
-                };
-
+                currentPlace = DataAccess.DataFactory.Create<IPlace>();
+                currentPlace.Name = placeName;
+                currentPlace.SetAccessors(_data, _dataCache);
                 currentPlace.Create();
             }
 
@@ -110,15 +107,14 @@ namespace Echoes.Web.Controllers
             if (String.IsNullOrWhiteSpace(personaName))
                 return null;
 
-            var persona  = _dataCache.GetAll<Persona>().FirstOrDefault(per => per.Name.Equals(personaName, StringComparison.InvariantCultureIgnoreCase));
+            var persona  = _dataCache.GetAll<IPersona>().FirstOrDefault(per => per.Name.Equals(personaName, StringComparison.InvariantCultureIgnoreCase));
 
             //Make a new one
             if(persona == null)
             {
-                persona = new Persona(_data, _dataCache)
-                {
-                    Name = personaName
-                }; 
+                persona = DataAccess.DataFactory.Create<IPersona>();
+                persona.Name = personaName;
+                persona.SetAccessors(_data, _dataCache);
                 persona.Create();
             }
 

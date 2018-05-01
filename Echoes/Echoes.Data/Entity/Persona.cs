@@ -9,6 +9,7 @@ using Echoes.DataStructure.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Echoes.Data.Entity
 {
@@ -31,9 +32,9 @@ namespace Echoes.Data.Entity
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public override IEnumerable<IContext> WriteTo(string input, IPersona originator)
+        public override IEnumerable<IContext> WriteTo(string input, IPersona originator, bool acting)
         {
-            var newContext = base.WriteTo(input, originator);
+            var newContext = base.WriteTo(input, originator, acting);
 
             Observe(input, originator, newContext);
 
@@ -49,9 +50,11 @@ namespace Echoes.Data.Entity
 
         public override IEnumerable<string> RenderToLocation()
         {
+            var decorators = FullContext.Where(adj => adj.GetType() == typeof(IDescriptor)).Select(desc => desc.Name);
+
             var sb = new List<string>
             {
-                string.Format("{0} is here", Name)
+                string.Format("{1} {0} is standing here.", Name, String.Join(",", decorators))
             };
 
             return sb;
@@ -61,7 +64,7 @@ namespace Echoes.Data.Entity
         {
             var sb = new List<string>
             {
-                string.Format("<s>{0}</s>", Name)
+                string.Format("{0}", Name)
             };
 
             return sb;

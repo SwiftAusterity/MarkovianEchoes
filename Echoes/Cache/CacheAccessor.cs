@@ -65,7 +65,11 @@ namespace Cottontail.Cache
                 Remove<T>(cacheKey);
 
             AddKey(objectToCache.GetType(), cacheKey);
-            _globalCache.Set(cacheKey.KeyHash(), objectToCache);
+
+            var entryOptions = new MemoryCacheEntryOptions();
+            entryOptions.SetPriority(CacheItemPriority.NeverRemove);
+
+            _globalCache.Set(cacheKey.KeyHash(), objectToCache, entryOptions);
         }
 
         /// <summary>

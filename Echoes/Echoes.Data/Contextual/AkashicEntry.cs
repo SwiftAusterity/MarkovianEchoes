@@ -13,9 +13,9 @@ namespace Echoes.Data.Contextual
     {
         private StoredDataCache dataCache;
 
-        public DateTime Timestamp { get; private set; }
+        public DateTime Timestamp { get; set; }
 
-        public string Observance { get; private set; }
+        public string Observance { get; set; }
 
         [JsonProperty("Actor")]
         private long _actor { get; set; }
@@ -27,13 +27,18 @@ namespace Echoes.Data.Contextual
             {
                 return dataCache.Get<Persona>(_actor);
             }
-            private set
+            set
             {
                 _actor = value.ID;
             }
         }
 
-        public IEnumerable<IContext> Context { get; private set; }
+        public IEnumerable<IContext> Context { get; set; }
+
+        public AkashicEntry()
+        {
+            Context = new List<IContext>();
+        }
 
         [JsonConstructor]
         public AkashicEntry(DateTime timestamp, string observance, long actor, IEnumerable<IContext> context, StoredDataCache storedDataCache)

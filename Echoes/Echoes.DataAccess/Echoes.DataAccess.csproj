@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C2E2E765-9A8E-4975-AF4A-32BCAABF3033}</ProjectGuid>
+    <ProjectGuid>{2BD74033-362E-452D-B697-29350B94B054}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Echoes.Interpretation</RootNamespace>
-    <AssemblyName>Echoes.Interpretation</AssemblyName>
+    <RootNamespace>Echoes.DataAccess</RootNamespace>
+    <AssemblyName>Echoes.DataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,32 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarkovianEngine.cs" />
+    <Compile Include="DataFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cache\Cottontail.Cache.csproj">
-      <Project>{ec6ed52e-7f08-4f14-9ff5-064332175ca8}</Project>
-      <Name>Cottontail.Cache</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Echoes.DataStructure\Echoes.DataStructure.csproj">
       <Project>{57886759-d433-4c4f-9bf2-3ea178250bab}</Project>
       <Name>Echoes.DataStructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FileSystem\Cottontail.FileSystem.csproj">
-      <Project>{13943448-4008-4c37-9f5c-f1793e773314}</Project>
-      <Name>Cottontail.FileSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Structure\Cottontail.Structure.csproj">
-      <Project>{cf2ad084-bea7-47cd-b934-38bff7598937}</Project>
-      <Name>Cottontail.Structure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utility\Cottontail.Utility.csproj">
-      <Project>{192b043d-e34f-44e2-b59f-10378c6096d3}</Project>
-      <Name>Cottontail.Utility</Name>
+    <ProjectReference Include="..\Echoes.Data\Echoes.Data.csproj">
+      <Project>{6d46845d-ee57-431b-9394-bd6f1c7f538a}</Project>
+      <Name>Echoes.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

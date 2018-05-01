@@ -9,6 +9,7 @@ using Echoes.DataStructure.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Echoes.Data.Entity
 {
@@ -62,15 +63,15 @@ namespace Echoes.Data.Entity
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public override IEnumerable<IContext> WriteTo(string input, IPersona originator)
+        public override IEnumerable<IContext> WriteTo(string input, IPersona originator, bool acting)
         { 
             foreach(var entity in GetThings())
-                entity.WriteTo(input, originator);
+                entity.WriteTo(input, originator, acting);
 
             foreach (var entity in GetPersonas())
-                entity.WriteTo(input, originator);
+                entity.WriteTo(input, originator, acting);
 
-            return base.WriteTo(input, originator);
+            return base.WriteTo(input, originator, acting);
         }
 
         /// <summary>
@@ -85,7 +86,8 @@ namespace Echoes.Data.Entity
 
             PersonaInventory.Add(thing);
             thing.Position = this;
-            UpsertToLiveWorldCache();
+            thing.Save();
+            Save();
 
             return true;
         }
@@ -102,7 +104,8 @@ namespace Echoes.Data.Entity
 
             ThingInventory.Add(thing);
             thing.Position = this;
-            UpsertToLiveWorldCache();
+            thing.Save();
+            Save();
 
             return true;
         }
@@ -145,8 +148,11 @@ namespace Echoes.Data.Entity
 
         private IEnumerable<string> RenderSelf()
         {
+            var decorators = FullContext.Where(adj => adj.GetType() == typeof(IDescriptor)).Select(desc => desc.Name);
+
             var sb = new List<string>
             {
+                string.Format("It is quite {0} here.", String.Join(",", decorators))
             };
 
             return sb;

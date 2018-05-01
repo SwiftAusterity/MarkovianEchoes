@@ -33,9 +33,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Cache\Cottontail.Cache.csproj" />
     <ProjectReference Include="..\Echoes.Backup\Echoes.Backup.csproj" />
+    <ProjectReference Include="..\Echoes.DataAccess\Echoes.DataAccess.csproj" />
     <ProjectReference Include="..\Echoes.DataStructure\Echoes.DataStructure.csproj" />
-    <ProjectReference Include="..\Echoes.Data\Echoes.Data.csproj" />
-    <ProjectReference Include="..\Echoes.Interpretation\Echoes.Interpretation.csproj" />
     <ProjectReference Include="..\FileSystem\Cottontail.FileSystem.csproj" />
     <ProjectReference Include="..\Structure\Cottontail.Structure.csproj" />
     <ProjectReference Include="..\Utility\Cottontail.Utility.csproj" />

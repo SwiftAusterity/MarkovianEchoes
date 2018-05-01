@@ -1,1 +1,1 @@
-{"AkashicRecord":[{"$type":"Echoes.Data.Contextual.AkashicEntry, Echoes.Data","Timestamp":"2018-04-29T11:32:38.6976624-05:00","Observance":"hello","Actor":0,"Context":[]}],"FullContext":[],"ID":0,"Created":"2018-04-29T10:20:58.5197063-05:00","LastRevised":"2018-04-29T11:32:38.6986625-05:00","Name":"bunny","Position":0}
+{"AkashicRecord":[],"FullContext":[],"ID":0,"Created":"2018-04-30T23:54:49.4164711-05:00","LastRevised":"2018-04-30T23:54:49.4164711-05:00","Name":"bunny","Position":0}

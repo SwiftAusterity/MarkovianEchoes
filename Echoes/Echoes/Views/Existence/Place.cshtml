@@ -24,7 +24,7 @@
     <div>
         <h3>Whomst</h3>
         <div>
-            @foreach (var persona in Model.CurrentPlace.PersonaInventory)
+            @foreach (var persona in Model.CurrentPlace.GetPersonas())
             {
                 <p>@String.Join(" ", persona.RenderToLocation())</p>
             }

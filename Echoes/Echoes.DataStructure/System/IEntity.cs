@@ -40,7 +40,7 @@ namespace Echoes.DataStructure.System
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        IEnumerable<IContext> WriteTo(string input, IPersona originator);
+        IEnumerable<IContext> WriteTo(string input, IPersona originator, bool acting);
 
         /// <summary>
         /// Update this to the live cache

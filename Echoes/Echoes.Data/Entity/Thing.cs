@@ -2,11 +2,13 @@
 using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
 using Echoes.Data.System;
+using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Echoes.Data.Entity
 {
@@ -57,9 +59,12 @@ namespace Echoes.Data.Entity
 
         public override IEnumerable<string> RenderToLocation()
         {
-            var sb = new List<string>();
+            var decorators = FullContext.Where(adj => adj.GetType() == typeof(IDescriptor)).Select(desc => desc.Name);
 
-            sb.Add(string.Format("{0} is here", Name));
+            var sb = new List<string>
+            {
+                string.Format("{1} {0} is here.", Name, String.Join(",", decorators))
+            };
 
             return sb;
         }

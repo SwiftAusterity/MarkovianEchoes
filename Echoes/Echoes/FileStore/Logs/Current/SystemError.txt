@@ -1,0 +1,8 @@
+[2018/04/30 23:49:31]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/04/30 23:53:11]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137

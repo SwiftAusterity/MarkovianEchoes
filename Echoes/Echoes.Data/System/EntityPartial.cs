@@ -4,10 +4,10 @@ using Cottontail.FileSystem.Logging;
 using Cottontail.Structure;
 using Cottontail.Utility.Data;
 using Echoes.Data.Entity;
+using Echoes.Data.Interp;
 using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
-using Echoes.Interpretation;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -58,18 +58,17 @@ namespace Echoes.Data.System
         [JsonConstructor]
         public EntityPartial()
         {
-            MarkovEngine = new MarkovianEngine();
             FullContext = new List<IContext>();
         }
 
         public EntityPartial(StoredData storedData, StoredDataCache storedDataCache)
         {
+            FullContext = new List<IContext>();
             BaseDirectory = storedData.RootDirectory;
             DataStore = storedData;
             DataCache = storedDataCache;
 
-            MarkovEngine = new MarkovianEngine();
-            FullContext = new List<IContext>();
+            MarkovEngine = new MarkovianEngine(DataStore, DataCache);
         }
 
         public virtual void SetAccessors(StoredData storedData, StoredDataCache storedDataCache)
@@ -77,16 +76,18 @@ namespace Echoes.Data.System
             BaseDirectory = storedData.RootDirectory;
             DataStore = storedData;
             DataCache = storedDataCache;
+
+            MarkovEngine = new MarkovianEngine(DataStore, DataCache);
         }
 
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
-        public virtual IEnumerable<IContext> WriteTo(string input, IPersona originator)
+        public virtual IEnumerable<IContext> WriteTo(string input, IPersona originator, bool acting)
         {
-            var newContext = MarkovEngine.Experience(this, originator, input);
+            var newContext = MarkovEngine.Experience(this, originator, input, acting);
 
-            MarkovEngine.Merge(FullContext, newContext);
+            MarkovEngine.Merge(FullContext.ToList(), newContext);
 
             Save();
 
