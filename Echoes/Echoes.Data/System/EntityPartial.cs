@@ -33,7 +33,7 @@ namespace Echoes.Data.System
         [JsonIgnore]
         internal string BaseDirectory { get; private set; }
 
-        public IList<IContext> FullContext { get; set; }
+        public IEnumerable<IContext> FullContext { get; set; }
         public long ID { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastRevised { get; set; }
@@ -87,7 +87,7 @@ namespace Echoes.Data.System
         {
             var newContext = MarkovEngine.Experience(this, originator, input, acting);
 
-            MarkovEngine.Merge(FullContext.ToList(), newContext);
+            FullContext = MarkovEngine.Merge(FullContext.ToList(), newContext);
 
             Save();
 
@@ -211,6 +211,7 @@ namespace Echoes.Data.System
             {
                 LastRevised = DateTime.Now;
 
+                UpsertToLiveWorldCache();
                 DataStore.WriteEntity(this);
             }
             catch (Exception ex)
@@ -227,7 +228,7 @@ namespace Echoes.Data.System
         /// </summary>
         internal void GetNextId()
         {
-            IEnumerable<IData> allOfMe = DataCache.GetAll().Where(bdc => bdc.GetType() == this.GetType());
+            IEnumerable<IData> allOfMe = DataCache.GetAll(GetType());
 
             //Zero ordered list
             if (allOfMe.Count() > 0)

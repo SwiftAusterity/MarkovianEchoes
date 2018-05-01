@@ -16,7 +16,7 @@ namespace Echoes.DataStructure.System
         /// <summary>
         /// List of descriptors this objects knows
         /// </summary>
-        IList<IContext> FullContext { get; set; }
+        IEnumerable<IContext> FullContext { get; set; }
 
         /// <summary>
         /// Where this is in the world

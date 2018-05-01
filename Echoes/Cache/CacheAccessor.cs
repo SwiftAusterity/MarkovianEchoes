@@ -7,7 +7,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Cottontail.Cache
 {
-    internal class CacheAccessor
+    public abstract class CacheAccessor
     {
         /* 
          * The general idea here is that we are literally caching everything possible from app start.
@@ -27,27 +27,26 @@ namespace Cottontail.Cache
         /// <summary>
         /// The place everything gets stored
         /// </summary>
-        private MemoryCache _globalCache;
+        internal IMemoryCache _globalCache;
 
-        private string _baseDirectory;
+        internal string _baseDirectory;
 
-        private Dictionary<Type, HashSet<ICacheKey>> _keysByType;
+        internal Dictionary<Type, HashSet<ICacheKey>> _keysByType;
 
         /// <summary>
         /// The cache type (affects the "ids")
         /// </summary>
-        private CacheType _type;
+        internal CacheType _type;
 
         /// <summary>
         /// Create a new CacheAccessor with its type
         /// </summary>
         /// <param name="type">The type of item we're caching</param>
-        internal CacheAccessor(CacheType type, string baseDirectory)
+        internal CacheAccessor(CacheType type, IMemoryCache memoryCache, string baseDirectory)
         {
             _keysByType = new Dictionary<Type, HashSet<ICacheKey>>();
 
-            var cacheOptions = new MemoryCacheOptions();
-            _globalCache = new MemoryCache(cacheOptions);
+            _globalCache = memoryCache;
 
             _type = type;
 
@@ -55,36 +54,42 @@ namespace Cottontail.Cache
         }
 
         /// <summary>
-        /// Adds an object to the cache
-        /// </summary>
-        /// <param name="objectToCache">the object to cache</param>
-        /// <param name="cacheKey">the key to cache it under</param>
-        public void Add<T>(object objectToCache, ICacheKey cacheKey)
-        {
-            if (Exists(cacheKey))
-                Remove<T>(cacheKey);
-
-            AddKey(objectToCache.GetType(), cacheKey);
-
-            var entryOptions = new MemoryCacheEntryOptions();
-            entryOptions.SetPriority(CacheItemPriority.NeverRemove);
-
-            _globalCache.Set(cacheKey.KeyHash(), objectToCache, entryOptions);
-        }
-
-        /// <summary>
         /// fills a list of entities from the cache of a single type that match the birthmarks sent in
         /// </summary>
         /// <typeparam name="T">the system type for the entity</typeparam>
         /// <returns>a list of the entities from the cache</returns>
-        public IEnumerable<T> GetMany<T>(IEnumerable<ICacheKey> ids) where T : IData
+        public virtual IEnumerable<T> GetMany<T>(IEnumerable<ICacheKey> ids) where T : IData
         {
             try
             {
                 var returnList = new List<T>();
 
                 foreach (var id in ids)
-                    returnList.Add(_globalCache.Get<T>(id.KeyHash()));
+                    returnList.Add(Get<T>(id));
+
+                return returnList;
+            }
+            catch (Exception ex)
+            {
+                LoggingUtility.LogError(_baseDirectory, ex);
+            }
+
+            return Enumerable.Empty<T>();
+        }
+        
+        /// <summary>
+        /// Get all entities of a type from the cache
+        /// </summary>
+        /// <typeparam name="T">the system type for the entity</typeparam>
+        /// <returns>a list of the entities from the cache</returns>
+        public virtual IEnumerable<T> GetAll<T>()
+        {
+            try
+            {
+                var returnList = new List<T>();
+
+                foreach (var key in GetKeys(typeof(T)))
+                    returnList.Add(Get<T>(key));
 
                 return returnList;
             }
@@ -97,27 +102,14 @@ namespace Cottontail.Cache
         }
 
         /// <summary>
-        /// Get all entities of a type from the cache
+        /// Gets one entity from the cache by its key
         /// </summary>
-        /// <typeparam name="T">the system type for the entity</typeparam>
-        /// <returns>a list of the entities from the cache</returns>
-        public IEnumerable<T> GetAll<T>()
+        /// <typeparam name="T">the type of the entity</typeparam>
+        /// <param name="key">the key it was cached with</param>
+        /// <returns>the entity requested</returns>
+        public virtual T Get<T>(ICacheKey key)
         {
-            try
-            {
-                var returnList = new List<T>();
-
-                foreach (var key in GetKeys(typeof(T)))
-                    returnList.Add(_globalCache.Get<T>(key.KeyHash()));
-
-                return returnList;
-            }
-            catch (Exception ex)
-            {
-                LoggingUtility.LogError(_baseDirectory, ex);
-            }
-
-            return Enumerable.Empty<T>();
+            return Get<T>(key.KeyHash());
         }
 
         /// <summary>
@@ -126,7 +118,7 @@ namespace Cottontail.Cache
         /// <typeparam name="T">the type of the entity</typeparam>
         /// <param name="key">the key it was cached with</param>
         /// <returns>the entity requested</returns>
-        public T Get<T>(string key)
+        public virtual T Get<T>(string key)
         {
             try
             {
@@ -141,34 +133,29 @@ namespace Cottontail.Cache
         }
 
         /// <summary>
-        /// Gets one entity from the cache by its key
+        /// Adds an object to the cache
         /// </summary>
-        /// <typeparam name="T">the type of the entity</typeparam>
-        /// <param name="key">the key it was cached with</param>
-        /// <returns>the entity requested</returns>
-        public T Get<T>(ICacheKey key)
+        /// <param name="objectToCache">the object to cache</param>
+        /// <param name="cacheKey">the key to cache it under</param>
+        public virtual void Add<T>(object objectToCache, ICacheKey cacheKey)
         {
-            try
-            {
-                return _globalCache.Get<T>(key.KeyHash());
-            }
-            catch (Exception ex)
-            {
-                LoggingUtility.LogError(_baseDirectory, ex);
-            }
+            if (Exists(cacheKey))
+                Remove<T>(cacheKey);
 
-            return default(T);
+            AddKey(cacheKey.ValueType, cacheKey);
+
+            _globalCache.Set(cacheKey.KeyHash(), objectToCache);
         }
 
         /// <summary>
         /// Removes an entity from the cache by its key
         /// </summary>
         /// <param name="key">the key of the entity to remove</param>
-        public void Remove<T>(ICacheKey key)
+        public virtual void Remove<T>(ICacheKey key)
         {
             _globalCache.Remove(key.KeyHash());
 
-            RemoveKey(typeof(T), key);
+            RemoveKey(key.ValueType, key);
         }
 
         /// <summary>
@@ -176,9 +163,9 @@ namespace Cottontail.Cache
         /// </summary>
         /// <param name="key">the key of the entity</param>
         /// <returns>if it is in the cache of not</returns>
-        public bool Exists(ICacheKey key)
+        public virtual bool Exists(ICacheKey key)
         {
-            return _globalCache.Get(key.KeyHash()) != null;
+            return Exists(key.KeyHash());
         }
 
         /// <summary>
@@ -191,13 +178,18 @@ namespace Cottontail.Cache
             return _globalCache.Get(key) != null;
         }
 
-        private void AddKey(Type type, ICacheKey key)
+        internal virtual void AddKey(Type type, ICacheKey key)
         {
             var currentList = new HashSet<ICacheKey>();
 
             if (_keysByType.ContainsKey(type))
             {
                 currentList = _keysByType[type];
+
+                //Already got it and this is just a keystore not the actual object
+                if(currentList.Any(ky => ky.Equals(key)))
+                    return;
+
                 _keysByType.Remove(type);
             }
 
@@ -205,7 +197,7 @@ namespace Cottontail.Cache
             _keysByType.Add(type, currentList);
         }
 
-        private void RemoveKey(Type type, ICacheKey key)
+        internal virtual void RemoveKey(Type type, ICacheKey key)
         {
             //Doesn't exist just leave
             if (!_keysByType.ContainsKey(type))
@@ -216,7 +208,7 @@ namespace Cottontail.Cache
             currentList.Remove(key);
         }
 
-        private HashSet<ICacheKey> GetKeys(Type type)
+        internal virtual HashSet<ICacheKey> GetKeys(Type type)
         {
             if (!_keysByType.ContainsKey(type))
                 return new HashSet<ICacheKey>();

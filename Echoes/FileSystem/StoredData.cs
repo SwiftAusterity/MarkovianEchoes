@@ -1,5 +1,6 @@
 ﻿using Cottontail.FileSystem.Logging;
 using Cottontail.Structure;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
 
@@ -35,7 +36,7 @@ namespace Cottontail.FileSystem
             }
         }
 
-        public StoredData(string rootPath) : base(rootPath) { }
+        public StoredData(IHostingEnvironment hostingEnvironment) : base(hostingEnvironment.ContentRootPath) { }
 
         public IData ReadEntity(FileInfo file, Type entityType, object[] args)
         {

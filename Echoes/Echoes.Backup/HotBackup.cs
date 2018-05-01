@@ -72,14 +72,14 @@ namespace Echoes.Backup
             {
                 LoggingUtility.Log(DataStore.RootDirectory, "World backup to current INITIATED.", LogChannels.Backup);
 
-                DataStore.ArchiveFull();
+                //DataStore.ArchiveFull();
 
                 //Get all the entities (which should be a ton of stuff)
-                var entities = DataCache.GetAll();
+                //var entities = DataCache.GetAll();
 
                 //Dont save players to the hot section, there's another place for them
-                foreach (var entity in entities)
-                    DataStore.WriteEntity(entity);
+                //foreach (var entity in entities)
+                //    DataStore.WriteEntity(entity);
 
                 LoggingUtility.Log(DataStore.RootDirectory, "Live world written to current.", LogChannels.Backup);
 

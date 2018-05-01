@@ -57,9 +57,11 @@ namespace Echoes.Data.Interp
         /// </summary>
         /// <param name="originContext">The existing context</param>
         /// <param name="newContext">The new context</param>
-        public void Merge(List<IContext> originContext, IEnumerable<IContext> newContext)
+        public IEnumerable<IContext> Merge(List<IContext> originContext, IEnumerable<IContext> newContext)
         {
             originContext.AddRange(newContext);
+
+            return originContext;
         }
 
         /*
