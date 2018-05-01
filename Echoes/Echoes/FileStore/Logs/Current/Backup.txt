@@ -128,3 +128,35 @@
 [2018/04/30 23:49:31]:  World restored from data fallback.
 [2018/04/30 23:53:10]:  World restored from current live INITIATED.
 [2018/04/30 23:53:11]:  World restored from data fallback.
+[2018/05/01 14:08:09]:  World restored from current live INITIATED.
+[2018/05/01 14:09:51]:  World restored from current live INITIATED.
+[2018/05/01 14:10:38]:  World restored from current live INITIATED.
+[2018/05/01 14:10:38]:  World restored from data fallback.
+[2018/05/01 14:20:00]:  World restored from current live INITIATED.
+[2018/05/01 14:20:00]:  World restored from data fallback.
+[2018/05/01 14:22:54]:  World restored from current live INITIATED.
+[2018/05/01 14:22:54]:  World restored from data fallback.
+[2018/05/01 14:37:59]:  World restored from current live INITIATED.
+[2018/05/01 14:38:00]:  World restored from data fallback.
+[2018/05/01 14:47:36]:  World restored from current live INITIATED.
+[2018/05/01 14:47:36]:  World restored from data fallback.
+[2018/05/01 14:54:03]:  World restored from current live INITIATED.
+[2018/05/01 14:54:03]:  World restored from data fallback.
+[2018/05/01 14:56:16]:  World restored from current live INITIATED.
+[2018/05/01 14:56:16]:  World restored from data fallback.
+[2018/05/01 15:02:46]:  World restored from current live INITIATED.
+[2018/05/01 15:02:46]:  World restored from data fallback.
+[2018/05/01 15:13:31]:  World restored from current live INITIATED.
+[2018/05/01 15:13:31]:  World restored from data fallback.
+[2018/05/01 15:33:56]:  World restored from current live INITIATED.
+[2018/05/01 15:33:57]:  World restored from data fallback.
+[2018/05/01 15:38:09]:  World restored from current live INITIATED.
+[2018/05/01 15:38:18]:  World restored from current live.
+[2018/05/01 15:42:45]:  World restored from current live INITIATED.
+[2018/05/01 15:43:01]:  World restored from current live.
+[2018/05/01 15:45:30]:  World restored from current live INITIATED.
+[2018/05/01 15:46:04]:  World restored from current live.
+[2018/05/01 15:50:49]:  World restored from current live INITIATED.
+[2018/05/01 15:50:49]:  World restored from current live.
+[2018/05/01 15:55:13]:  World restored from current live INITIATED.
+[2018/05/01 15:55:13]:  World restored from current live.

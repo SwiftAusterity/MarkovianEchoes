@@ -6,3 +6,43 @@
    at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
    at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
    at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 14:10:38]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 14:20:00]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 14:22:54]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 14:38:00]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 14:47:36]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 14:54:03]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 14:56:16]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 15:02:46]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 15:13:31]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/01 15:33:57]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137

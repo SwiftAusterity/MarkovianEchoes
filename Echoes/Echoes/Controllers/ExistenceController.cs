@@ -40,7 +40,7 @@ namespace Echoes.Web.Controllers
                 viewModel.Errors = "You must choose a persona first.";
             else
             {
-                if (!persona.Position.Equals(viewModel.CurrentPlace))
+                if (!persona.Position.Equals(viewModel.CurrentPlace) || !viewModel.CurrentPlace.PersonaInventory.Contains(persona))
                     viewModel.CurrentPlace.MoveInto(persona);
 
                 viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item3);
@@ -75,20 +75,13 @@ namespace Echoes.Web.Controllers
 
         public IPlace GetPlace(string placeName)
         {
-            var places = _dataCache.GetAll<IPlace>();
             IPlace currentPlace = null;
 
             //Find a default place
             if (String.IsNullOrWhiteSpace(placeName))
-            {
-                currentPlace = places.FirstOrDefault();
-
-                //We have no places at all?
-                if(currentPlace == null)
-                    placeName = "The_Warren";
-            }
+                Response.Redirect("/existence");
             else
-                currentPlace = places.FirstOrDefault(pl => pl.Name.Equals(placeName, StringComparison.InvariantCultureIgnoreCase));
+                currentPlace = _dataCache.GetByName<IPlace>(placeName);
 
             //Create one
             if (currentPlace == null)
@@ -107,7 +100,7 @@ namespace Echoes.Web.Controllers
             if (String.IsNullOrWhiteSpace(personaName))
                 return null;
 
-            var persona  = _dataCache.GetAll<IPersona>().FirstOrDefault(per => per.Name.Equals(personaName, StringComparison.InvariantCultureIgnoreCase));
+            var persona  = _dataCache.GetByName<IPersona>(personaName);
 
             //Make a new one
             if(persona == null)
@@ -131,7 +124,7 @@ namespace Echoes.Web.Controllers
                 personaName = HttpContext.Request.Cookies["persona"];
 
             if (HttpContext.Request.Cookies.ContainsKey("modality"))
-                bool.TryParse(HttpContext.Request.Cookies["modality"], out acting);
+                acting = !HttpContext.Request.Cookies["modality"].Equals("speak");
 
             if (HttpContext.Request.Cookies.ContainsKey("lastSeenDate"))
                 DateTime.TryParse(HttpContext.Request.Cookies["lastSeenDate"], out lastSeenDate);
