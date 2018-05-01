@@ -36,14 +36,13 @@ namespace Echoes
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddMemoryCache();
 
             // Register no-op EmailSender used by account confirmation and password reset during development
             // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
             services.AddSingleton<IEmailSender, EmailSender>();
 
-            services.AddSingleton(new StoredData(HostingEnvironment.ContentRootPath));
-            services.AddSingleton(new StoredDataCache(HostingEnvironment.ContentRootPath));
+            services.AddMvc();
 
             services.AddMvc(config =>
             {
@@ -52,6 +51,9 @@ namespace Echoes
                                  .Build();
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
+
+            services.AddSingleton<StoredData>();
+            services.AddSingleton<StoredDataCache>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
