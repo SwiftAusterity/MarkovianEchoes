@@ -105,31 +105,20 @@ function Kinesis_Finale(child, parentContainer, modeOptions, styles, effects) {
     } else {
         OrientText(modeOptions.Orientation, child);
 
-        var appropriateWidthBounding = Math.max(0, parentContainer.width() - width);
-        var appropriateHeightBounding = Math.max(0, parentContainer.height() - height);
+        var appropriateWidthBounding = Math.max(0, parentContainer.width() - child.width());
+        var appropriateHeightBounding = Math.max(0, parentContainer.height() - child.height());
 
-        posx = (Math.random() * appropriateWidthBounding).toFixed();
-        posy = (Math.random() * appropriateHeightBounding).toFixed();
+        //Absolute X bounding is within 25, width - 25
+        //Absolute Y bounding is within 50 (for padding), height - 25
 
-        width = constrainBounds(child.width(), posx, appropriateWidthBounding);
-        height = constrainBounds(child.height(), posy, appropriateHeightBounding);
+        posx = Math.min(parentContainer.width() - 25,
+            Math.max(25, (Math.random() * appropriateWidthBounding).toFixed()));
+        posy = Math.min(parentContainer.height() - 25,
+            Math.max(50, (Math.random() * appropriateHeightBounding).toFixed()));
 
-        /*
-        if (OrientText(modeOptions.Orientation, child)) {
-            var appropriateWidthBounding = Math.max(0, parentContainer.width() - width);
-            var appropriateHeightBounding = Math.max(0, parentContainer.height() - height);
-
-            posx = (Math.random() * appropriateWidthBounding).toFixed();
-            posy = (Math.random() * appropriateHeightBounding).toFixed();
-
-            height = constrainBounds(child.height(), posy, appropriateHeightBounding);
-            width = width * Math.ceil(child.height() / height);
-        } else {
-            width = constrainBounds(child.width(), posx, appropriateWidthBounding);
-            height = height * Math.ceil(child.width() / width);
-        }
-        */
-    }
+        child.width(constrainBounds(child.width(), posx, parentContainer.width()));
+        child.height(constrainBounds(child.height(), posy, parentContainer.height()));
+   }
 
     child.css({
         'position': 'absolute',
@@ -215,7 +204,7 @@ function OrientText(textOrientation, child) {
 
     if (angleDeformation != 0 && angleDeformation != 1) {
         width = width * angleDeformation;
-        height = height / angleDeformation + 10;
+        height = (height / angleDeformation) + 10;
     }
 
     if (writingMode = 'random' && Math.random() <= 0.2) {
