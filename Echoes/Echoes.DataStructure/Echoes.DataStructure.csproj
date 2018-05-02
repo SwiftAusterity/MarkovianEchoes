@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contextual\ActionType.cs" />
     <Compile Include="Contextual\IContext.cs" />
     <Compile Include="Contextual\IVerb.cs" />
     <Compile Include="Contextual\IAkashicEntry.cs" />

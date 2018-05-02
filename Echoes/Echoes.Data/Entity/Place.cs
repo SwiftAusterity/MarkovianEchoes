@@ -150,10 +150,10 @@ namespace Echoes.Data.Entity
         {
             var decorators = FullContext.Where(adj => adj.GetType() == typeof(IDescriptor)).Select(desc => desc.Name);
 
-            var sb = new List<string>
-            {
-                string.Format("It is quite {0} here.", String.Join(",", decorators))
-            };
+            var sb = new List<string>();
+
+            if(decorators.Count() > 0)
+                sb.Add(string.Format("It is quite {0} here.", String.Join(",", decorators)));
 
             return sb;
         }

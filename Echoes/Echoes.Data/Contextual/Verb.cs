@@ -13,13 +13,13 @@ namespace Echoes.Data.Contextual
         /// <summary>
         /// What affects this has on the current context. Key: Context target, Value: What do to, Context (to apply or remove)
         /// </summary>
-        public Dictionary<string, Tuple<ActionType, string>> Affects { get; set; }
+        public Dictionary<string, HashSet<Tuple<ActionType, string>>> Affects { get; set; }
 
         public string Name { get; set; }
 
         public Verb()
         {
-            Affects = new Dictionary<string, Tuple<ActionType, string>>();
+            Affects = new Dictionary<string, HashSet<Tuple<ActionType, string>>>();
         }
     }
 }

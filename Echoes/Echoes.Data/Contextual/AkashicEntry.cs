@@ -17,6 +17,8 @@ namespace Echoes.Data.Contextual
 
         public string Observance { get; set; }
 
+        public bool Spoken { get; set; }
+
         [JsonProperty("Actor")]
         private long _actor { get; set; }
 
@@ -41,22 +43,24 @@ namespace Echoes.Data.Contextual
         }
 
         [JsonConstructor]
-        public AkashicEntry(DateTime timestamp, string observance, long actor, IEnumerable<IContext> context, StoredDataCache storedDataCache)
+        public AkashicEntry(DateTime timestamp, string observance, bool spoken, long actor, IEnumerable<IContext> context, StoredDataCache storedDataCache)
         {
             Timestamp = timestamp;
             Observance = observance;
             _actor = actor;
             Context = context;
+            Spoken = spoken;
 
             dataCache = storedDataCache;
         }
 
-        public AkashicEntry(DateTime timestamp, string observance, IPersona actor, IEnumerable<IContext> context, StoredDataCache storedDataCache)
+        public AkashicEntry(DateTime timestamp, string observance, bool spoken, IPersona actor, IEnumerable<IContext> context, StoredDataCache storedDataCache)
         {
             Timestamp = timestamp;
             Observance = observance;
             Actor = actor;
             Context = context;
+            Spoken = spoken;
 
             dataCache = storedDataCache;
         }

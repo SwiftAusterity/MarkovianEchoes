@@ -67,8 +67,10 @@
         var timer = 0;
        @foreach (var record in Model.NewToYou)
        {
+           var outputText = record.Spoken ? String.Format("{0} says \"{1}\"", record.Actor.Name, record.Observance) : String.Format("{0} {1}", record.Actor.Name, record.Observance);
+
           <text>
-        Kinesis_Text('@record.Observance', $('.parserOutput'), { Orientation: { direction: 'random', FadeOnSweep: true }, undefined, { initialDelay: timer });
+        Kinesis_Text('@outputText', $('.parserOutput'), { Orientation: { direction: 'random', FadeOnSweep: true }, undefined, { initialDelay: timer });
             timer += 1250;
           </text>
        }

@@ -11,12 +11,6 @@ namespace Echoes.DataStructure.Contextual
         /// <summary>
         /// What affects this has on the current context. Key: Context target, Value: What do to, Context (to apply or remove)
         /// </summary>
-        Dictionary<string, Tuple<ActionType, string>> Affects { get; set; }
-    }
-
-    public enum ActionType
-    {
-        Apply,
-        Remove
+        Dictionary<string, HashSet<Tuple<ActionType, string>>> Affects { get; set; }
     }
 }

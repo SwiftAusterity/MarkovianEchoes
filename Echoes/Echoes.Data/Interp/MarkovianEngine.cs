@@ -98,9 +98,26 @@ namespace Echoes.Data.Interp
 
             var verb = new Verb { Name = verbWord };
 
+            HashSet<Tuple<ActionType, string>> actionsList = new HashSet<Tuple<ActionType, string>>();
+
+            if (verb.Affects.ContainsKey(targetWord))
+                actionsList = verb.Affects[targetWord];
+
             foreach (var adjective in adjectives)
             {
-                verb.Affects.Add(targetWord, new Tuple<ActionType, string>(ActionType.Apply, adjective));
+                var existingPair = actionsList.FirstOrDefault(value => value.Item2.Equals(adjective));
+
+                if (existingPair != null)
+                {
+                    var actionType = existingPair.Item1 == ActionType.Apply ? ActionType.Remove : ActionType.Apply;
+
+                    actionsList.RemoveWhere(value => value.Item2.Equals(adjective));
+
+                    actionsList.Add(new Tuple<ActionType, string>(actionType, adjective));
+                }
+                else
+                    actionsList.Add(new Tuple<ActionType, string>(ActionType.Apply, adjective));
+
                 descriptors.Add(new Descriptor() { Name = adjective });
             }
 
@@ -111,8 +128,11 @@ namespace Echoes.Data.Interp
                 && !currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
             {
                 //make new thing
-                var newThing = new Thing(DataStore, DataCache);
-                newThing.Name = targetWord;
+                var newThing = new Thing(DataStore, DataCache)
+                {
+                    Name = targetWord
+                };
+
                 currentPlace.MoveInto(newThing);
 
                 newThing.Create();

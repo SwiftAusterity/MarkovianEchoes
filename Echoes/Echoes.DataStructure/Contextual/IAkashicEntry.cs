@@ -12,21 +12,26 @@ namespace Echoes.DataStructure.Contextual
         /// <summary>
         /// The time this occured
         /// </summary>
-        DateTime Timestamp { get; }
+        DateTime Timestamp { get; set; }
 
         /// <summary>
         /// The raw input that spawned this record
         /// </summary>
-        string Observance { get; }
+        string Observance { get; set; }
+
+        /// <summary>
+        /// Whether or not the observance was spoken or acted
+        /// </summary>
+        bool Spoken { get; set; }
 
         /// <summary>
         /// The originator of the occurance
         /// </summary>
-        IPersona Actor { get; }
+        IPersona Actor { get; set; }
 
         /// <summary>
         /// The context generated for the observer from the occurance
         /// </summary>
-        IEnumerable<IContext> Context { get; }
+        IEnumerable<IContext> Context { get; set; }
     }
 }

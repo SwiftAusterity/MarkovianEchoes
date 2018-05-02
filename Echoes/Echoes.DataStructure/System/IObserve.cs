@@ -19,6 +19,6 @@ namespace Echoes.DataStructure.System
         /// </summary>
         /// <param name="observance">The raw input</param>
         /// <param name="actor">Who originated it</param>
-        void Observe(string observance, IPersona actor, IEnumerable<IContext> newContext);
+        void Observe(string observance, IPersona actor, IEnumerable<IContext> newContext, bool spoken);
     }
 }

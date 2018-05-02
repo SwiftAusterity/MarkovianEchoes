@@ -36,16 +36,16 @@ namespace Echoes.Data.Entity
         {
             var newContext = base.WriteTo(input, originator, acting);
 
-            Observe(input, originator, newContext);
+            Observe(input, originator, newContext, !acting);
 
             Save();
 
             return newContext;
         }
 
-        public void Observe(string observance, IPersona actor, IEnumerable<IContext> newContext)
+        public void Observe(string observance, IPersona actor, IEnumerable<IContext> newContext, bool spoken)
         {
-            AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, actor, newContext, DataCache));
+            AkashicRecord.Add(new AkashicEntry(DateTime.Now, observance, spoken, actor, newContext, DataCache));
         }
 
         public override IEnumerable<string> RenderToLocation()
