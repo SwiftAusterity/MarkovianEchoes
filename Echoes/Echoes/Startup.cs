@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Echoes.Backup;
 using Cottontail.FileSystem;
 using Cottontail.Cache;
+using Cottontail.FileSystem.Logging;
 
 namespace Echoes
 {
@@ -52,12 +53,13 @@ namespace Echoes
                 config.Filters.Add(new AuthorizeFilter(policy));
             });
 
-            services.AddSingleton<StoredData>();
+            services.AddSingleton<StoredDataFileAccessor>();
             services.AddSingleton<StoredDataCache>();
+            services.AddSingleton<FileLogger>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoredData storedData, StoredDataCache storedDataCache)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger)
         {
             if (env.IsDevelopment())
             {
@@ -76,7 +78,7 @@ namespace Echoes
 
             app.UseMvc();
 
-            var dataStorage = new HotBackup(storedData, storedDataCache);
+            var dataStorage = new HotBackup(storedData, storedDataCache, logger);
 
             //Our live data restore failed, reload the entire world from backing data
             if (!dataStorage.RestoreLiveBackup())

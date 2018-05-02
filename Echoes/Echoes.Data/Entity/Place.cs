@@ -28,18 +28,18 @@ namespace Echoes.Data.Entity
         {
         }
 
-        public Place(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache) 
+        public Place(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger) : base(storedData, storedDataCache, logger) 
         {
             PersonaInventory = new CacheContainer<IPersona>(storedDataCache);
             ThingInventory = new CacheContainer<IThing>(storedDataCache);
         }
 
-        public override void SetAccessors(StoredData storedData, StoredDataCache storedDataCache)
+        public override void SetAccessors(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger)
         {
             PersonaInventory = new CacheContainer<IPersona>(storedDataCache);
             ThingInventory = new CacheContainer<IThing>(storedDataCache);
 
-            base.SetAccessors(storedData, storedDataCache);
+            base.SetAccessors(storedData, storedDataCache, logger);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Echoes.Data.Entity
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(BaseDirectory, ex);
+                Logger.LogError(ex);
                 return false;
             }
 

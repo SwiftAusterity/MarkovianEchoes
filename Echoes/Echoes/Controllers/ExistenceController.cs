@@ -1,5 +1,6 @@
 ﻿using Cottontail.Cache;
 using Cottontail.FileSystem;
+using Cottontail.FileSystem.Logging;
 using Echoes.DataStructure.Entity;
 using Echoes.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,12 +15,14 @@ namespace Echoes.Web.Controllers
     public class ExistenceController : Controller
     {
         private StoredDataCache _dataCache;
-        private StoredData _data;
+        private StoredDataFileAccessor _data;
+        private FileLogger _logger;
 
-        public ExistenceController(StoredData storedData, StoredDataCache storedDataCache)
+        public ExistenceController(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger)
         {
             _dataCache = storedDataCache;
             _data = storedData;
+            _logger = logger;
         }
 
         [HttpGet("", Name = "Existence_Index")]
@@ -88,7 +91,7 @@ namespace Echoes.Web.Controllers
             {
                 currentPlace = DataAccess.DataFactory.Create<IPlace>();
                 currentPlace.Name = placeName;
-                currentPlace.SetAccessors(_data, _dataCache);
+                currentPlace.SetAccessors(_data, _dataCache, _logger);
                 currentPlace.Create();
             }
 
@@ -107,7 +110,7 @@ namespace Echoes.Web.Controllers
             {
                 persona = DataAccess.DataFactory.Create<IPersona>();
                 persona.Name = personaName;
-                persona.SetAccessors(_data, _dataCache);
+                persona.SetAccessors(_data, _dataCache, _logger);
                 persona.Create();
             }
 

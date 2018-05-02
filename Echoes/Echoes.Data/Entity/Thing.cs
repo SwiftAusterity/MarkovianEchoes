@@ -18,7 +18,7 @@ namespace Echoes.Data.Entity
         [JsonConstructor]
         public Thing() : base() { }
 
-        public Thing(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache) { }
+        public Thing(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger) : base(storedData, storedDataCache, logger) { }
 
         /// <summary>
         /// Spawn this new into the live world
@@ -94,7 +94,7 @@ namespace Echoes.Data.Entity
         }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(BaseDirectory, ex);
+                Logger.LogError(ex);
                 return false;
             }
 

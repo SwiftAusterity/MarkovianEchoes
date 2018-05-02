@@ -8,6 +8,8 @@ namespace Cottontail.FileSystem
     {
         public string RootDirectory { get; }
 
+        public FileLogger Logger { get; internal set; }
+
         /// <summary>
         /// The base directory for these files, should be overriden
         /// </summary>
@@ -54,8 +56,17 @@ namespace Cottontail.FileSystem
             }
         }
 
-        public FileAccessor(string rootDirectory)
+        public FileAccessor(string rootDirectory, FileLogger logger)
         {
+            if (Directory.Exists(rootDirectory))
+                RootDirectory = rootDirectory;
+
+            BaseDirectory = rootDirectory + "/FileStore/";
+            Logger = logger;
+        }
+
+        public FileAccessor(string rootDirectory)
+        { 
             if (Directory.Exists(rootDirectory))
                 RootDirectory = rootDirectory;
 
@@ -133,7 +144,7 @@ namespace Cottontail.FileSystem
             catch (Exception ex)
             {
                 //Log any filesystem errors
-                LoggingUtility.LogError(BaseDirectory, ex);
+                Logger.LogError(ex);
             }
 
             return false;
@@ -164,7 +175,7 @@ namespace Cottontail.FileSystem
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(BaseDirectory, ex);
+                Logger.LogError(ex);
             }
             finally
             {

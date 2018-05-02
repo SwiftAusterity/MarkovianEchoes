@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Cottontail.FileSystem.Logging;
 using Echoes.Data;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,7 +10,7 @@ namespace Echoes.Web.Pages.Logs
 {
     public class LogsModel : PageModel
     {
-        private IHostingEnvironment _env;
+        private FileLogger _logger;
 
         public UserManager<ApplicationUser> _userManager { get; set; }
 
@@ -24,33 +23,33 @@ namespace Echoes.Web.Pages.Logs
         [BindProperty]
         public string SelectedLog { get; set; }
 
-        public LogsModel(UserManager<ApplicationUser> userManager, IHostingEnvironment env)
+        public LogsModel(UserManager<ApplicationUser> userManager, FileLogger logger)
         {
             _userManager = userManager;
-            _env = env;
+            _logger = logger;
         }
 
         public void OnGet(string selectedLog = "")
         {
-            ChannelNames = LoggingUtility.GetCurrentLogNames(_env.ContentRootPath);
+            ChannelNames = _logger.GetCurrentLogNames();
 
             if (!String.IsNullOrWhiteSpace(selectedLog))
-                SelectedLogContent = LoggingUtility.GetCurrentLogContent(_env.ContentRootPath, selectedLog);
+                SelectedLogContent = _logger.GetCurrentLogContent(selectedLog);
         }
 
         public void OnPost()
         {
-            ChannelNames = LoggingUtility.GetCurrentLogNames(_env.ContentRootPath);
+            ChannelNames = _logger.GetCurrentLogNames();
 
             var message = String.Empty;
 
             if (!String.IsNullOrWhiteSpace(SelectedLog))
             {
-                if (!LoggingUtility.RolloverLog(_env.ContentRootPath, SelectedLog))
+                if (!_logger.RolloverLog(SelectedLog))
                     message = "Error rolling over log.";
                 else
                 {
-                    LoggingUtility.LogAdminCommandUsage(_env.ContentRootPath, "*WEB* - RolloverLog[" + SelectedLog + "]", _userManager.GetUserName(User));
+                    _logger.LogAdminCommandUsage("*WEB* - RolloverLog[" + SelectedLog + "]", _userManager.GetUserName(User));
                     message = "Rollover Successful.";
                 }
             }

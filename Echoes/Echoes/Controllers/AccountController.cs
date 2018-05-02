@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
+using Cottontail.FileSystem.Logging;
+using Echoes.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Echoes.Data;
+using System.Threading.Tasks;
 
 namespace Echoes.Controllers
 {
@@ -10,9 +10,9 @@ namespace Echoes.Controllers
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger _logger;
+        private readonly FileLogger _logger;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, ILogger<AccountController> logger)
+        public AccountController(SignInManager<ApplicationUser> signInManager, FileLogger logger)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -23,7 +23,7 @@ namespace Echoes.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            _logger.WriteToLog("User logged out.");
             return RedirectToPage("/Index");
         }
     }

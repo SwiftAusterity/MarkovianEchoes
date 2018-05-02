@@ -28,10 +28,10 @@ namespace Echoes.Data.System
         internal StoredDataCache DataCache { get; private set; }
 
         [JsonIgnore]
-        internal StoredData DataStore { get; private set; }
+        internal StoredDataFileAccessor DataStore { get; private set; }
 
         [JsonIgnore]
-        internal string BaseDirectory { get; private set; }
+        internal FileLogger Logger { get; private set; }
 
         public IEnumerable<IContext> FullContext { get; set; }
         public long ID { get; set; }
@@ -61,23 +61,23 @@ namespace Echoes.Data.System
             FullContext = new List<IContext>();
         }
 
-        public EntityPartial(StoredData storedData, StoredDataCache storedDataCache)
+        public EntityPartial(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger)
         {
             FullContext = new List<IContext>();
-            BaseDirectory = storedData.RootDirectory;
+            Logger = logger;
             DataStore = storedData;
             DataCache = storedDataCache;
 
-            MarkovEngine = new MarkovianEngine(DataStore, DataCache);
+            MarkovEngine = new MarkovianEngine(DataStore, DataCache, Logger);
         }
 
-        public virtual void SetAccessors(StoredData storedData, StoredDataCache storedDataCache)
+        public virtual void SetAccessors(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger)
         {
-            BaseDirectory = storedData.RootDirectory;
+            Logger = logger;
             DataStore = storedData;
             DataCache = storedDataCache;
 
-            MarkovEngine = new MarkovianEngine(DataStore, DataCache);
+            MarkovEngine = new MarkovianEngine(DataStore, DataCache, Logger);
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace Echoes.Data.System
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(BaseDirectory, ex);
+                Logger.LogError(ex);
                 return null;
             }
 
@@ -216,7 +216,7 @@ namespace Echoes.Data.System
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(BaseDirectory, ex);
+                Logger.LogError(ex);
                 return false;
             }
 
@@ -263,7 +263,7 @@ namespace Echoes.Data.System
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.LogError(BaseDirectory, ex);
+                    Logger.LogError(ex);
                 }
             }
 
@@ -285,7 +285,7 @@ namespace Echoes.Data.System
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.LogError(BaseDirectory, ex);
+                    Logger.LogError(ex);
                 }
             }
 
@@ -308,7 +308,7 @@ namespace Echoes.Data.System
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.LogError(BaseDirectory, ex);
+                    Logger.LogError(ex);
                 }
             }
 
@@ -325,7 +325,7 @@ namespace Echoes.Data.System
                 }
                 catch (Exception ex)
                 {
-                    LoggingUtility.LogError(BaseDirectory, ex);
+                    Logger.LogError(ex);
                 }
             }
 

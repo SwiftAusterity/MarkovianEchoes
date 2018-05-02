@@ -24,7 +24,7 @@ namespace Echoes.Data.Entity
             AkashicRecord = new List<IAkashicEntry>();
         }
 
-        public Persona(StoredData storedData, StoredDataCache storedDataCache) : base(storedData, storedDataCache)
+        public Persona(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger) : base(storedData, storedDataCache, logger)
         {
             AkashicRecord = new List<IAkashicEntry>();
         }
@@ -115,7 +115,7 @@ namespace Echoes.Data.Entity
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(BaseDirectory, ex);
+                Logger.LogError(ex);
                 return false;
             }
 

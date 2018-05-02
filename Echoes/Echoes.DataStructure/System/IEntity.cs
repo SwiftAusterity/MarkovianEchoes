@@ -1,5 +1,6 @@
 ﻿using Cottontail.Cache;
 using Cottontail.FileSystem;
+using Cottontail.FileSystem.Logging;
 using Cottontail.Structure;
 using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
@@ -58,6 +59,6 @@ namespace Echoes.DataStructure.System
         /// <param name="spawnTo">the location/container this should spawn into</param>
         void SpawnNewInWorld(IContains spawnTo);
 
-        void SetAccessors(StoredData storedData, StoredDataCache storedDataCache);
+        void SetAccessors(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger);
     }
 }

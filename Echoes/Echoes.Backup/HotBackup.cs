@@ -20,12 +20,14 @@ namespace Echoes.Backup
     public class HotBackup
     {
         private readonly StoredDataCache DataCache;
-        private readonly StoredData DataStore;
+        private readonly StoredDataFileAccessor DataStore;
+        private readonly FileLogger Logger;
 
-        public HotBackup(StoredData dataStore, StoredDataCache dataCache)
+        public HotBackup(StoredDataFileAccessor dataStore, StoredDataCache dataCache, FileLogger logger)
         {
             DataStore = dataStore;
             DataCache = dataCache;
+            Logger = logger;
         }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace Echoes.Backup
             PreLoadAll<IThing>(typeof(Thing));
             PreLoadAll<IPersona>(typeof(Persona));
 
-            LoggingUtility.Log(DataStore.RootDirectory, "World restored from data fallback.", LogChannels.Backup);
+            Logger.WriteToLog("World restored from data fallback.", LogChannels.Backup);
 
             return true;
         }
@@ -70,7 +72,7 @@ namespace Echoes.Backup
         {
             try
             {
-                LoggingUtility.Log(DataStore.RootDirectory, "World backup to current INITIATED.", LogChannels.Backup);
+                Logger.WriteToLog("World backup to current INITIATED.", LogChannels.Backup);
 
                 //DataStore.ArchiveFull();
 
@@ -81,13 +83,13 @@ namespace Echoes.Backup
                 //foreach (var entity in entities)
                 //    DataStore.WriteEntity(entity);
 
-                LoggingUtility.Log(DataStore.RootDirectory, "Live world written to current.", LogChannels.Backup);
+                Logger.WriteToLog("Live world written to current.", LogChannels.Backup);
 
                 return true;
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(DataStore.RootDirectory, ex);
+                Logger.LogError(ex);
             }
 
             return false;
@@ -105,7 +107,7 @@ namespace Echoes.Backup
             if (!Directory.Exists(currentBackupDirectory))
                 return false;
 
-            LoggingUtility.Log(DataStore.RootDirectory, "World restored from current live INITIATED.", LogChannels.Backup);
+            Logger.WriteToLog("World restored from current live INITIATED.", LogChannels.Backup);
 
             try
             {
@@ -127,7 +129,7 @@ namespace Echoes.Backup
                     foreach (var file in entityFilesDirectory.EnumerateFiles())
                     {
                         var newEntity = (IEntity)DataStore.ReadEntity(file, type, args);
-                        newEntity.SetAccessors(DataStore, DataCache);
+                        newEntity.SetAccessors(DataStore, DataCache, Logger);
                         entitiesToLoad.Add(newEntity);
                     }
                 }
@@ -140,12 +142,12 @@ namespace Echoes.Backup
                 if (!entitiesToLoad.Any(ent => ent.GetType() == typeof(Place)))
                     throw new Exception("No places found, failover.");
 
-                LoggingUtility.Log(DataStore.RootDirectory, "World restored from current live.", LogChannels.Backup);
+                Logger.WriteToLog("World restored from current live.", LogChannels.Backup);
                 return true;
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(DataStore.RootDirectory, ex);
+                Logger.LogError(ex);
             }
 
             return false;

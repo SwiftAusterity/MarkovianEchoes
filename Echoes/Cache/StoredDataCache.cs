@@ -1,5 +1,5 @@
-﻿using Cottontail.Structure;
-using Microsoft.AspNetCore.Hosting;
+﻿using Cottontail.FileSystem.Logging;
+using Cottontail.Structure;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Cottontail.Cache
     /// </summary>
     public class StoredDataCache : CacheAccessor, IDisposable
     {
-        public StoredDataCache(IHostingEnvironment hostingEnvironment, IMemoryCache memoryCache) : base(CacheType.Stored, memoryCache, hostingEnvironment.ContentRootPath)
+        public StoredDataCache(IMemoryCache memoryCache, FileLogger logger) : base(CacheType.Stored, memoryCache, logger)
         {
         }
 

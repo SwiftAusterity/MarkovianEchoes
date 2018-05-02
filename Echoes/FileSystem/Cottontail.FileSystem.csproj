@@ -136,9 +136,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileAccessor.cs" />
-    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LogChannels.cs" />
+    <Compile Include="Logging\FileLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StoredData.cs" />
+    <Compile Include="StoredDataFileAccessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Structure\Cottontail.Structure.csproj">

@@ -29,9 +29,9 @@ namespace Cottontail.Cache
         /// </summary>
         internal IMemoryCache _globalCache;
 
-        internal string _baseDirectory;
-
         internal Dictionary<Type, HashSet<ICacheKey>> _keysByType;
+
+        internal FileLogger Logger { get; }
 
         /// <summary>
         /// The cache type (affects the "ids")
@@ -42,7 +42,7 @@ namespace Cottontail.Cache
         /// Create a new CacheAccessor with its type
         /// </summary>
         /// <param name="type">The type of item we're caching</param>
-        internal CacheAccessor(CacheType type, IMemoryCache memoryCache, string baseDirectory)
+        internal CacheAccessor(CacheType type, IMemoryCache memoryCache, FileLogger logger)
         {
             _keysByType = new Dictionary<Type, HashSet<ICacheKey>>();
 
@@ -50,7 +50,7 @@ namespace Cottontail.Cache
 
             _type = type;
 
-            _baseDirectory = baseDirectory;
+            Logger = logger;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Cottontail.Cache
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(_baseDirectory, ex);
+                Logger.LogError(ex);
             }
 
             return Enumerable.Empty<T>();
@@ -95,7 +95,7 @@ namespace Cottontail.Cache
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(_baseDirectory, ex);
+                Logger.LogError(ex);
             }
 
             return Enumerable.Empty<T>();
@@ -126,7 +126,7 @@ namespace Cottontail.Cache
             }
             catch (Exception ex)
             {
-                LoggingUtility.LogError(_baseDirectory, ex);
+                Logger.LogError(ex);
             }
 
             return default(T);

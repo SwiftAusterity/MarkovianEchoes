@@ -13,9 +13,9 @@ namespace Echoes.Web.Pages.Admin
         public int PlaceCount { get; set;  }
 
         private StoredDataCache _dataCache;
-        private StoredData _data;
+        private StoredDataFileAccessor _data;
 
-        public DashboardModel(StoredData storedData, StoredDataCache storedDataCache)
+        public DashboardModel(StoredDataFileAccessor storedData, StoredDataCache storedDataCache)
         {
             _dataCache = storedDataCache;
             _data = storedData;

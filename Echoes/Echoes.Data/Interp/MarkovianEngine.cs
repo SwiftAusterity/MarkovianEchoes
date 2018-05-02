@@ -1,5 +1,6 @@
 ﻿using Cottontail.Cache;
 using Cottontail.FileSystem;
+using Cottontail.FileSystem.Logging;
 using Echoes.Data.Contextual;
 using Echoes.Data.Entity;
 using Echoes.DataStructure.Contextual;
@@ -17,14 +18,14 @@ namespace Echoes.Data.Interp
     public class MarkovianEngine
     {
         internal StoredDataCache DataCache { get; private set; }
-        internal StoredData DataStore { get; private set; }
-        internal string BaseDirectory { get; private set; }
+        internal StoredDataFileAccessor DataStore { get; private set; }
+        internal FileLogger Logger { get; private set; }
 
-        public MarkovianEngine(StoredData storedData, StoredDataCache storedDataCache)
+        public MarkovianEngine(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger)
         {
-            BaseDirectory = storedData.RootDirectory;
             DataStore = storedData;
             DataCache = storedDataCache;
+            Logger = logger;
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace Echoes.Data.Interp
                 && !currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
             {
                 //make new thing
-                var newThing = new Thing(DataStore, DataCache)
+                var newThing = new Thing(DataStore, DataCache, Logger)
                 {
                     Name = targetWord
                 };
