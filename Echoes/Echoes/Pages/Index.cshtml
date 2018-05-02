@@ -16,24 +16,24 @@
     <script type="text/javascript">
         $('#homeLink').addClass('selected');
 
-        Kinesis_Element($('<span class="animate-1 h1">Existence</span>'), $('.textParserClient'), { FadeOnSweep: true }, 
+        Kinesis_Element($('<div class="h1">Existence</div>'), $('.textParserClient'), { FadeOnSweep: false }, undefined, 
         {
             in: { effect: 'fadeIn' }
         });
 
-        Kinesis_Array(['Persists', 'Combines', 'Evolves'], $('.textParserClient'), { Orientation: 'random' }, 
+        Kinesis_Array(['Persists', 'Combines', 'Evolves'], $('.textParserClient'), { Orientation: { direction: 'random' } }, undefined, 
         {
             in: { effect: 'fadeIn' },
             out: { effect: 'fadeOutDown' }
         });
 
-        Kinesis_Text('That which exists creates echoes that all which will exist', $('.textParserClient'), { Orientation: 'vertical', FadeOnSweep: true }, 
+        Kinesis_Text('That which exists creates echoes that all which will exist', $('.textParserClient'), { FadeOnSweep: true }, undefined, 
         {
             in: { effect: 'fadeIn' },
             initialDelay: 8000
         });
 
-        Kinesis_Array(['experience', 'feel', 'are shaped by'], $('.textParserClient'), { Orientation: 'normal', FadeOnSweep: false }, 
+        Kinesis_Array(['experience', 'feel', 'are shaped by'], $('.textParserClient'), { Orientation: { direction: 45 }, FadeOnSweep: false }, undefined, 
         {
             in: { effect: 'fadeIn' },
             out: { effect: 'fadeOutDown' },
@@ -43,8 +43,8 @@
         var quote = '"The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion." - Albert Camus';
         var quote2 = '"As far as we can discern, the sole purpose of human existence is to kindle a light in the darkness of mere being." - Carl Jung';
 
-        Kinesis_Text(quote, $('.textParserClient'), { Orientation: 'vertical', FadeOnSweep: true }, { in: { effect: 'fadeIn' }, initialDelay: 5000 });
-        Kinesis_Text(quote2, $('.textParserClient'), { Orientation: 'normal', FadeOnSweep: true }, { in: { effect: 'fadeIn' }, initialDelay: 3000 });
+        Kinesis_Text(quote, $('.textParserClient'), { Orientation: { direction: 180 }, FadeOnSweep: true }, undefined, { in: { effect: 'fadeIn' }, initialDelay: 5000 });
+        Kinesis_Text(quote2, $('.textParserClient'), { Orientation: { direction: 210 }, FadeOnSweep: true }, undefined, { in: { effect: 'fadeIn' }, initialDelay: 3000 });
 
         $('.animate-final').delay(35000).show(1000);
     </script>

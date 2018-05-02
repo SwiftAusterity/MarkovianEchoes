@@ -10,11 +10,16 @@ function Kinesis_Text(text, parentContainer, modeOptions, styles, effects) {
 
     var child = $('<div/>').text(text);
 
-    var width = text.length * 7 + 10;
+    if (styles !== undefined) {
+        child.css(styles);
+    }
+
+    var height = 30;
+    var width = GetTextFontWidth(text, parentContainer) + 20;
 
     child.css({
         'width': width + 'px',
-        'height': '30px',
+        'height': height + 'px',
         'padding': '5px'
     });
 
@@ -32,23 +37,34 @@ function Kinesis_Array(list, parentContainer, modeOptions, styles, effects) {
 
     var child = $('<ul class="animated-list"/>');
 
-    child.css({
-        'width': '100px',
-        'height': '30px',
-        'padding': '5px'
-    });
+    if (styles !== undefined) {
+        child.css(styles);
+    }
 
+    var width = 0;
     list.forEach(function (element) {
+        var newWidth = GetTextFontWidth(element, child) + 20;
+
+        if (newWidth > width) {
+            width = newWidth;
+        }
+
         var newItem = $('<li/>').text(element);
 
         child.append(newItem);
     });
 
+    child.css({
+        'width': width + 'px',
+        'height': '30px',
+        'padding': '5px'
+    });
+
     Kinesis_Finale(child, parentContainer, modeOptions, styles, effects);
 }
 
-function Kinesis_Element(element, parentContainer, modeOptions, styles, effects) {
-    if (element === undefined) {
+function Kinesis_Element(child, parentContainer, modeOptions, styles, effects) {
+    if (child === undefined) {
         return;
     }
 
@@ -56,11 +72,17 @@ function Kinesis_Element(element, parentContainer, modeOptions, styles, effects)
         parentContainer = $(document);
     }
 
-    Kinesis_Finale(element, parentContainer, modeOptions, styles, effects);
+    if (styles !== undefined) {
+        child.css(styles);
+    }
+
+    Kinesis_Finale(child, parentContainer, modeOptions, styles, effects);
 }
 
 //Kinetic Text Helpers
 function Kinesis_Finale(child, parentContainer, modeOptions, styles, effects) {
+    child.appendTo(parentContainer);
+
     var width = child.width();
     var height = child.height();
 
@@ -78,34 +100,42 @@ function Kinesis_Finale(child, parentContainer, modeOptions, styles, effects) {
             '-ms-writing-mode': 'horizontal-tb'
         });
 
-        parentContainer = $('body');
+        child.width(constrainBounds(child.width(), posx, parentContainer.width()));
+        child.height(height * Math.ceil(child.width() / width));
     } else {
-        posx = (Math.random() * parentContainer.width()).toFixed();
-        posy = (Math.random() * parentContainer.height()).toFixed();
+        OrientText(modeOptions.Orientation, child);
 
-        if (SelectOrientation(modeOptions.Orientation, child)) {
-            height = constrainBounds(child.height(), posy, parentContainer.height());
+        var appropriateWidthBounding = Math.max(0, parentContainer.width() - width);
+        var appropriateHeightBounding = Math.max(0, parentContainer.height() - height);
+
+        posx = (Math.random() * appropriateWidthBounding).toFixed();
+        posy = (Math.random() * appropriateHeightBounding).toFixed();
+
+        width = constrainBounds(child.width(), posx, appropriateWidthBounding);
+        height = constrainBounds(child.height(), posy, appropriateHeightBounding);
+
+        /*
+        if (OrientText(modeOptions.Orientation, child)) {
+            var appropriateWidthBounding = Math.max(0, parentContainer.width() - width);
+            var appropriateHeightBounding = Math.max(0, parentContainer.height() - height);
+
+            posx = (Math.random() * appropriateWidthBounding).toFixed();
+            posy = (Math.random() * appropriateHeightBounding).toFixed();
+
+            height = constrainBounds(child.height(), posy, appropriateHeightBounding);
             width = width * Math.ceil(child.height() / height);
         } else {
-            width = constrainBounds(child.width(), posx, parentContainer.width());
+            width = constrainBounds(child.width(), posx, appropriateWidthBounding);
             height = height * Math.ceil(child.width() / width);
         }
+        */
     }
-
-    child.width(width);
-    child.height(height);
 
     child.css({
         'position': 'absolute',
         'left': posx + 'px',
         'top': posy + 'px'
     });
-
-    if (styles !== undefined) {
-        child.css(styles);
-    }
-
-    child.appendTo(parentContainer);
 
     if (effects === undefined) {
         effects = { in: { effect: 'fadeIn' } };
@@ -129,63 +159,90 @@ function Kinesis_Finale(child, parentContainer, modeOptions, styles, effects) {
     child.textillate(effects);
 }
 
-function SelectOrientation(orientation, child) {
+function GetTextFontWidth(text, containerElement) {
+    var fontSize = GetStyleProperty(containerElement[0], 'font-size');
+    var fontVariant = GetStyleProperty(containerElement[0], 'font-variant');
+    var fontName = GetStyleProperty(containerElement[0], 'font-family');
+    var fontStyle = GetStyleProperty(containerElement[0], 'font-style');
+    var fontWeight = GetStyleProperty(containerElement[0], 'font-weight');
+
+    var font = fontStyle + ' ' + fontVariant + ' ' + fontWeight + ' ' + fontSize + ' ' + fontName;
+
+    var canvas = GetTextFontWidth.canvas || (GetTextFontWidth.canvas = document.createElement("canvas"));
+
+    var context = canvas.getContext("2d");
+    context.font = font;
+
+    var metrics = context.measureText(text);
+
+    return metrics.width;
+}
+
+function GetStyleProperty(element, property) {
+    return window.getComputedStyle(element, null).getPropertyValue(property);
+}
+
+function OrientText(textOrientation, child) {
+    var direction = '0';
+    var writingMode = 'normal';
+
+    if (textOrientation !== undefined) {
+        if (textOrientation.direction !== undefined) {
+            if (textOrientation.direction == 'random') {
+                direction = getRandomInt(0, 360);
+            } else if (textOrientation.direction == 'upRandom') {
+                direction = getRandomInt(181, 360);
+            } else if (textOrientation.direction == 'downRandom') {
+                direction = getRandomInt(0, 180);
+            } else {
+                direction = textOrientation.direction;
+            }
+        }
+
+        if (textOrientation.writingMode !== undefined) {
+            writingMode = textOrientation.writingMode;
+        }
+    }
+
     var width = child.width();
     var height = child.height();
-    var flip = false;
 
-    if (orientation === 'normal') {
-        child.css({
-            'writing-mode': 'horizontal-tb',
-            '-webkit-writing-mode': 'horizontal-tb',
-            '-ms-writing-mode': 'horizontal-tb'
-        });
-    } else if (orientation === 'vertical') {
-        child.width(height);
-        child.height(width + 10);
+    child.css({
+        transform: 'rotate(' + direction + 'deg)'
+    });
 
+    var angleDeformation = Math.abs(180 - direction) / 180;
+
+    if (angleDeformation != 0 && angleDeformation != 1) {
+        width = width * angleDeformation;
+        height = height / angleDeformation + 10;
+    }
+
+    if (writingMode = 'random' && Math.random() <= 0.2) {
+        writingMode = 'vertical';
+    } else {
+        writingMode = 'normal';
+    }
+
+    if (writingMode === 'vertical') {
         child.css({
             'writing-mode': 'vertical-lr',
             '-webkit-writing-mode': 'vertical-lr',
             '-ms-writing-mode': 'vertical-lr'
         });
 
-        flip = true;
+        height = child.width();
+        width = child.height() + 10;
     } else {
-        var writingChance = Math.random();
-
-        if (writingChance >= 0.5) {
-            child.css({
-                'writing-mode': 'horizontal-tb',
-                '-webkit-writing-mode': 'horizontal-tb',
-                '-ms-writing-mode': 'horizontal-tb'
-            });
-        } else if (writingChance >= 0.2) {
-            child.width(height);
-            child.height(width + 10);
-
-            child.css({
-                'writing-mode': 'vertical-lr',
-                '-webkit-writing-mode': 'vertical-lr',
-                '-ms-writing-mode': 'vertical-lr'
-            });
-
-            flip = true;
-        } else {
-            child.width(height);
-            child.height(width + 10);
-
-            child.css({
-                'writing-mode': 'vertical-rl',
-                '-webkit-writing-mode': 'vertical-rl',
-                '-ms-writing-mode': 'vertical-rl'
-            });
-
-            flip = true;
-        }
+        child.css({
+            'writing-mode': 'horizontal-tb',
+            '-webkit-writing-mode': 'horizontal-tb',
+            '-ms-writing-mode': 'horizontal-tb'
+        });
     }
 
-    return flip;
+    child.height(height);
+    child.width(width);
 }
 
 function constrainBounds(childWidth, startingPosition, parentWidth) {
@@ -196,6 +253,14 @@ function constrainBounds(childWidth, startingPosition, parentWidth) {
     }
 
     return childWidth;
+}
+
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 //Cookies stuff
@@ -237,10 +302,10 @@ function setMode(acting) {
 //Tutorial TODO put this in its own js along with kinesis
 
 function Tutorial(parent, text) {
-    if (Cookies.get('tutorialMode') !== 'on') {
+    if (Cookies.get('tutorialMode') === 'off') {
         return;
     }
-    
+
     var parentBounds = parent[0].getBoundingClientRect();
 
     var modeOptions = {
@@ -253,5 +318,5 @@ function Tutorial(parent, text) {
 
     text = '^ ' + text;
 
-    Kinesis_Text(text, parent, modeOptions, { 'color': 'green', 'z-index': 999, 'background-color': 'lightgrey', 'border': '1px solid white' });
+    Kinesis_Text(text, $('body'), modeOptions, { 'color': 'green', 'z-index': 999, 'background-color': 'lightgrey', 'border': '1px solid white' });
 }
