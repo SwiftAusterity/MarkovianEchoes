@@ -8,6 +8,10 @@
     <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
+                <label for="tutorialCheck">Guidance?</label>
+                <input type="checkbox" title="Tutorial?" id="tutorialCheck" name="tutorialCheck" checked="checked" />
+            </li>
+            <li>
                 <a href="#" title="Who are you?" id="personaLabel" name="personaLabel">I Am</a>
             </li>
             <li>
@@ -33,6 +37,10 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
+        <li>
+            <label for="tutorialCheck" id="tutorialCheckLabel">Guidance?</label>
+            <input type="checkbox" title="Tutorial?" id="tutorialCheck" name="tutorialCheck" checked="checked" />
+        </li>
         <li>
             <a href="#" title="Who are you?" id="personaLabel" name="personaLabel">I Am</a>
         </li>

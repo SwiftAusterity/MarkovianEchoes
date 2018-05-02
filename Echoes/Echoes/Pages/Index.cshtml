@@ -5,18 +5,6 @@
 }
 
 <div class="textParserClient">
-    <span class="animate-1 h1">Existence</span>
-
-    <ul class="animated-list animate-2">
-        <li>Persists</li>
-        <li>Combines</li>
-        <li>Evolves</li>
-    </ul>
-
-    <span class="animate-3">That which exists creates echoes that all which will exist</span>
-
-    <ul class="animated-list animate-4"><li>experience</li><li>feel</li><li>are shaped by</li></ul>
-
     <div class="animate-final" style="display:none;">
         <h3>
             <a href="/existence">Exist</a>
@@ -28,21 +16,25 @@
     <script type="text/javascript">
         $('#homeLink').addClass('selected');
 
-        PositionOutput(undefined, $('.textParserClient'), $('.animate-1'), {
+        Kinesis_Element($('<span class="animate-1 h1">Existence</span>'), $('.textParserClient'), { FadeOnSweep: true }, 
+        {
             in: { effect: 'fadeIn' }
         });
 
-        PositionOutput(undefined, $('.textParserClient'), $('.animate-2'), {
+        Kinesis_Array(['Persists', 'Combines', 'Evolves'], $('.textParserClient'), { Orientation: 'random' }, 
+        {
             in: { effect: 'fadeIn' },
             out: { effect: 'fadeOutDown' }
         });
 
-        PositionOutput(undefined, $('.textParserClient'), $('.animate-3'), {
+        Kinesis_Text('That which exists creates echoes that all which will exist', $('.textParserClient'), { Orientation: 'vertical', FadeOnSweep: true }, 
+        {
             in: { effect: 'fadeIn' },
             initialDelay: 8000
         });
 
-        PositionOutput(undefined, $('.textParserClient'), $('.animate-4'), {
+        Kinesis_Array(['experience', 'feel', 'are shaped by'], $('.textParserClient'), { Orientation: 'normal', FadeOnSweep: false }, 
+        {
             in: { effect: 'fadeIn' },
             out: { effect: 'fadeOutDown' },
             initialDelay: 9500
@@ -51,8 +43,8 @@
         var quote = '"The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion." - Albert Camus';
         var quote2 = '"As far as we can discern, the sole purpose of human existence is to kindle a light in the darkness of mere being." - Carl Jung';
 
-        PositionOutput(quote, $('.textParserClient'), undefined, { in: { effect: 'fadeIn' }, initialDelay: 5000 });
-        PositionOutput(quote2, $('.textParserClient'), undefined, { in: { effect: 'fadeIn' }, initialDelay: 3000 });
+        Kinesis_Text(quote, $('.textParserClient'), { Orientation: 'vertical', FadeOnSweep: true }, { in: { effect: 'fadeIn' }, initialDelay: 5000 });
+        Kinesis_Text(quote2, $('.textParserClient'), { Orientation: 'normal', FadeOnSweep: true }, { in: { effect: 'fadeIn' }, initialDelay: 3000 });
 
         $('.animate-final').delay(35000).show(1000);
     </script>

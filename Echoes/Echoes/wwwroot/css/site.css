@@ -41,7 +41,7 @@ body {
     margin-top: 50px;
     position: relative;
     overflow-y: hidden;
-    overflow-x: visible;
+    overflow-x: hidden;
 }
 
 .text-output {
@@ -111,6 +111,16 @@ ul.nav li a img {
 ul.nav li input {
     margin-top: 20px;
     color: black;
+}
+
+    ul.nav li input[type=checkbox] {
+        margin-top: 25px;
+        margin-right: 50px;
+    }
+
+ul.nav li label {
+    display: inline-block;
+    margin-right: 5px;
 }
 
 #personaLabel {

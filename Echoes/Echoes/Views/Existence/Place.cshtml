@@ -56,13 +56,19 @@
             setMode(true);
         }
 
-        PositionOutput('@Model.Errors', $('.parserOutput'), undefined, { in: { effect: 'fadeIn' } }, { 'color': 'red' });
+        Tutorial($('#switchAct'), 'Choose to speak or act.');
+        Tutorial($('#clientReload'), "Blink to see what you've missed.");
+        Tutorial($('#Input'), "Do or say something.");
+        Tutorial($('.parserClientRight'), "Who has been here.");
+        Tutorial($('.parserClientLeft'), "Here is where.");
+
+        Kinesis_Text('@Model.Errors', $('.parserOutput'), { Orientation: 'normal', FadeOnSweep: true }, { 'color': 'red' }, { in: { effect: 'fadeIn' } });
 
         var timer = 0;
        @foreach (var record in Model.NewToYou)
        {
           <text>
-            PositionOutput('@record.Observance', $('.parserOutput'), undefined, { initialDelay: timer });
+        Kinesis_Text('@record.Observance', $('.parserOutput'), { Orientation: 'normal', FadeOnSweep: true }, undefined, { initialDelay: timer });
             timer += 1250;
           </text>
        }
