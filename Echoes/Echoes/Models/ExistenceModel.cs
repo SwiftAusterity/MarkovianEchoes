@@ -14,9 +14,12 @@ namespace Echoes.Web.Models
         public IPlace CurrentPlace { get; set; }
         public IEnumerable<IAkashicEntry> NewToYou { get; set; }
 
+        public IEnumerable<IPlace> KnownPlaces { get; set; }
+
         public ExistenceModel()
         {
             NewToYou = new List<IAkashicEntry>();
+            KnownPlaces = new List<IPlace>();
         }
     }
 }

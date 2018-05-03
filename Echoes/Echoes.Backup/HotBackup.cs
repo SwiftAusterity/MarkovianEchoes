@@ -124,7 +124,7 @@ namespace Echoes.Backup
 
                     var entityFilesDirectory = new DirectoryInfo(currentBackupDirectory + type.Name);
 
-                    var args = new object[] { DataStore, DataCache };
+                    var args = new object[] { DataStore, DataCache, Logger };
 
                     foreach (var file in entityFilesDirectory.EnumerateFiles())
                     {
@@ -135,8 +135,18 @@ namespace Echoes.Backup
                 }
 
                 //Shove them all into the live system first
-                foreach (var entity in entitiesToLoad.OrderBy(ent => ent.Created))
-                    entity.SpawnNewInWorld();
+                foreach (var entity in entitiesToLoad.OrderBy(ent => ent.GetType() == typeof(Place) ? 1 : 99).OrderBy(ent => ent.Created))
+                {
+                    if (entity.GetType() != typeof(Place))
+                    {
+                        if (entity.Position != null)
+                            entity.SpawnNewInWorld(entity.Position);
+                        else
+                            entity.SpawnNewInWorld();
+                    }
+                    else
+                        entity.SpawnNewInWorld();
+                }
 
                 //Check we found actual data
                 if (!entitiesToLoad.Any(ent => ent.GetType() == typeof(Place)))

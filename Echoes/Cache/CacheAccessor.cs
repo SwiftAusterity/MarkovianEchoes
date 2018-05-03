@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
+using Utility;
 
 namespace Cottontail.Cache
 {
@@ -210,10 +211,7 @@ namespace Cottontail.Cache
 
         internal virtual HashSet<ICacheKey> GetKeys(Type type)
         {
-            if (!_keysByType.ContainsKey(type))
-                return new HashSet<ICacheKey>();
-
-            return _keysByType[type];
+           return new HashSet<ICacheKey>(_keysByType.Where(key => key.Key == type || TypeUtility.GetAllImplimentingedTypes(key.Key).Contains(type)).SelectMany(key => key.Value));
         }
     }
 }

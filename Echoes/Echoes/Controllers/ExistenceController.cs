@@ -28,13 +28,18 @@ namespace Echoes.Web.Controllers
         [HttpGet("", Name = "Existence_Index")]
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new ExistenceModel();
+            viewModel.KnownPlaces = _dataCache.GetAll<IPlace>();
+
+            return View(viewModel);
         }
 
         [HttpGet("{place}", Name = "Existence_Place")]
         public IActionResult Place(string place)
         {
             var viewModel = new ExistenceModel();
+            viewModel.KnownPlaces = _dataCache.GetAll<IPlace>();
+
             var self = GetPersonaValues();
             var persona = GetPersona(self.Item1);
             viewModel.CurrentPlace = GetPlace(place);
@@ -57,6 +62,8 @@ namespace Echoes.Web.Controllers
         public IActionResult Input(string place, string input)
         {
             var viewModel = new ExistenceModel();
+            viewModel.KnownPlaces = _dataCache.GetAll<IPlace>();
+
             var self = GetPersonaValues();
             var persona = GetPersona(self.Item1);
             viewModel.CurrentPlace = GetPlace(place);

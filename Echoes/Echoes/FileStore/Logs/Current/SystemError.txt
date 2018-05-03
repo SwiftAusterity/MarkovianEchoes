@@ -46,3 +46,33 @@
    at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
    at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
    at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
+[2018/05/02 21:29:51]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
+[2018/05/02 21:49:50]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
+[2018/05/02 21:55:06]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
+[2018/05/02 21:57:13]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
+[2018/05/02 22:01:48]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
+   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
+   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
+   at System.Activator.CreateInstance(Type type, Object[] args)
+   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131

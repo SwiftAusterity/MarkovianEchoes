@@ -94,12 +94,6 @@ function Kinesis_Finale(child, parentContainer, modeOptions, styles, effects) {
         posx = modeOptions.xPos;
         posy = modeOptions.yPos;
 
-        child.css({
-            'writing-mode': 'horizontal-tb',
-            '-webkit-writing-mode': 'horizontal-tb',
-            '-ms-writing-mode': 'horizontal-tb'
-        });
-
         child.width(constrainBounds(child.width(), posx, parentContainer.width()));
         child.height(height * Math.ceil(child.width() / width));
     } else {
@@ -118,7 +112,7 @@ function Kinesis_Finale(child, parentContainer, modeOptions, styles, effects) {
 
         child.width(constrainBounds(child.width(), posx, parentContainer.width()));
         child.height(constrainBounds(child.height(), posy, parentContainer.height()));
-   }
+    }
 
     child.css({
         'position': 'absolute',
@@ -183,7 +177,7 @@ function OrientText(textOrientation, child) {
                 direction = getRandomInt(181, 360);
             } else if (textOrientation.direction == 'downRandom') {
                 direction = getRandomInt(0, 180);
-            } else {
+            } else if (isNumeric(textOrientation.direction)) {
                 direction = textOrientation.direction;
             }
         }
@@ -196,21 +190,25 @@ function OrientText(textOrientation, child) {
     var width = child.width();
     var height = child.height();
 
-    child.css({
-        transform: 'rotate(' + direction + 'deg)'
-    });
+    if (direction != 0) {
+        child.css({
+            transform: 'rotate(' + direction + 'deg)'
+        });
 
-    var angleDeformation = Math.abs(180 - direction) / 180;
+        var angleDeformation = Math.abs(180 - direction) / 180;
 
-    if (angleDeformation != 0 && angleDeformation != 1) {
-        width = width * angleDeformation;
-        height = (height / angleDeformation) + 10;
+        if (angleDeformation != 0 && angleDeformation != 1) {
+            width = width * angleDeformation;
+            height = (height / angleDeformation) + 10;
+        }
     }
 
-    if (writingMode = 'random' && Math.random() <= 0.2) {
-        writingMode = 'vertical';
-    } else {
-        writingMode = 'normal';
+    if (writingMode === 'random') {
+        if (Math.random() <= 0.2) {
+            writingMode = 'vertical';
+        } else {
+            writingMode = 'normal';
+        }
     }
 
     if (writingMode === 'vertical') {
@@ -222,12 +220,6 @@ function OrientText(textOrientation, child) {
 
         height = child.width();
         width = child.height() + 10;
-    } else {
-        child.css({
-            'writing-mode': 'horizontal-tb',
-            '-webkit-writing-mode': 'horizontal-tb',
-            '-ms-writing-mode': 'horizontal-tb'
-        });
     }
 
     child.height(height);
@@ -244,7 +236,11 @@ function constrainBounds(childWidth, startingPosition, parentWidth) {
     return childWidth;
 }
 
-/**
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+/*
  * Returns a random integer between min (inclusive) and max (inclusive)
  * Using Math.round() will give you a non-uniform distribution!
  */

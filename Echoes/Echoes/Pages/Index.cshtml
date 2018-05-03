@@ -16,36 +16,37 @@
     <script type="text/javascript">
         $('#homeLink').addClass('selected');
 
-        Kinesis_Element($('<div class="h1">Existence</div>'), $('.textParserClient'), { FadeOnSweep: false }, undefined, 
-        {
-            in: { effect: 'fadeIn' }
-        });
+        Kinesis_Element($('<div class="h1">Existence</div>'), $('.textParserClient'), { FadeOnSweep: true }, undefined,
+            {
+                in: { effect: 'fadeIn' }
+            });
 
-        Kinesis_Array(['Persists', 'Combines', 'Evolves'], $('.textParserClient'), { Orientation: { direction: 'random' } }, undefined, 
-        {
-            in: { effect: 'fadeIn' },
-            out: { effect: 'fadeOutDown' }
-        });
+        Kinesis_Text('Journey into a world without purpose or shape. Shape that world with purpose by your journey.', $('.textParserClient'), { FadeOnSweep: true }, undefined,
+            {
+                in: { effect: 'fadeIn' }
+            });
 
-        Kinesis_Text('That which exists creates echoes that all which will exist', $('.textParserClient'), { FadeOnSweep: true }, undefined, 
-        {
-            in: { effect: 'fadeIn' },
-            initialDelay: 8000
-        });
+        Kinesis_Array(['Experience a world of shared meaning.', 'Share a world of experienced meaning.', 'Experience meaning of a shared world.'],
+            $('.textParserClient'),
+            { FadeOnSweep: true },
+            undefined,
+            {
+                in: { effect: 'fadeIn' },
+                initialDelay: 8000
+            });
 
-        Kinesis_Array(['experience', 'feel', 'are shaped by'], $('.textParserClient'), { Orientation: { direction: 45 }, FadeOnSweep: false }, undefined, 
-        {
-            in: { effect: 'fadeIn' },
-            out: { effect: 'fadeOutDown' },
-            initialDelay: 9500
-        });
+        Kinesis_Array(['Shape your reality', 'Realize your shape', 'Your shaped reality'], $('.textParserClient'), { FadeOnSweep: true }, undefined,
+            {
+                in: { effect: 'fadeIn' },
+                initialDelay: 8000
+            });
 
         var quote = '"The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion." - Albert Camus';
         var quote2 = '"As far as we can discern, the sole purpose of human existence is to kindle a light in the darkness of mere being." - Carl Jung';
 
-        Kinesis_Text(quote, $('.textParserClient'), { Orientation: { direction: 180 }, FadeOnSweep: true }, undefined, { in: { effect: 'fadeIn' }, initialDelay: 5000 });
-        Kinesis_Text(quote2, $('.textParserClient'), { Orientation: { direction: 210 }, FadeOnSweep: true }, undefined, { in: { effect: 'fadeIn' }, initialDelay: 3000 });
+        Kinesis_Text(quote, $('.textParserClient'), { Orientation: { direction: 'random' }, FadeOnSweep: true }, undefined, { in: { effect: 'fadeIn' }, initialDelay: 5000 });
+        Kinesis_Text(quote2, $('.textParserClient'), { Orientation: { direction: 'random' }, FadeOnSweep: true }, undefined, { in: { effect: 'fadeIn' }, initialDelay: 3000 });
 
-        $('.animate-final').delay(35000).show(1000);
+        $('.animate-final').delay(10000).show(1000);
     </script>
 }
