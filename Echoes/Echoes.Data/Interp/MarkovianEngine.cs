@@ -39,7 +39,7 @@ namespace Echoes.Data.Interp
         public IEnumerable<IContext> Experience(IEntity observer, IEntity actor, string observance, bool acting)
         {
             var returnList = Enumerable.Empty<IContext>();
-            var words = RemoveGrammaticalNiceities(IsolateIndividuals(observance, observer, actor));
+            var words = IsolateIndividuals(observance, observer, actor);
 
             //can't parse nothing man
             if (words.Count == 0)
@@ -242,31 +242,6 @@ namespace Echoes.Data.Interp
             return returnList;
         }
 
-        /// <summary>
-        /// Removes stuff we don't care about like to, into, the, etc
-        /// </summary>
-        /// <param name="currentParams">The current set of params</param>
-        /// <returns>the scrubbed params</returns>
-        private IList<string> RemoveGrammaticalNiceities(IList<string> currentParams)
-        {
-            var parmList = currentParams.ToList();
-
-            parmList.RemoveAll(str => str.Equals("the", StringComparison.InvariantCulture)
-                                        || str.Equals("of", StringComparison.InvariantCulture)
-                                        || str.Equals("to", StringComparison.InvariantCulture)
-                                        || str.Equals("into", StringComparison.InvariantCulture)
-                                        || str.Equals("in", StringComparison.InvariantCulture)
-                                        || str.Equals("from", StringComparison.InvariantCulture)
-                                        || str.Equals("inside", StringComparison.InvariantCulture)
-                                        || str.Equals("at", StringComparison.InvariantCulture)
-                                        || str.Equals("a", StringComparison.InvariantCulture)
-                                        || str.Equals("an", StringComparison.InvariantCulture)
-                                        || str.Equals("that", StringComparison.InvariantCulture)
-                                        || str.Equals("this", StringComparison.InvariantCulture)
-                                  );
-
-            return parmList;
-        }
 
         private IList<string> IsolateIndividuals(string baseString, IEntity observer, IEntity actor)
         {
@@ -276,7 +251,7 @@ namespace Echoes.Data.Interp
             foundStrings.AddRange(ParseEntitiesOut(observer, actor, ref iterator, ref baseString));
 
             var originalStrings = new List<string>();
-            originalStrings.AddRange(baseString.Split(new char[] { ' ', ',', ';', '?', '.', ':' }, StringSplitOptions.RemoveEmptyEntries));
+            originalStrings.AddRange(RemoveGrammaticalNiceities(baseString.Split(new char[] { ' ', ',', ';', '?', '.', ':' }, StringSplitOptions.RemoveEmptyEntries)));
 
             //Either add the modified one or add the normal one
             var i = 0;
@@ -358,6 +333,32 @@ namespace Echoes.Data.Interp
             }
 
             return baseString;
+        }
+
+        /// <summary>
+        /// Removes stuff we don't care about like to, into, the, etc
+        /// </summary>
+        /// <param name="currentParams">The current set of params</param>
+        /// <returns>the scrubbed params</returns>
+        private IList<string> RemoveGrammaticalNiceities(IList<string> currentParams)
+        {
+            var parmList = currentParams.ToList();
+
+            parmList.RemoveAll(str => str.Equals("the", StringComparison.InvariantCulture)
+                                        || str.Equals("of", StringComparison.InvariantCulture)
+                                        || str.Equals("to", StringComparison.InvariantCulture)
+                                        || str.Equals("into", StringComparison.InvariantCulture)
+                                        || str.Equals("in", StringComparison.InvariantCulture)
+                                        || str.Equals("from", StringComparison.InvariantCulture)
+                                        || str.Equals("inside", StringComparison.InvariantCulture)
+                                        || str.Equals("at", StringComparison.InvariantCulture)
+                                        || str.Equals("a", StringComparison.InvariantCulture)
+                                        || str.Equals("an", StringComparison.InvariantCulture)
+                                        || str.Equals("that", StringComparison.InvariantCulture)
+                                        || str.Equals("this", StringComparison.InvariantCulture)
+                                  );
+
+            return parmList;
         }
     }
 }
