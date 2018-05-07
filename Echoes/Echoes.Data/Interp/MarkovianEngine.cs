@@ -39,7 +39,7 @@ namespace Echoes.Data.Interp
         public IEnumerable<IContext> Experience(IEntity observer, IEntity actor, string observance, bool acting)
         {
             var returnList = Enumerable.Empty<IContext>();
-            var words = RemoveGrammaticalNiceities(ParseQuotesOut(observance));
+            var words = RemoveGrammaticalNiceities(IsolateIndividuals(observance, observer, actor));
 
             //can't parse nothing man
             if (words.Count == 0)
@@ -69,7 +69,6 @@ namespace Echoes.Data.Interp
          * TODO: First pass: parse out new things and verbs
          * Second pass: check existing room for things and known decorators
          * Third pass: More robust logic to avoid extra merging later
-         *
          */
         private IEnumerable<IContext> ParseAction(IEntity observer, IEntity actor, IList<string> words)
         {
@@ -202,7 +201,6 @@ namespace Echoes.Data.Interp
          * TODO: First pass: parse out existing things, the place we're in and decorators
          * Second pass: search for places in the world to make links
          * Third pass: More robust logic to avoid extra merging later
-         *
          */
         private IEnumerable<IContext> ParseSpeech(IEntity observer, IEntity actor, IList<string> words)
         {
@@ -270,19 +268,72 @@ namespace Echoes.Data.Interp
             return parmList;
         }
 
-        /// <summary>
-        /// Scrubs "s out and figures out what the parameters really are
-        /// </summary>
-        /// <returns>the right parameters</returns>
-        private IList<string> ParseQuotesOut(string baseString)
+        private IList<string> IsolateIndividuals(string baseString, IEntity observer, IEntity actor)
         {
             baseString = baseString.ToLower();
-            var originalStrings = new List<string>();
+            int iterator = 0;
+            var foundStrings = ParseQuotesOut(ref baseString, ref iterator);
+            foundStrings.AddRange(ParseEntitiesOut(observer, actor, ref iterator, ref baseString));
 
-            int foundStringIterator = 0;
+            var originalStrings = new List<string>();
+            originalStrings.AddRange(baseString.Split(new char[] { ' ', ',', ';', '?', '.', ':' }, StringSplitOptions.RemoveEmptyEntries));
+
+            //Either add the modified one or add the normal one
+            var i = 0;
+            var returnStrings = new List<string>();
+            foreach (var returnString in originalStrings)
+            {
+                if (returnString.Equals("%%" + i.ToString() + "%%"))
+                {
+                    returnStrings.Add(foundStrings[i]);
+                    i++;
+                }
+                else
+                    returnStrings.Add(returnString);
+            }
+
+            return returnStrings;
+        }
+
+        private IList<string> ParseEntitiesOut(IEntity observer, IEntity actor, ref int iterator, ref string baseString)
+        {
+            var foundStrings = new List<string>();
+            var allContext = new List<string>();
+
+            allContext.AddRange(observer.FullContext.Select(ctx => ctx.Name));
+            allContext.AddRange(actor.FullContext.Select(ctx => ctx.Name));
+
+            //Brand all the words with their current meaning
+            foreach (var word in allContext.Distinct())
+            {
+                if(baseString.Contains(word))
+                {
+                    foundStrings.Add(word);
+                    baseString = baseString.Replace(word, "%%" + iterator.ToString() + "%%");
+                    iterator++;
+                }
+            }
+
+            return foundStrings;
+        }
+
+        /// <summary>
+        /// Scrubs "s and 's out and figures out what the parameters really are
+        /// </summary>
+        /// <returns>the right parameters</returns>
+        private List<string> ParseQuotesOut(ref string baseString, ref int iterator)
+        {
             var foundStrings = new List<string>();
 
-            //Do we have magic string collectors? quotation marks demarcate a single parameter being passed in
+            baseString = IsolateStrings(baseString, "\"", foundStrings, ref iterator);
+            baseString = IsolateStrings(baseString, "'", foundStrings, ref iterator);
+
+            return foundStrings;
+        }
+
+        //Do we have magic string collectors? quotation marks demarcate a single parameter being passed in
+        private string IsolateStrings(string baseString, string closure, IList<string> foundStrings, ref int foundStringIterator)
+        {
             while (baseString.Contains("\""))
             {
                 var firstQuoteIndex = baseString.IndexOf('"');
@@ -306,24 +357,7 @@ namespace Echoes.Data.Interp
                 foundStringIterator++;
             }
 
-            originalStrings.AddRange(baseString.Split(new char[] { ' ', ',', ';', '?', '.' }, StringSplitOptions.RemoveEmptyEntries));
-
-            //Either add the modified one or add the normal one
-            var iterator = 0;
-            var returnStrings = new List<string>();
-            foreach (var returnString in originalStrings)
-            {
-                if (returnString.Equals("%%" + iterator.ToString() + "%%"))
-                {
-                    returnStrings.Add(foundStrings[iterator]);
-                    iterator++;
-                }
-                else
-                    returnStrings.Add(returnString);
-            }
-
-            return returnStrings;
+            return baseString;
         }
-
     }
 }
