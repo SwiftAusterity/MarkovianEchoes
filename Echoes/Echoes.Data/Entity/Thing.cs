@@ -1,8 +1,8 @@
 ﻿using Cottontail.Cache;
 using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
+using Echoes.Data.Contextual;
 using Echoes.Data.System;
-using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
 using Newtonsoft.Json;
@@ -59,11 +59,11 @@ namespace Echoes.Data.Entity
 
         public override IEnumerable<string> RenderToLocation()
         {
-            var decorators = FullContext.Where(adj => adj.GetType() == typeof(IDescriptor)).Select(desc => desc.Name);
+            var decorators = FullContext.Where(adj => adj.GetType() == typeof(Descriptor) && ((Descriptor)adj).Applied).Select(desc => desc.Name);
 
             var sb = new List<string>
             {
-                string.Format("{1} {0} is here.", Name, String.Join(",", decorators))
+                string.Format("A {1} {0} is here.", Name, String.Join(",", decorators))
             };
 
             return sb;

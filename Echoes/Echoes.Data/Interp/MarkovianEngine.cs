@@ -157,8 +157,24 @@ namespace Echoes.Data.Interp
             returnList.AddRange(descriptors);
             returnList.Add(currentVerb);
 
-            if (!currentPlace.ThingInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase))
-                && !currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
+            if (currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
+                return returnList;
+
+            var contextList = new List<IContext>();
+
+            foreach (var item in contextList.Where(it => it.GetType() == typeof(IDescriptor)))
+            {
+                var desc = (IDescriptor)item;
+
+                contextList.Add(new Descriptor()
+                {
+                    Applied = true,
+                    Name = desc.Name,
+                    Opposite = desc.Opposite
+                });
+            }
+
+            if (!currentPlace.ThingInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
             {
                 //make new thing
                 var newThing = new Thing(DataStore, DataCache, Logger)
@@ -168,9 +184,15 @@ namespace Echoes.Data.Interp
 
                 currentPlace.MoveInto(newThing);
 
-                newThing.FullContext = returnList;
+                newThing.FullContext = contextList;
 
                 newThing.Create();
+            }
+            else
+            {
+                var newThing = currentPlace.ThingInventory.FirstOrDefault(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase));
+
+                newThing.ConveyMeaning(contextList);
             }
 
             return returnList;
@@ -241,6 +263,8 @@ namespace Echoes.Data.Interp
                                         || str.Equals("at", StringComparison.InvariantCulture)
                                         || str.Equals("a", StringComparison.InvariantCulture)
                                         || str.Equals("an", StringComparison.InvariantCulture)
+                                        || str.Equals("that", StringComparison.InvariantCulture)
+                                        || str.Equals("this", StringComparison.InvariantCulture)
                                   );
 
             return parmList;

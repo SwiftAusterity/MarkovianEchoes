@@ -1,4 +1,5 @@
-﻿using Echoes.DataStructure.Entity;
+﻿using Cottontail.Cache;
+using Echoes.DataStructure.Entity;
 using System;
 using System.Collections.Generic;
 
@@ -33,5 +34,11 @@ namespace Echoes.DataStructure.Contextual
         /// The context generated for the observer from the occurance
         /// </summary>
         IEnumerable<IContext> Context { get; set; }
+
+        /// <summary>
+        /// Set the data and cache accessors
+        /// </summary>
+        /// <param name="storedDataCache"></param>
+        void SetAccessors(StoredDataCache storedDataCache);
     }
 }

@@ -29,6 +29,16 @@ namespace Echoes.Data.Entity
             AkashicRecord = new List<IAkashicEntry>();
         }
 
+        public override void SetAccessors(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger)
+        {
+            foreach(var entry in AkashicRecord)
+            {
+                entry.SetAccessors(storedDataCache);
+            }
+
+            base.SetAccessors(storedData, storedDataCache, logger);
+        }
+
         /// <summary>
         /// Method by which this entity has output (from commands and events) "shown" to it
         /// </summary>
@@ -50,12 +60,13 @@ namespace Echoes.Data.Entity
 
         public override IEnumerable<string> RenderToLocation()
         {
-            var decorators = FullContext.Where(adj => adj.GetType() == typeof(IDescriptor)).Select(desc => desc.Name);
+            var decorators = FullContext.Where(adj => adj.GetType() == typeof(Descriptor) && ((Descriptor)adj).Applied).Select(desc => desc.Name);
+            var sb = new List<string>();
 
-            var sb = new List<string>
-            {
-                string.Format("{1} {0} is standing here.", Name, String.Join(",", decorators))
-            };
+            if (decorators.Count() > 0)         
+                sb.Add(string.Format("{0} is standing here appearing quite {1}.", Name, String.Join(",", decorators)));
+            else
+                sb.Add(string.Format("{0} is standing here.", Name));
 
             return sb;
         }

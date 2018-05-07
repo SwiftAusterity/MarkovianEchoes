@@ -2,6 +2,7 @@
 using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
 using Cottontail.Structure;
+using Echoes.Data.Contextual;
 using Echoes.Data.System;
 using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
@@ -148,7 +149,7 @@ namespace Echoes.Data.Entity
 
         private IEnumerable<string> RenderSelf()
         {
-            var decorators = FullContext.Where(adj => adj.GetType() == typeof(IDescriptor)).Select(desc => desc.Name);
+            var decorators = FullContext.Where(adj => adj.GetType() == typeof(Descriptor) && ((Descriptor)adj).Applied).Select(desc => desc.Name);
 
             var sb = new List<string>();
 

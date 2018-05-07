@@ -1,5 +1,4 @@
 ﻿using Cottontail.Cache;
-using Echoes.Data.Entity;
 using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Newtonsoft.Json;
@@ -27,7 +26,7 @@ namespace Echoes.Data.Contextual
         {
             get
             {
-                return dataCache.Get<Persona>(_actor);
+                return dataCache.Get<IPersona>(_actor);
             }
             set
             {
@@ -62,6 +61,11 @@ namespace Echoes.Data.Contextual
             Context = context;
             Spoken = spoken;
 
+            dataCache = storedDataCache;
+        }
+
+        public void SetAccessors(StoredDataCache storedDataCache)
+        {
             dataCache = storedDataCache;
         }
     }
