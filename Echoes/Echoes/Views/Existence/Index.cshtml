@@ -8,10 +8,18 @@
 <div style="padding-top: 100px;">
     <span>You stand in purgatory. You might want to exist somewhere:</span>
 
-    @foreach (var place in Model.KnownPlaces)
+    @if (Model.KnownPlaces.Count() == 0)
     {
-        <p><a href="/existence/@place.Name">@place.Name</a></p>
+        <p><a href="/existence/The Warren">The Warren</a></p>
     }
+    else
+    {
+        foreach (var place in Model.KnownPlaces)
+        {
+            <p><a href="/existence/@place.Name">@place.Name</a></p>
+        }
+    }
+
 </div>
 
 @section Scripts {

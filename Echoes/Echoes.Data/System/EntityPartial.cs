@@ -178,13 +178,16 @@ namespace Echoes.Data.System
         {
             try
             {
-                //reset this guy's ID to the next one in the list
-                GetNextId();
-                Created = DateTime.Now;
-                LastRevised = DateTime.Now;
+                if (Created != DateTime.MinValue)
+                    Save();
+                else
+                {
+                    //reset this guy's ID to the next one in the list
+                    LastRevised = DateTime.Now;
 
-                DataStore.WriteEntity(this);
-                UpsertToLiveWorldCache();
+                    UpsertToLiveWorldCache();
+                    DataStore.WriteEntity(this);
+                }
             }
             catch (Exception ex)
             {
@@ -209,10 +212,15 @@ namespace Echoes.Data.System
         {
             try
             {
-                LastRevised = DateTime.Now;
+                if (Created == DateTime.MinValue)
+                    Create();
+                else
+                {
+                    LastRevised = DateTime.Now;
 
-                UpsertToLiveWorldCache();
-                DataStore.WriteEntity(this);
+                    UpsertToLiveWorldCache();
+                    DataStore.WriteEntity(this);
+                }
             }
             catch (Exception ex)
             {

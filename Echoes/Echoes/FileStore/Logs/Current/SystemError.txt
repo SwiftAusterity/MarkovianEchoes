@@ -81,3 +81,7 @@
    at System.IO.File.Move(String sourceFileName, String destFileName)
    at Cottontail.FileSystem.StoredDataFileAccessor.RollingArchiveFile(String currentFile, String archiveFile, String archiveDirectory) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 126
    at Cottontail.FileSystem.StoredDataFileAccessor.WriteEntity(IData entity) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 72
+[2018/05/07 09:57:43]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 145

@@ -87,43 +87,75 @@ namespace Echoes.Data.Interp
             if (words.First().Equals("i") || words.First().Equals("me"))
                 words.RemoveAt(0);
 
-            //First word is the action
-            var verbWord = words.First();
-            var adjectives = Enumerable.Empty<string>();
-            var descriptors = new List<IDescriptor>();
+            var brandedWords = new Dictionary<string, IContext>();
 
-            var targetWord = words.Last();
+            //Brand all the words with their current meaning
+            foreach(var word in words.Distinct())
+            {
+                IContext existingMeaning = null;
+                var actorType = actor.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
 
-            if (words.Count > 2)
-                adjectives = words.Skip(1).Take(words.Count - 2);
+                if (actorType == null)
+                {
+                    var placeType = currentPlace.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
 
-            var verb = new Verb { Name = verbWord };
+                    if (placeType == null)
+                    {
+                        var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                        if (observerType != null)
+                            existingMeaning = observerType;
+                    }
+                    else
+                        existingMeaning = placeType;
+                }
+                else
+                    existingMeaning = actorType;
+
+                brandedWords.Add(word, existingMeaning);
+            }
+
+            IVerb currentVerb = null;
+
+            //No verb?
+            if (!brandedWords.Any(ctx => ctx.Value?.GetType() == typeof(IVerb)))
+            {
+                var verbWord = brandedWords.First(ctx => ctx.Value == null).Key;
+
+                currentVerb = new Verb() { Name = verbWord };
+                brandedWords[verbWord] = currentVerb;
+            }
+            else
+                currentVerb = (IVerb)brandedWords.FirstOrDefault(ctx => ctx.Value.GetType() == typeof(IVerb)).Value;
+
+            string targetWord = string.Empty;
+
+            //No valid nouns to make the target? Pick the last one
+            if (!brandedWords.Any(ctx => ctx.Value == null))
+                targetWord = brandedWords.LastOrDefault().Key;
+            else
+                targetWord = brandedWords.LastOrDefault(ctx => ctx.Value == null).Key;
 
             HashSet<Tuple<ActionType, string>> actionsList = new HashSet<Tuple<ActionType, string>>();
 
-            if (verb.Affects.ContainsKey(targetWord))
-                actionsList = verb.Affects[targetWord];
+            if (currentVerb.Affects.ContainsKey(targetWord))
+                actionsList = currentVerb.Affects[targetWord];
 
-            foreach (var adjective in adjectives)
+            var descriptors = new List<IDescriptor>();
+            foreach (var adjective in brandedWords.Where(ctx => !ctx.Key.Equals(targetWord) && (ctx.Value == null || ctx.Value?.GetType() == typeof(IDescriptor))))
             {
-                var existingPair = actionsList.FirstOrDefault(value => value.Item2.Equals(adjective));
+                var existingPair = actionsList.FirstOrDefault(value => value.Item2.Equals(adjective.Key));
 
-                if (existingPair != null)
-                {
-                    var actionType = existingPair.Item1 == ActionType.Apply ? ActionType.Remove : ActionType.Apply;
+                actionsList.Add(new Tuple<ActionType, string>(ActionType.Apply, adjective.Key));
 
-                    actionsList.RemoveWhere(value => value.Item2.Equals(adjective));
-
-                    actionsList.Add(new Tuple<ActionType, string>(actionType, adjective));
-                }
+                if (adjective.Value != null)
+                    descriptors.Add((IDescriptor)adjective.Value);
                 else
-                    actionsList.Add(new Tuple<ActionType, string>(ActionType.Apply, adjective));
-
-                descriptors.Add(new Descriptor() { Name = adjective });
+                    descriptors.Add(new Descriptor() { Name = adjective.Key });
             }
 
             returnList.AddRange(descriptors);
-            returnList.Add(verb);
+            returnList.Add(currentVerb);
 
             if (!currentPlace.ThingInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase))
                 && !currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
@@ -135,6 +167,8 @@ namespace Echoes.Data.Interp
                 };
 
                 currentPlace.MoveInto(newThing);
+
+                newThing.FullContext = returnList;
 
                 newThing.Create();
             }
