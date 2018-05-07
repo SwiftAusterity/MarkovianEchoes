@@ -45,6 +45,10 @@ namespace Echoes.Data.Interp
             if (words.Count == 0)
                 return returnList;
 
+            //Get rid of the imperative self declaration
+            if (words.First().Equals("i") || words.First().Equals("me"))
+                words.RemoveAt(0);
+
             if (acting)
                 returnList = ParseAction(observer, actor, words);
             else
@@ -66,9 +70,7 @@ namespace Echoes.Data.Interp
         }
 
         /*
-         * TODO: First pass: parse out new things and verbs
-         * Second pass: check existing room for things and known decorators
-         * Third pass: More robust logic to avoid extra merging later
+         * TODO: Wow this is inefficient, maybe clean up how many loops we do
          */
         private IEnumerable<IContext> ParseAction(IEntity observer, IEntity actor, IList<string> words)
         {
@@ -82,37 +84,7 @@ namespace Echoes.Data.Interp
             var returnList = new List<IContext>();
             IPlace currentPlace = (IPlace)observer.Position;
 
-            //Get rid of the imperative self declaration
-            if (words.First().Equals("i") || words.First().Equals("me"))
-                words.RemoveAt(0);
-
-            var brandedWords = new Dictionary<string, IContext>();
-
-            //Brand all the words with their current meaning
-            foreach(var word in words.Distinct())
-            {
-                IContext existingMeaning = null;
-                var actorType = actor.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
-
-                if (actorType == null)
-                {
-                    var placeType = currentPlace.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
-
-                    if (placeType == null)
-                    {
-                        var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
-
-                        if (observerType != null)
-                            existingMeaning = observerType;
-                    }
-                    else
-                        existingMeaning = placeType;
-                }
-                else
-                    existingMeaning = actorType;
-
-                brandedWords.Add(word, existingMeaning);
-            }
+            var brandedWords = BrandWords(observer, actor, words, currentPlace);
 
             IVerb currentVerb = null;
 
@@ -140,8 +112,10 @@ namespace Echoes.Data.Interp
             if (currentVerb.Affects.ContainsKey(targetWord))
                 actionsList = currentVerb.Affects[targetWord];
 
+            brandedWords.Remove(targetWord);
+
             var descriptors = new List<IDescriptor>();
-            foreach (var adjective in brandedWords.Where(ctx => !ctx.Key.Equals(targetWord) && (ctx.Value == null || ctx.Value?.GetType() == typeof(IDescriptor))))
+            foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(IDescriptor)))
             {
                 var existingPair = actionsList.FirstOrDefault(value => value.Item2.Equals(adjective.Key));
 
@@ -214,34 +188,101 @@ namespace Echoes.Data.Interp
             var returnList = new List<IContext>();
 
             IPlace currentPlace = (IPlace)observer.Position;
-            var existingNames = new List<string>
+
+            var brandedWords = BrandWords(observer, actor, words, currentPlace);
+
+            var allOtherPlaces = DataCache.GetAll<IPlace>().Where(place => place != currentPlace);
+
+            var linkedPlaces = new List<IPlace>();
+            foreach(var place in allOtherPlaces)
             {
-                currentPlace.Name
-            };
+                if (brandedWords.ContainsKey(place.Name))
+                    continue;
 
-            existingNames.AddRange(currentPlace.ThingInventory.Select(thing => thing.Name));
-            existingNames.AddRange(currentPlace.PersonaInventory.Select(thing => thing.Name));
+                brandedWords.Remove(place.Name);
+                linkedPlaces.Add(place);
+            }
 
-            var adjectives = new List<Tuple<string, string>>();
+            var targetWord = string.Empty;
+
+            //No valid nouns to make the target? Pick the last one
+            if (!brandedWords.Any(ctx => ctx.Value == null))
+                targetWord = brandedWords.LastOrDefault().Key;
+            else
+                targetWord = brandedWords.LastOrDefault(ctx => ctx.Value == null).Key;
+
+            brandedWords.Remove(targetWord);
+
+            HashSet<Tuple<ActionType, string>> actionsList = new HashSet<Tuple<ActionType, string>>();
+
             var descriptors = new List<IDescriptor>();
-
-            if (words.Count > 1)
+            foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(IDescriptor)))
             {
-                for (int i = 1; i < words.Count; i++)
-                {
-                    if (existingNames.Contains(words[i]) && !existingNames.Contains(words[i - 1]))
-                    {
-                        adjectives.Add(new Tuple<string, string>(words[i - 1], words[i]));
-                        descriptors.Add(new Descriptor() { Name = words[i - 1] });
-                    }
-                }
+                var existingPair = actionsList.FirstOrDefault(value => value.Item2.Equals(adjective.Key));
+
+                actionsList.Add(new Tuple<ActionType, string>(ActionType.Apply, adjective.Key));
+
+                if (adjective.Value != null)
+                    descriptors.Add((IDescriptor)adjective.Value);
+                else
+                    descriptors.Add(new Descriptor() { Name = adjective.Key });
             }
 
             returnList.AddRange(descriptors);
 
+            //Make a new place
+            if(!allOtherPlaces.Any(place => place.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                var newPlace = new Place(DataStore, DataCache, Logger);
+                newPlace.Name = targetWord;
+                newPlace.LinkedPlaces.Add(currentPlace);
+                newPlace.Create();
+
+                currentPlace.LinkPlace(newPlace);
+                currentPlace.Save();
+            }
+
+            //Add the place links and places
+            foreach (var place in linkedPlaces.Where(pl => !currentPlace.LinkedPlaces.Contains(pl)))
+            {
+                currentPlace.LinkPlace(place);
+            }
+            
             return returnList;
         }
 
+        private Dictionary<string, IContext> BrandWords(IEntity observer, IEntity actor, IList<string> words, IPlace currentPlace)
+        {
+            var brandedWords = new Dictionary<string, IContext>();
+
+            //Brand all the words with their current meaning
+            foreach (var word in words.Distinct())
+            {
+                IContext existingMeaning = null;
+                var actorType = actor.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                if (actorType == null)
+                {
+                    var placeType = currentPlace.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                    if (placeType == null)
+                    {
+                        var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                        if (observerType != null)
+                            existingMeaning = observerType;
+                    }
+                    else
+                        existingMeaning = placeType;
+                }
+                else
+                    existingMeaning = actorType;
+
+                brandedWords.Add(word, existingMeaning);
+            }
+
+            return brandedWords;
+        }
 
         private IList<string> IsolateIndividuals(string baseString, IEntity observer, IEntity actor)
         {
@@ -277,6 +318,7 @@ namespace Echoes.Data.Interp
 
             allContext.AddRange(observer.FullContext.Select(ctx => ctx.Name));
             allContext.AddRange(actor.FullContext.Select(ctx => ctx.Name));
+            allContext.AddRange(actor.Position.FullContext.Select(ctx => ctx.Name));
 
             //Brand all the words with their current meaning
             foreach (var word in allContext.Distinct())

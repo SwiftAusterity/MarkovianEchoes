@@ -10,7 +10,7 @@
     <div>
         <h3>@Model.CurrentPlace.Name</h3>
         <div>
-            <p>@String.Join(" ", Model.CurrentPlace.RenderToLook())</p>
+            <p>@Html.Raw(String.Join(" ", Model.CurrentPlace.RenderToLook()))</p>
         </div>
         <div>
             @foreach (var thing in Model.CurrentPlace.ThingInventory)

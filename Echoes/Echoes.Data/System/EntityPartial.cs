@@ -183,7 +183,8 @@ namespace Echoes.Data.System
                 else
                 {
                     //reset this guy's ID to the next one in the list
-                    LastRevised = DateTime.Now;
+                    GetNextId();
+                    Created = DateTime.Now;
 
                     UpsertToLiveWorldCache();
                     DataStore.WriteEntity(this);

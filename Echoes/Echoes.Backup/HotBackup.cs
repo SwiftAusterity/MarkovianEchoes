@@ -134,16 +134,14 @@ namespace Echoes.Backup
                     }
                 }
 
+                foreach (var entity in entitiesToLoad.Where(ent => ent.GetType() == typeof(Place)).OrderBy(ent => ent.Created))
+                    entity.SpawnNewInWorld();
+
                 //Shove them all into the live system first
-                foreach (var entity in entitiesToLoad.OrderBy(ent => ent.GetType() == typeof(Place) ? 1 : 99).OrderBy(ent => ent.Created))
+                foreach (var entity in entitiesToLoad.Where(ent => ent.GetType() != typeof(Place)).OrderBy(ent => ent.Created))
                 {
-                    if (entity.GetType() != typeof(Place))
-                    {
-                        if (entity.Position != null)
-                            entity.SpawnNewInWorld(entity.Position);
-                        else
-                            entity.SpawnNewInWorld();
-                    }
+                    if (entity.Position != null)
+                        entity.SpawnNewInWorld(entity.Position);
                     else
                         entity.SpawnNewInWorld();
                 }

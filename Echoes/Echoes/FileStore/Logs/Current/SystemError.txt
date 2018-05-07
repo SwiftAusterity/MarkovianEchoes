@@ -1,87 +1,16 @@
-[2018/04/30 23:49:31]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+[2018/05/07 15:43:30]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 91
    at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/04/30 23:53:11]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 145
+[2018/05/07 15:46:18]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 91
    at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 14:10:38]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 14:20:00]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 14:22:54]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 14:38:00]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 14:47:36]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 14:54:03]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 14:56:16]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 15:02:46]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 15:13:31]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/01 15:33:57]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
-   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Users\dxn88\Documents\Visual Studio 2017\Projects\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 137
-[2018/05/02 21:29:51]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
-   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
-   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
-   at System.Activator.CreateInstance(Type type, Object[] args)
-   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
-[2018/05/02 21:49:50]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
-   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
-   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
-   at System.Activator.CreateInstance(Type type, Object[] args)
-   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
-[2018/05/02 21:55:06]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
-   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
-   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
-   at System.Activator.CreateInstance(Type type, Object[] args)
-   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
-[2018/05/02 21:57:13]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
-   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
-   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
-   at System.Activator.CreateInstance(Type type, Object[] args)
-   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
-[2018/05/02 22:01:48]:  MissingMethodException: Constructor on type 'Echoes.Data.Entity.Persona' not found.
-   at System.RuntimeType.CreateInstanceImpl(BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes, StackCrawlMark& stackMark)
-   at System.Activator.CreateInstance(Type type, BindingFlags bindingAttr, Binder binder, Object[] args, CultureInfo culture, Object[] activationAttributes)
-   at System.Activator.CreateInstance(Type type, Object[] args)
-   at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
-   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
-[2018/05/04 15:45:57]:  IOException: The process cannot access the file because it is being used by another process.
-   at System.IO.Win32FileSystem.MoveFile(String sourceFullPath, String destFullPath)
-   at System.IO.File.Move(String sourceFileName, String destFileName)
-   at Cottontail.FileSystem.StoredDataFileAccessor.RollingArchiveFile(String currentFile, String archiveFile, String archiveDirectory) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 126
-   at Cottontail.FileSystem.StoredDataFileAccessor.WriteEntity(IData entity) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 72
-[2018/05/07 09:57:43]:  NullReferenceException: Object reference not set to an instance of an object.
-   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 80
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 145
+[2018/05/07 15:50:30]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 91
+   at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
+   at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 145
+[2018/05/07 15:52:11]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Entity.Persona.SpawnNewInWorld(IContains spawnTo) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Persona.cs:line 91
    at Echoes.Data.System.EntityPartial.SpawnNewInWorld() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 107
    at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 145

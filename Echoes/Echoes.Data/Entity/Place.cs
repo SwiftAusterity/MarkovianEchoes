@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace Echoes.Data.Entity
 {
@@ -24,15 +25,33 @@ namespace Echoes.Data.Entity
         [JsonIgnore]
         public ICacheContainer<IThing> ThingInventory { get; set; }
 
+        [JsonProperty("LinkedPlaces")]
+        private IList<long> _linkedPlaces { get; set; }
+
+        [JsonIgnore]
+        public IList<IPlace> LinkedPlaces
+        {
+            get
+            {
+                return DataCache.GetMany<IPlace>(_linkedPlaces).ToList();
+            }
+            set
+            {
+                _linkedPlaces = value.Select(pl => pl.ID).ToList();
+            }
+        }
+
         [JsonConstructor]
         public Place() : base()
         {
+            _linkedPlaces = new List<long>();
         }
 
         public Place(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger) : base(storedData, storedDataCache, logger) 
         {
             PersonaInventory = new CacheContainer<IPersona>(storedDataCache);
             ThingInventory = new CacheContainer<IThing>(storedDataCache);
+            _linkedPlaces = new List<long>();
         }
 
         public override void SetAccessors(StoredDataFileAccessor storedData, StoredDataCache storedDataCache, FileLogger logger)
@@ -41,6 +60,11 @@ namespace Echoes.Data.Entity
             ThingInventory = new CacheContainer<IThing>(storedDataCache);
 
             base.SetAccessors(storedData, storedDataCache, logger);
+        }
+
+        public void LinkPlace(IPlace place)
+        {
+            _linkedPlaces.Add(place.ID);
         }
 
         /// <summary>
@@ -155,6 +179,13 @@ namespace Echoes.Data.Entity
 
             if(decorators.Count() > 0)
                 sb.Add(string.Format("It is quite {0} here.", String.Join(",", decorators)));
+
+            foreach(var place in LinkedPlaces)
+            {
+                var adjective = place.FullContext.FirstOrDefault(ctx => ctx.GetType() == typeof(Descriptor));
+                sb.Add(string.Format("A {1} doorway marked <a href=\"/existence/{0}\">{0}</a> is here.", place.Name, adjective?.Name));
+            }
+
 
             return sb;
         }
