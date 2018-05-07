@@ -102,6 +102,9 @@
                 Cookies.set('tutorialMode', 'on');
             } else {
                 Cookies.set('tutorialMode', 'off');
+
+                //Wipe out all the tutorial bits
+                $('.tutorial').remove();
             }
         });
 

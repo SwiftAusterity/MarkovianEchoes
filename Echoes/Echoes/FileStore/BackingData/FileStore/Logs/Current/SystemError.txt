@@ -1,5 +1,0 @@
-[2018/04/29 11:32:38]:  IOException: The process cannot access the file because it is being used by another process.
-   at System.IO.Win32FileSystem.MoveFile(String sourceFullPath, String destFullPath)
-   at System.IO.File.Move(String sourceFileName, String destFileName)
-   at Cottontail.FileSystem.StoredData.RollingArchiveFile(String currentFile, String archiveFile, String archiveDirectory) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 125
-   at Cottontail.FileSystem.StoredData.WriteEntity(IData entity) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredData.cs:line 71

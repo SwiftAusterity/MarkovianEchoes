@@ -24,6 +24,8 @@ function Kinesis_Text(text, parentContainer, modeOptions, styles, effects) {
     });
 
     Kinesis_Finale(child, parentContainer, modeOptions, styles, effects);
+
+    return child;
 }
 
 function Kinesis_Array(list, parentContainer, modeOptions, styles, effects) {
@@ -61,6 +63,8 @@ function Kinesis_Array(list, parentContainer, modeOptions, styles, effects) {
     });
 
     Kinesis_Finale(child, parentContainer, modeOptions, styles, effects);
+
+    return child;
 }
 
 function Kinesis_Element(child, parentContainer, modeOptions, styles, effects) {
@@ -77,6 +81,8 @@ function Kinesis_Element(child, parentContainer, modeOptions, styles, effects) {
     }
 
     Kinesis_Finale(child, parentContainer, modeOptions, styles, effects);
+
+    return child;
 }
 
 //Kinetic Text Helpers
@@ -120,6 +126,9 @@ function Kinesis_Finale(child, parentContainer, modeOptions, styles, effects) {
         'top': posy + 'px'
     });
 
+    //Make things easier to find
+    child.addClass('kinetic-text');
+
     if (effects === undefined) {
         effects = { in: { effect: 'fadeIn' } };
     }
@@ -140,6 +149,8 @@ function Kinesis_Finale(child, parentContainer, modeOptions, styles, effects) {
     }
 
     child.textillate(effects);
+
+    return child;
 }
 
 function GetTextFontWidth(text, containerElement) {
@@ -195,14 +206,20 @@ function OrientText(textOrientation, child) {
             transform: 'rotate(' + direction + 'deg)'
         });
 
-        var angleDeformation = Math.abs(180 - direction) / 180;
+        var angleDeformation = 0;
 
-        if (angleDeformation != 0 && angleDeformation != 1) {
-            width = width * angleDeformation;
-            height = (height / angleDeformation) + 10;
+        if (direction <= 270) {
+            angleDeformation = Math.abs(90 - direction);
+        } else {
+            angleDeformation = Math.abs(270 - direction);
         }
+
+        width = Math.abs(child.width() * Math.cos(Math.PI * angleDeformation / 180.0));
+        height = Math.abs(child.width() * Math.sin(Math.PI * angleDeformation / 180.0));
     }
 
+
+    //TODO: Incorporate css text-direction
     if (writingMode === 'random') {
         if (Math.random() <= 0.2) {
             writingMode = 'vertical';
@@ -230,7 +247,7 @@ function constrainBounds(childWidth, startingPosition, parentWidth) {
     var roomToMove = parentWidth - startingPosition;
 
     if (roomToMove < childWidth) {
-        childWidth = childWidth * (roomToMove / childWidth);
+        childWidth = childWidth * (roomToMove / childWidth) - 10;
     }
 
     return childWidth;
@@ -303,5 +320,5 @@ function Tutorial(parent, text) {
 
     text = '^ ' + text;
 
-    Kinesis_Text(text, $('body'), modeOptions, { 'color': 'green', 'z-index': 999, 'background-color': 'lightgrey', 'border': '1px solid white' });
+    Kinesis_Text(text, $('body'), modeOptions, { 'color': 'green', 'z-index': 999, 'background-color': 'lightgrey', 'border': '1px solid white' }).addClass('tutorial');
 }

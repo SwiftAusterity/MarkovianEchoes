@@ -76,3 +76,8 @@
    at System.Activator.CreateInstance(Type type, Object[] args)
    at Cottontail.FileSystem.StoredDataFileAccessor.ReadEntity(FileInfo file, Type entityType, Object[] args) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 44
    at Echoes.Backup.HotBackup.RestoreLiveBackup() in C:\Dev\MarkovianEchoes\Echoes\Echoes.Backup\HotBackup.cs:line 131
+[2018/05/04 15:45:57]:  IOException: The process cannot access the file because it is being used by another process.
+   at System.IO.Win32FileSystem.MoveFile(String sourceFullPath, String destFullPath)
+   at System.IO.File.Move(String sourceFileName, String destFileName)
+   at Cottontail.FileSystem.StoredDataFileAccessor.RollingArchiveFile(String currentFile, String archiveFile, String archiveDirectory) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 126
+   at Cottontail.FileSystem.StoredDataFileAccessor.WriteEntity(IData entity) in C:\Dev\MarkovianEchoes\Echoes\FileSystem\StoredDataFileAccessor.cs:line 72

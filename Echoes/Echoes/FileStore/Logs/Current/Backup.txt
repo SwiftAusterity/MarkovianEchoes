@@ -205,3 +205,18 @@
 [2018/05/02 22:10:06]:  World restored from current live.
 [2018/05/02 22:13:56]:  World restored from current live INITIATED.
 [2018/05/02 22:13:57]:  World restored from current live.
+[2018/05/04 15:34:30]:  World restored from current live INITIATED.
+[2018/05/04 15:34:31]:  World restored from current live.
+[2018/05/04 15:43:42]:  World restored from current live INITIATED.
+[2018/05/04 15:43:44]:  World restored from current live.
+[2018/05/04 15:44:01]:  World restored from current live INITIATED.
+[2018/05/04 15:44:02]:  World restored from current live.
+[2018/05/04 15:52:28]:  World restored from current live INITIATED.
+[2018/05/04 15:52:29]:  World restored from current live.
+[2018/05/04 16:00:27]:  World restored from data fallback.
+[2018/05/04 16:06:31]:  World restored from data fallback.
+[2018/05/04 16:20:59]:  World restored from data fallback.
+[2018/05/04 16:22:35]:  World restored from data fallback.
+[2018/05/04 16:23:34]:  World restored from data fallback.
+[2018/05/04 16:27:10]:  World restored from data fallback.
+[2018/05/04 16:30:39]:  World restored from data fallback.
