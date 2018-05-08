@@ -9,6 +9,8 @@ using Echoes.DataStructure.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Utility;
 
 namespace Echoes.Data.Interp
 {
@@ -39,20 +41,25 @@ namespace Echoes.Data.Interp
         public IEnumerable<IContext> Experience(IEntity observer, IEntity actor, string observance, bool acting)
         {
             var returnList = Enumerable.Empty<IContext>();
-            var words = IsolateIndividuals(observance, observer, actor);
+            var sentences = IsolateSentences(observance);
 
-            //can't parse nothing man
-            if (words.Count == 0)
-                return returnList;
+            foreach (var sentence in sentences)
+            {
+                var words = IsolateIndividuals(sentence, observer, actor);
 
-            //Get rid of the imperative self declaration
-            if (words.First().Equals("i") || words.First().Equals("me"))
-                words.RemoveAt(0);
+                //can't parse nothing man
+                if (words.Count == 0)
+                    return returnList;
 
-            if (acting)
-                returnList = ParseAction(observer, actor, words);
-            else
-                returnList = ParseSpeech(observer, actor, words);
+                //Get rid of the imperative self declaration
+                if (words.First().Equals("i") || words.First().Equals("me"))
+                    words.RemoveAt(0);
+
+                if (acting)
+                    returnList = ParseAction(observer, actor, words);
+                else
+                    returnList = ParseSpeech(observer, actor, words);
+            }
 
             return returnList;
         }
@@ -194,7 +201,7 @@ namespace Echoes.Data.Interp
             var allOtherPlaces = DataCache.GetAll<IPlace>().Where(place => place != currentPlace);
 
             var linkedPlaces = new List<IPlace>();
-            foreach(var place in allOtherPlaces)
+            foreach (var place in allOtherPlaces)
             {
                 if (brandedWords.ContainsKey(place.Name))
                     continue;
@@ -231,7 +238,7 @@ namespace Echoes.Data.Interp
             returnList.AddRange(descriptors);
 
             //Make a new place
-            if(!allOtherPlaces.Any(place => place.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
+            if (!allOtherPlaces.Any(place => place.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
             {
                 var newPlace = new Place(DataStore, DataCache, Logger);
                 newPlace.Name = targetWord;
@@ -247,7 +254,7 @@ namespace Echoes.Data.Interp
             {
                 currentPlace.LinkPlace(place);
             }
-            
+
             return returnList;
         }
 
@@ -255,60 +262,177 @@ namespace Echoes.Data.Interp
         {
             var brandedWords = new Dictionary<string, IContext>();
 
-            //Brand all the words with their current meaning
+            //Brand all the words with their current meaning. Continues are in there because the listword inflation might cause collision
             foreach (var word in words.Distinct())
             {
-                IContext existingMeaning = null;
-                var actorType = actor.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+                if (brandedWords.ContainsKey(word))
+                    continue;
 
-                if (actorType == null)
+                //We have a comma list, kind of cheaty not marking it as a list with a bit flag somewhere but eh maybe later
+                if (word.Contains(",") || (word.Contains("and") && word != "and"))
                 {
-                    var placeType = currentPlace.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+                    var listWords = word.Split(new string[] { "and", ",", " " }, StringSplitOptions.RemoveEmptyEntries);
 
-                    if (placeType == null)
+                    IContext listMeaning = null;
+                    foreach (var listWord in listWords)
                     {
-                        var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+                        if (brandedWords.ContainsKey(listWord))
+                            continue;
 
-                        if (observerType != null)
-                            existingMeaning = observerType;
+                        if (listMeaning == null)
+                        {
+                            listMeaning = GetExistingMeaning(listWord, observer, actor, currentPlace);
+                            break;
+                        }
                     }
-                    else
-                        existingMeaning = placeType;
-                }
-                else
-                    existingMeaning = actorType;
 
-                brandedWords.Add(word, existingMeaning);
+                    foreach(var listWord in listWords)
+                    {
+                        if (brandedWords.ContainsKey(listWord))
+                            continue;
+
+                        brandedWords.Add(listWord, listMeaning);
+                    }
+
+                    continue;
+                }
+
+                brandedWords.Add(word, GetExistingMeaning(word, observer, actor, currentPlace));
             }
 
             return brandedWords;
         }
 
+        private IContext GetExistingMeaning(string word, IEntity observer, IEntity actor, IPlace currentPlace)
+        {
+            IContext existingMeaning = null;
+            var actorType = actor.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+            if (actorType == null)
+            {
+                var placeType = currentPlace.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                if (placeType == null)
+                {
+                    var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                    if (observerType != null)
+                        existingMeaning = observerType;
+                }
+                else
+                    existingMeaning = placeType;
+            }
+            else
+                existingMeaning = actorType;
+
+            return existingMeaning;
+        }
+
         private IList<string> IsolateIndividuals(string baseString, IEntity observer, IEntity actor)
         {
-            baseString = baseString.ToLower();
             int iterator = 0;
+            baseString = baseString.ToLower();
+
             var foundStrings = ParseQuotesOut(ref baseString, ref iterator);
+
             foundStrings.AddRange(ParseEntitiesOut(observer, actor, ref iterator, ref baseString));
 
+            foundStrings.AddRange(ParseCommaListsOut(ref iterator, ref baseString));
+
             var originalStrings = new List<string>();
-            originalStrings.AddRange(RemoveGrammaticalNiceities(baseString.Split(new char[] { ' ', ',', ';', '?', '.', ':' }, StringSplitOptions.RemoveEmptyEntries)));
+            originalStrings.AddRange(RemoveGrammaticalNiceities(baseString.Split(new char[] { ' ', ',', ':' }, StringSplitOptions.RemoveEmptyEntries)));
+
+            //So thanks to the commalist puller potentially adding replacement strings to the found collection we have to do a pass there first
+            var cleanerList = new List<Tuple<int, string>>();
+            foreach (var dirtyString in foundStrings.Where(str => str.Contains("%%")))
+            {
+                var dirtyIndex = foundStrings.IndexOf(dirtyString);
+                var cleanString = dirtyString;
+
+                while(cleanString.Contains("%%"))
+                {
+                    var i = TypeUtility.TryConvert<int>(cleanString.Substring(cleanString.IndexOf("%%") + 2, 1));
+                    cleanString = cleanString.Replace(String.Format("%%{0}%%", i), foundStrings[i]);
+                }
+
+                cleanerList.Add(new Tuple<int, string>(dirtyIndex, cleanString));
+            }
+
+            foreach (var cleaner in cleanerList)
+            {
+                var dirtyIndex = cleaner.Item1;
+                var cleanString = cleaner.Item2;
+
+                foundStrings[dirtyIndex] = cleanString;
+            }
 
             //Either add the modified one or add the normal one
-            var i = 0;
             var returnStrings = new List<string>();
             foreach (var returnString in originalStrings)
             {
-                if (returnString.Equals("%%" + i.ToString() + "%%"))
+                if (returnString.StartsWith("%%") && returnString.EndsWith("%%"))
                 {
+                    var i = TypeUtility.TryConvert<int>(returnString.Substring(2, returnString.Length - 4));
                     returnStrings.Add(foundStrings[i]);
-                    i++;
                 }
                 else
                     returnStrings.Add(returnString);
             }
 
             return returnStrings;
+        }
+
+        /*
+         * word, word, word, word- ([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+
+         * word, word, word and word- ([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+(\sand\s)([a-zA-Z0-9_.-|(%%\d%%)]+)
+         * word, word, word, and word ([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+(,\sand\s)([a-zA-Z0-9_.-|(%%\d%%)]+)
+         * word and word and word and word- ([a-zA-Z0-9_.-|(%%\d%%)]+)((\sand\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+
+         */
+        private IList<string> ParseCommaListsOut(ref int iterator, ref string baseString)
+        {
+            var foundStrings = new List<string>();
+            var cccPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+", RegexOptions.IgnorePatternWhitespace);
+            var ccaPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+(\sand\s)([a-zA-Z0-9_.-|(%%\d%%)]+)", RegexOptions.IgnorePatternWhitespace);
+            var ccacPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+(,\sand\s)([a-zA-Z0-9_.-|(%%\d%%)]+)", RegexOptions.IgnorePatternWhitespace);
+            var aaaPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((\sand\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+", RegexOptions.IgnorePatternWhitespace);
+
+            foundStrings.AddRange(RunListPattern(cccPattern, ref iterator, ref baseString));
+            foundStrings.AddRange(RunListPattern(ccaPattern, ref iterator, ref baseString));
+            foundStrings.AddRange(RunListPattern(ccacPattern, ref iterator, ref baseString));
+            foundStrings.AddRange(RunListPattern(aaaPattern, ref iterator, ref baseString));
+
+            return foundStrings;
+        }
+
+        private IList<string> RunListPattern(Regex capturePattern, ref int iterator, ref string baseString)
+        {
+            var foundStrings = new List<string>();
+
+            var cccMatches = capturePattern.Matches(baseString);
+            for (var i = 0; i < cccMatches.Count; i++)
+            {
+                var currentMatch = cccMatches[i];
+
+                if (currentMatch == null || !currentMatch.Success)
+                    continue;
+
+                var cccCaptures = currentMatch.Captures;
+                for (var iC = 0; iC < cccCaptures.Count; iC++)
+                {
+                    var currentCapture = cccCaptures[iC];
+
+                    if (currentCapture == null || currentCapture.Length == 0)
+                        continue;
+
+                    var commaList = currentCapture.Value;
+
+                    foundStrings.Add(commaList);
+                    baseString = baseString.Replace(commaList, "%%" + iterator.ToString() + "%%");
+                    iterator++;
+                }
+            }
+
+            return foundStrings;
         }
 
         private IList<string> ParseEntitiesOut(IEntity observer, IEntity actor, ref int iterator, ref string baseString)
@@ -323,7 +447,7 @@ namespace Echoes.Data.Interp
             //Brand all the words with their current meaning
             foreach (var word in allContext.Distinct())
             {
-                if(baseString.Contains(word))
+                if (baseString.Contains(word))
                 {
                     foundStrings.Add(word);
                     baseString = baseString.Replace(word, "%%" + iterator.ToString() + "%%");
@@ -375,6 +499,30 @@ namespace Echoes.Data.Interp
             }
 
             return baseString;
+        }
+
+        IEnumerable<string> IsolateSentences(string input)
+        {
+            var sentences = new List<string>();
+
+            //TODO: recognize "and <verb>"
+            var initialSplit = input.Split(new string[] { ";", "?", ". ", "!" }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var phrase in initialSplit)
+            {
+                var potentialWords = phrase.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (potentialWords.Count() > 1)
+                {
+                    sentences.Add(phrase);
+                }
+            }
+
+            if (sentences.Count > 1)
+                return sentences;
+
+            //Fall back to just the initial sentence because we couldn't find multiple full sentences.
+            return new List<string>() { input };
         }
 
         /// <summary>
