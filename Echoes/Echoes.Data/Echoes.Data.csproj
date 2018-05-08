@@ -135,6 +135,7 @@
   <ItemGroup>
     <Compile Include="Contextual\AkashicEntry.cs" />
     <Compile Include="Contextual\Descriptor.cs" />
+    <Compile Include="Contextual\Noun.cs" />
     <Compile Include="Contextual\Verb.cs" />
     <Compile Include="Interp\MarkovianEngine.cs" />
     <Compile Include="Entity\Persona.cs" />

@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Contextual\ActionType.cs" />
     <Compile Include="Contextual\IContext.cs" />
+    <Compile Include="Contextual\INoun.cs" />
     <Compile Include="Contextual\IVerb.cs" />
     <Compile Include="Contextual\IAkashicEntry.cs" />
     <Compile Include="Entity\IPersona.cs" />

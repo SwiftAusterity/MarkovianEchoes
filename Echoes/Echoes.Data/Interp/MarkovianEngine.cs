@@ -108,11 +108,15 @@ namespace Echoes.Data.Interp
 
             string targetWord = string.Empty;
 
-            //No valid nouns to make the target? Pick the last one
-            if (!brandedWords.Any(ctx => ctx.Value == null))
-                targetWord = brandedWords.LastOrDefault().Key;
-            else
-                targetWord = brandedWords.LastOrDefault(ctx => ctx.Value == null).Key;
+            //We might have nouns already
+            if (!brandedWords.Any(ctx => ctx.GetType() == typeof(Noun)))
+            {
+                //No valid nouns to make the target? Pick the last one
+                if (!brandedWords.Any(ctx => ctx.Value == null))
+                    targetWord = brandedWords.LastOrDefault().Key;
+                else
+                    targetWord = brandedWords.LastOrDefault(ctx => ctx.Value == null).Key;
+            }
 
             HashSet<Tuple<ActionType, string>> actionsList = new HashSet<Tuple<ActionType, string>>();
 
@@ -305,25 +309,40 @@ namespace Echoes.Data.Interp
 
         private IContext GetExistingMeaning(string word, IEntity observer, IEntity actor, IPlace currentPlace)
         {
+            var allContext = new List<string>();
+
+            allContext.AddRange(observer.FullContext.Select(ctx => ctx.Name));
+            allContext.AddRange(actor.FullContext.Select(ctx => ctx.Name));
+            allContext.AddRange(actor.Position.FullContext.Select(ctx => ctx.Name));
+
             IContext existingMeaning = null;
-            var actorType = actor.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
 
-            if (actorType == null)
+            //It's a thing
+            if (allContext.Contains(word))
             {
-                var placeType = currentPlace.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
-
-                if (placeType == null)
-                {
-                    var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
-
-                    if (observerType != null)
-                        existingMeaning = observerType;
-                }
-                else
-                    existingMeaning = placeType;
+                existingMeaning = new Noun() { Name = word };
             }
             else
-                existingMeaning = actorType;
+            {
+                var actorType = actor.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                if (actorType == null)
+                {
+                    var placeType = currentPlace.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                    if (placeType == null)
+                    {
+                        var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+
+                        if (observerType != null)
+                            existingMeaning = observerType;
+                    }
+                    else
+                        existingMeaning = placeType;
+                }
+                else
+                    existingMeaning = actorType;
+            }
 
             return existingMeaning;
         }
