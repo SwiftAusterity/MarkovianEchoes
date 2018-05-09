@@ -98,7 +98,7 @@ namespace Echoes.Data.Interp
             IVerb currentVerb = null;
 
             //No verb?
-            if (!brandedWords.Any(ctx => ctx.Value?.GetType() == typeof(IVerb)))
+            if (!brandedWords.Any(ctx => ctx.Value?.GetType() == typeof(Verb)))
             {
                 var verbWord = brandedWords.First(ctx => ctx.Value == null).Key;
 
@@ -106,10 +106,10 @@ namespace Echoes.Data.Interp
                 brandedWords[verbWord] = currentVerb;
             }
             else
-                currentVerb = (IVerb)brandedWords.FirstOrDefault(ctx => ctx.Value.GetType() == typeof(IVerb)).Value;
+                currentVerb = (IVerb)brandedWords.FirstOrDefault(ctx => ctx.Value.GetType() == typeof(Verb)).Value;
 
             //We might have nouns already
-            if (!brandedWords.Any(ctx => ctx.GetType() == typeof(Noun)))
+            if (!brandedWords.Any(ctx => ctx.Value?.GetType() == typeof(Noun)))
             {
                 string targetWord = string.Empty;
 
@@ -122,11 +122,11 @@ namespace Echoes.Data.Interp
                 brandedWords[targetWord] = new Noun() { Name = targetWord };
             }
 
-            var descriptors = new List<IDescriptor>();
-            foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(IDescriptor)))
+            var descriptors = new List<Descriptor>();
+            foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(Descriptor)))
             {
                 if (adjective.Value != null)
-                    descriptors.Add((IDescriptor)adjective.Value);
+                    descriptors.Add((Descriptor)adjective.Value);
                 else
                     descriptors.Add(new Descriptor() { Name = adjective.Key });
             }
@@ -134,45 +134,49 @@ namespace Echoes.Data.Interp
             returnList.AddRange(descriptors);
             returnList.Add(currentVerb);
 
-            var contextList = new List<IContext>();
-
-            foreach (var item in returnList.Where(it => it.GetType() == typeof(IDescriptor)))
+            //Don't add things unless we're in the place itself
+            if (observer == currentPlace)
             {
-                var desc = (IDescriptor)item;
+                var contextList = new List<IContext>();
 
-                contextList.Add(new Descriptor()
+                foreach (var item in returnList.Where(it => it.GetType() == typeof(Descriptor)))
                 {
-                    Applied = true,
-                    Name = desc.Name,
-                    Opposite = desc.Opposite
-                });
-            }
+                    var desc = (Descriptor)item;
 
-            foreach (var noun in brandedWords.Where(ctx => ctx.GetType() == typeof(Noun)))
-            {
-                if (currentPlace.Name.Equals(noun.Key) || currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase)))
-                    continue;
-
-                if (!currentPlace.ThingInventory.Any(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    //make new thing
-                    var newThing = new Thing(DataStore, DataCache, Logger)
+                    contextList.Add(new Descriptor()
                     {
-                        Name = noun.Key
-                    };
-
-                    currentPlace.MoveInto(newThing);
-
-                    newThing.FullContext = contextList;
-
-                    newThing.Create();
+                        Applied = true,
+                        Name = desc.Name,
+                        Opposite = desc.Opposite
+                    });
                 }
-                else
-                {
-                    var newThing = currentPlace.ThingInventory.FirstOrDefault(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase));
 
-                    newThing.ConveyMeaning(contextList);
-                    newThing.Save();
+                foreach (var noun in brandedWords.Where(ctx => ctx.Value?.GetType() == typeof(Noun)))
+                {
+                    if (currentPlace.Name.Equals(noun.Key) || currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase)))
+                        continue;
+
+                    if (!currentPlace.ThingInventory.Any(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        //make new thing
+                        var newThing = new Thing(DataStore, DataCache, Logger)
+                        {
+                            Name = noun.Key
+                        };
+
+                        currentPlace.MoveInto(newThing);
+
+                        newThing.FullContext = contextList;
+
+                        newThing.Create();
+                    }
+                    else
+                    {
+                        var newThing = currentPlace.ThingInventory.FirstOrDefault(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase));
+
+                        newThing.ConveyMeaning(contextList);
+                        newThing.Save();
+                    }
                 }
             }
 
@@ -224,14 +228,14 @@ namespace Echoes.Data.Interp
             HashSet<Tuple<ActionType, string>> actionsList = new HashSet<Tuple<ActionType, string>>();
 
             var descriptors = new List<IDescriptor>();
-            foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(IDescriptor)))
+            foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(Descriptor)))
             {
                 var existingPair = actionsList.FirstOrDefault(value => value.Item2.Equals(adjective.Key));
 
                 actionsList.Add(new Tuple<ActionType, string>(ActionType.Apply, adjective.Key));
 
                 if (adjective.Value != null)
-                    descriptors.Add((IDescriptor)adjective.Value);
+                    descriptors.Add((Descriptor)adjective.Value);
                 else
                     descriptors.Add(new Descriptor() { Name = adjective.Key });
             }
@@ -308,9 +312,9 @@ namespace Echoes.Data.Interp
         {
             var allContext = new List<string>();
 
-            allContext.AddRange(observer.FullContext.Select(ctx => ctx.Name));
-            allContext.AddRange(actor.FullContext.Select(ctx => ctx.Name));
-            allContext.AddRange(actor.Position.FullContext.Select(ctx => ctx.Name));
+            allContext.AddRange(actor.Position.GetThings().Select(thing => thing.Name));
+            allContext.AddRange(actor.Position.GetPersonas().Select(thing => thing.Name));
+            allContext.Add(actor.Position.Name);
 
             IContext existingMeaning = null;
 
@@ -321,24 +325,17 @@ namespace Echoes.Data.Interp
             }
             else
             {
-                var actorType = actor.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
+                var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
 
-                if (actorType == null)
+                if (observerType == null)
                 {
                     var placeType = currentPlace.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
 
-                    if (placeType == null)
-                    {
-                        var observerType = observer.FullContext.FirstOrDefault(ctx => ctx.Name.Equals(word));
-
-                        if (observerType != null)
-                            existingMeaning = observerType;
-                    }
-                    else
+                    if (placeType != null)
                         existingMeaning = placeType;
                 }
                 else
-                    existingMeaning = actorType;
+                    existingMeaning = observerType;
             }
 
             return existingMeaning;
@@ -456,8 +453,11 @@ namespace Echoes.Data.Interp
             var foundStrings = new List<string>();
             var allContext = new List<string>();
 
+            allContext.AddRange(actor.Position.GetThings().Select(thing => thing.Name));
+            allContext.AddRange(actor.Position.GetPersonas().Select(thing => thing.Name));
+            allContext.Add(actor.Position.Name);
+
             allContext.AddRange(observer.FullContext.Select(ctx => ctx.Name));
-            allContext.AddRange(actor.FullContext.Select(ctx => ctx.Name));
             allContext.AddRange(actor.Position.FullContext.Select(ctx => ctx.Name));
 
             //Brand all the words with their current meaning

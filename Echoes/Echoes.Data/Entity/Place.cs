@@ -89,13 +89,12 @@ namespace Echoes.Data.Entity
         /// </summary>
         public override IEnumerable<IContext> WriteTo(string input, IPersona originator, bool acting)
         { 
-            foreach(var entity in GetThings())
-                entity.WriteTo(input, originator, acting);
+            var returnContext = base.WriteTo(input, originator, acting);
 
             foreach (var entity in GetPersonas())
                 entity.WriteTo(input, originator, acting);
 
-            return base.WriteTo(input, originator, acting);
+            return returnContext;
         }
 
         /// <summary>
