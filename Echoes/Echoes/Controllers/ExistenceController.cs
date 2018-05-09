@@ -75,9 +75,18 @@ namespace Echoes.Web.Controllers
                 if (!persona.Position.Equals(viewModel.CurrentPlace))
                     viewModel.CurrentPlace.MoveInto(persona);
 
-                viewModel.CurrentPlace.WriteTo(input, persona, self.Item2);
                 viewModel.NewToYou = persona.AkashicRecord.Where(record => record.Timestamp >= self.Item3);
                 viewModel.CurrentPersona = persona;
+
+                try
+                {
+                    viewModel.CurrentPlace.WriteTo(input, persona, self.Item2);
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogError(ex);
+                    viewModel.Errors = ex.Message;
+                }
             }
 
             return View("Place", viewModel);

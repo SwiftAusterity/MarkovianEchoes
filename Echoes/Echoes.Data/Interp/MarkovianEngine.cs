@@ -14,6 +14,8 @@ using Utility;
 
 namespace Echoes.Data.Interp
 {
+    // Yes this file should be in its own project but I was sick of fighting circular dependencies
+
     /// <summary>
     /// Engine for interpreting and merging observances
     /// </summary>
@@ -106,32 +108,23 @@ namespace Echoes.Data.Interp
             else
                 currentVerb = (IVerb)brandedWords.FirstOrDefault(ctx => ctx.Value.GetType() == typeof(IVerb)).Value;
 
-            string targetWord = string.Empty;
-
             //We might have nouns already
             if (!brandedWords.Any(ctx => ctx.GetType() == typeof(Noun)))
             {
+                string targetWord = string.Empty;
+
                 //No valid nouns to make the target? Pick the last one
                 if (!brandedWords.Any(ctx => ctx.Value == null))
                     targetWord = brandedWords.LastOrDefault().Key;
                 else
                     targetWord = brandedWords.LastOrDefault(ctx => ctx.Value == null).Key;
+
+                brandedWords[targetWord] = new Noun() { Name = targetWord };
             }
-
-            HashSet<Tuple<ActionType, string>> actionsList = new HashSet<Tuple<ActionType, string>>();
-
-            if (currentVerb.Affects.ContainsKey(targetWord))
-                actionsList = currentVerb.Affects[targetWord];
-
-            brandedWords.Remove(targetWord);
 
             var descriptors = new List<IDescriptor>();
             foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(IDescriptor)))
             {
-                var existingPair = actionsList.FirstOrDefault(value => value.Item2.Equals(adjective.Key));
-
-                actionsList.Add(new Tuple<ActionType, string>(ActionType.Apply, adjective.Key));
-
                 if (adjective.Value != null)
                     descriptors.Add((IDescriptor)adjective.Value);
                 else
@@ -141,12 +134,9 @@ namespace Echoes.Data.Interp
             returnList.AddRange(descriptors);
             returnList.Add(currentVerb);
 
-            if (currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
-                return returnList;
-
             var contextList = new List<IContext>();
 
-            foreach (var item in contextList.Where(it => it.GetType() == typeof(IDescriptor)))
+            foreach (var item in returnList.Where(it => it.GetType() == typeof(IDescriptor)))
             {
                 var desc = (IDescriptor)item;
 
@@ -158,25 +148,32 @@ namespace Echoes.Data.Interp
                 });
             }
 
-            if (!currentPlace.ThingInventory.Any(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
+            foreach (var noun in brandedWords.Where(ctx => ctx.GetType() == typeof(Noun)))
             {
-                //make new thing
-                var newThing = new Thing(DataStore, DataCache, Logger)
+                if (currentPlace.Name.Equals(noun.Key) || currentPlace.PersonaInventory.Any(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase)))
+                    continue;
+
+                if (!currentPlace.ThingInventory.Any(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    Name = targetWord
-                };
+                    //make new thing
+                    var newThing = new Thing(DataStore, DataCache, Logger)
+                    {
+                        Name = noun.Key
+                    };
 
-                currentPlace.MoveInto(newThing);
+                    currentPlace.MoveInto(newThing);
 
-                newThing.FullContext = contextList;
+                    newThing.FullContext = contextList;
 
-                newThing.Create();
-            }
-            else
-            {
-                var newThing = currentPlace.ThingInventory.FirstOrDefault(thing => thing.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase));
+                    newThing.Create();
+                }
+                else
+                {
+                    var newThing = currentPlace.ThingInventory.FirstOrDefault(thing => thing.Name.Equals(noun.Key, StringComparison.InvariantCultureIgnoreCase));
 
-                newThing.ConveyMeaning(contextList);
+                    newThing.ConveyMeaning(contextList);
+                    newThing.Save();
+                }
             }
 
             return returnList;
@@ -280,17 +277,17 @@ namespace Echoes.Data.Interp
                     IContext listMeaning = null;
                     foreach (var listWord in listWords)
                     {
+                        if (listMeaning != null)
+                            break;
+
                         if (brandedWords.ContainsKey(listWord))
-                            continue;
+                            listMeaning = brandedWords[listWord];
 
                         if (listMeaning == null)
-                        {
                             listMeaning = GetExistingMeaning(listWord, observer, actor, currentPlace);
-                            break;
-                        }
                     }
 
-                    foreach(var listWord in listWords)
+                    foreach (var listWord in listWords)
                     {
                         if (brandedWords.ContainsKey(listWord))
                             continue;
@@ -368,7 +365,7 @@ namespace Echoes.Data.Interp
                 var dirtyIndex = foundStrings.IndexOf(dirtyString);
                 var cleanString = dirtyString;
 
-                while(cleanString.Contains("%%"))
+                while (cleanString.Contains("%%"))
                 {
                     var i = TypeUtility.TryConvert<int>(cleanString.Substring(cleanString.IndexOf("%%") + 2, 1));
                     cleanString = cleanString.Replace(String.Format("%%{0}%%", i), foundStrings[i]);
