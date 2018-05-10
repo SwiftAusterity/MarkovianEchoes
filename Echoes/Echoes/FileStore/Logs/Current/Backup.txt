@@ -15,3 +15,11 @@
 [2018/05/09 13:29:53]:  World restored from current live.
 [2018/05/09 16:15:46]:  World restored from current live INITIATED.
 [2018/05/09 16:15:53]:  World restored from current live.
+[2018/05/10 09:58:05]:  World restored from current live INITIATED.
+[2018/05/10 09:58:10]:  World restored from current live.
+[2018/05/10 14:12:32]:  World restored from current live INITIATED.
+[2018/05/10 14:12:33]:  World restored from current live.
+[2018/05/10 14:32:04]:  World restored from current live INITIATED.
+[2018/05/10 14:32:05]:  World restored from current live.
+[2018/05/10 14:36:59]:  World restored from current live INITIATED.
+[2018/05/10 14:37:00]:  World restored from current live.

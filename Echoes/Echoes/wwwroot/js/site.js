@@ -1,4 +1,27 @@
-﻿//Kinetic text functions
+﻿//Modal window
+function openFrameless(width, height, fromLeft, fromTop, targetUrl, windowTitle) {
+    var s = 'menubar=no, location=no, resizable=no, scrollbars=yes, status=no, width = ' + width + ', height = ' + height;
+
+    if (windowTitle === '') {
+        windowTitle = 'adminModal';
+    }
+
+    var NFW = window.open(targetUrl, windowTitle, s);
+
+    NFW.blur();
+
+    window.focus();
+
+    NFW.resizeTo(width, height);
+
+    NFW.moveTo(fromLeft, fromTop);
+
+    NFW.focus();
+
+    NFW.onsubmit = NFW.close;
+}
+
+//Kinetic text functions
 function Kinesis_Text(text, parentContainer, modeOptions, styles, effects) {
     if (text === undefined || text.length == 0) {
         return;

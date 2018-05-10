@@ -1,0 +1,42 @@
+﻿@model Echoes.Web.Models.EntityInfoModel
+
+@{
+    ViewData["Title"] = "Entity Info - " + Model.Entity.Name;
+    Layout = "~/Pages/_chromelessLayout.cshtml";
+}
+
+<h2>@Model.Entity.Name knows about</h2>
+
+<div>
+    @if (String.IsNullOrWhiteSpace(Model.Errors))
+    {
+        <h4>Things</h4>
+        <dl class="dl-horizontal">
+            <dd>
+                <span>@String.Join(", ", Model.Things)</span>
+            </dd>
+        </dl>
+        <h4>Personas</h4>
+        <dl class="dl-horizontal">
+            <dd>
+                <span>@String.Join(", ", Model.Personas)</span>
+            </dd>
+        </dl>
+        <h4>Actions</h4>
+        <dl class="dl-horizontal">
+            <dd>
+                <span>@String.Join(", ", Model.Actions)</span>
+            </dd>
+        </dl>
+        <h4>Adjectives</h4>
+        <dl class="dl-horizontal">
+            <dd>
+                <span>@String.Join(", ", Model.Adjectives)</span>
+            </dd>
+        </dl>
+    }
+    else
+    {
+        <h4>@Model.Errors</h4>
+    }
+</div>

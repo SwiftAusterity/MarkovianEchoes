@@ -1,7 +1,11 @@
 ﻿using Cottontail.Cache;
 using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
+using Echoes.Data.Contextual;
+using Echoes.Data.Entity;
+using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
+using Echoes.DataStructure.System;
 using Echoes.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -92,6 +96,42 @@ namespace Echoes.Web.Controllers
             return View("Place", viewModel);
         }
 
+        [HttpGet(@"{place}/{type}/{name}", Name ="Existence_Info_Popup")]
+        public ActionResult GetEntityInfo(string place, string type, string name)
+        {
+            var vModel = new EntityInfoModel();
+            IEntity entity = null;
+
+            switch(type.ToLower())
+            {
+                case "thing":
+                    entity = _dataCache.GetByName<IThing>(name);
+                    break;
+                case "persona":
+                    entity = _dataCache.GetByName<IPersona>(name);
+                    break;
+                case "place":
+                    entity = _dataCache.GetByName<IPlace>(name);
+                    break;
+            }
+
+            if (entity == null)
+            {
+                vModel.Errors = "Invalid parameters.";
+            }
+            else
+            {
+                vModel.Entity = entity;
+
+                vModel.Things = entity.FullContext.Where(ctx => ctx.GetType() == typeof(Thing)).Select(ctx => ctx.Name);
+                vModel.Personas = entity.FullContext.Where(ctx => ctx.GetType() == typeof(Persona)).Select(ctx => ctx.Name);
+                vModel.Actions = entity.FullContext.Where(ctx => ctx.GetType() == typeof(Verb)).Select(ctx => ctx.Name);
+                vModel.Adjectives = entity.FullContext.Where(ctx => ctx.GetType() == typeof(Descriptor)).Select(ctx => ctx.Name);
+            }
+
+            return View(@"~/Views/Existence/EntityInfo.cshtml", vModel);
+        }
+
         public IPlace GetPlace(string placeName)
         {
             IPlace currentPlace = null;
@@ -122,7 +162,7 @@ namespace Echoes.Web.Controllers
             var persona  = _dataCache.GetByName<IPersona>(personaName);
 
             //Make a new one
-            if(persona == null)
+            if (persona == null)
             {
                 persona = DataAccess.DataFactory.Create<IPersona>();
                 persona.Name = personaName;

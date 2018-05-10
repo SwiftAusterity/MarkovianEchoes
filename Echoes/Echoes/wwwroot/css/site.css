@@ -179,6 +179,10 @@ textarea {
         margin-top: 20px;
     }
 
+a.entityInfo {
+    color: lightgreen;
+}
+
 ul.animated-list {
     display: inline;
     padding: unset;

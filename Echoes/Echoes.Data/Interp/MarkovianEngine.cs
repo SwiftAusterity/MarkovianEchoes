@@ -225,15 +225,9 @@ namespace Echoes.Data.Interp
 
             brandedWords.Remove(targetWord);
 
-            HashSet<Tuple<ActionType, string>> actionsList = new HashSet<Tuple<ActionType, string>>();
-
             var descriptors = new List<IDescriptor>();
             foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(Descriptor)))
             {
-                var existingPair = actionsList.FirstOrDefault(value => value.Item2.Equals(adjective.Key));
-
-                actionsList.Add(new Tuple<ActionType, string>(ActionType.Apply, adjective.Key));
-
                 if (adjective.Value != null)
                     descriptors.Add((Descriptor)adjective.Value);
                 else
@@ -242,22 +236,26 @@ namespace Echoes.Data.Interp
 
             returnList.AddRange(descriptors);
 
-            //Make a new place
-            if (!allOtherPlaces.Any(place => place.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
+            if (observer == currentPlace)
             {
-                var newPlace = new Place(DataStore, DataCache, Logger);
-                newPlace.Name = targetWord;
-                newPlace.LinkedPlaces.Add(currentPlace);
-                newPlace.Create();
+                //Make a new place
+                if (!allOtherPlaces.Any(place => place.Name.Equals(targetWord, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    var newPlace = new Place(DataStore, DataCache, Logger);
+                    newPlace.Name = targetWord;
+                    newPlace.LinkedPlaces.Add(currentPlace);
+                    newPlace.Create();
 
-                currentPlace.LinkPlace(newPlace);
+                    currentPlace.LinkPlace(newPlace);
+                }
+
+                //Add the place links and places
+                foreach (var place in linkedPlaces.Where(pl => !currentPlace.LinkedPlaces.Contains(pl)))
+                {
+                    currentPlace.LinkPlace(place);
+                }
+
                 currentPlace.Save();
-            }
-
-            //Add the place links and places
-            foreach (var place in linkedPlaces.Where(pl => !currentPlace.LinkedPlaces.Contains(pl)))
-            {
-                currentPlace.LinkPlace(place);
             }
 
             return returnList;
@@ -274,7 +272,7 @@ namespace Echoes.Data.Interp
                     continue;
 
                 //We have a comma list, kind of cheaty not marking it as a list with a bit flag somewhere but eh maybe later
-                if (word.Contains(",") || (word.Contains("and") && word != "and"))
+                if (word.Contains(",") || (word.Contains(" and ") && word != "and"))
                 {
                     var listWords = word.Split(new string[] { "and", ",", " " }, StringSplitOptions.RemoveEmptyEntries);
 

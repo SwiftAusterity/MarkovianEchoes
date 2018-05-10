@@ -8,14 +8,16 @@
 
 <div class="parserClientLeft">
     <div>
-        <h3>@Model.CurrentPlace.Name</h3>
+        <h3>@Model.CurrentPlace.Name<sup><a href="#" entityType="place" entityName="@Model.CurrentPlace.Name" class="entityInfo">?</a></sup></h3>
         <div>
             <p>@Html.Raw(String.Join(" ", Model.CurrentPlace.RenderToLook()))</p>
         </div>
         <div>
             @foreach (var thing in Model.CurrentPlace.ThingInventory)
             {
-                <p>@String.Join(" ", thing.RenderToLocation())</p>
+                <p>
+                    @Html.Raw(String.Join(" ", thing.RenderToLocation()))
+                </p>
             }
         </div>
     </div>
@@ -26,7 +28,9 @@
         <div>
             @foreach (var persona in Model.CurrentPlace.GetPersonas())
             {
-                <p>@String.Join(" ", persona.RenderToLocation())</p>
+            <p>
+                @Html.Raw(String.Join(" ", persona.RenderToLocation()))
+            </p>
             }
         </div>
     </div>
@@ -113,6 +117,16 @@
 
         $('#clientReload').click(function () {
             window.location = window.location.href;
+            return false;
+        });
+
+        $('sup a.entityInfo').click(function () {
+            var entityType = $(this).attr('entityType');
+            var entityName = $(this).attr('entityName');
+            var hereName = '@Model.CurrentPlace.Name';
+
+            openFrameless(500, 500, 250, 250, '/existence/' + hereName + '/' + entityType + '/' + entityName, entityName);
+
             return false;
         });
     </script>

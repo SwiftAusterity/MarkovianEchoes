@@ -64,9 +64,9 @@ namespace Echoes.Data.Entity
             var sb = new List<string>();
 
             if (decorators.Count() > 0)         
-                sb.Add(string.Format("{0} is standing here appearing quite {1}.", Name, String.Join(",", decorators)));
+                sb.Add(string.Format("{0}<sup><a href='#' class='entityInfo' entityType='persona' entityName='{0}'>?</a></sup> is standing here appearing quite {1}.", Name, String.Join(",", decorators)));
             else
-                sb.Add(string.Format("{0} is standing here.", Name));
+                sb.Add(string.Format("{0}<sup><a href='#' class='entityInfo' entityType='persona' entityName='{0}'>?</a></sup> is standing here.", Name));
 
             return sb;
         }

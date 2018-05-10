@@ -63,7 +63,7 @@ namespace Echoes.Data.Entity
 
             var sb = new List<string>
             {
-                string.Format("A {1} {0} is here.", Name, String.Join(",", decorators))
+                string.Format("A {1} {0}<sup><a href='#' class='entityInfo' entityType='thing' entityName='{0}'>?</a></sup> is here.", Name, String.Join(",", decorators))
             };
 
             return sb;
