@@ -148,14 +148,14 @@ namespace Echoes.Data.System
 
         public bool ConveyMeaning(IContext context)
         {
-            //return Echoes.MarkovianEngine.Merge(FullContext, context);
-
-            return true;
+            return ConveyMeaning(new List<IContext>() { context });
         }
 
         public bool ConveyMeaning(IEnumerable<IContext> context)
         {
-            //return Echoes.MarkovianEngine.Merge(FullContext, context);
+            FullContext = MarkovEngine.Merge(FullContext.ToList(), context);
+
+            Save();
 
             return true;
         }

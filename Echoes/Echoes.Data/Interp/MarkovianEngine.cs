@@ -73,17 +73,34 @@ namespace Echoes.Data.Interp
         /// <param name="newContext">The new context</param>
         public IEnumerable<IContext> Merge(List<IContext> originContext, IEnumerable<IContext> newContext)
         {
-            foreach(var item in newContext)
+            foreach (var item in newContext)
             {
                 item.Strength++;
 
-                if (originContext.Contains(item))
+                if (originContext.Any(ctx => ctx.Name.Equals(item.Name)))
                 {
-                    var value = originContext.First(ctx => ctx == item);
-                    item.Strength += value.Strength;
+                    foreach (var currentContext in originContext.Where(ctx => ctx.Name.Equals(item.Name)))
+                    {
+                        originContext.Remove(currentContext);
 
-                    originContext.Remove(value);
-                    originContext.Add(item);
+                        if (currentContext.GetType() != item.GetType())
+                        {
+                            currentContext.Strength--;
+
+                            if (currentContext.Strength <= 0)
+                            {
+                                item.Strength = 1;
+                                originContext.Add(item);
+                            }
+                            else
+                                originContext.Add(currentContext);
+                        }
+                        else
+                        {
+                            item.Strength += currentContext.Strength;
+                            originContext.Add(item);
+                        }
+                    }
                 }
                 else
                     originContext.Add(item);
