@@ -9,9 +9,11 @@ namespace Echoes.Data.Contextual
         public bool Applied { get; set; }
         public string Opposite { get; set; }
         public string Name { get; set; }
+        public int Strength { get; set; }
 
         public Descriptor()
         {
+            Strength = 0;
             Applied = false;
         }
     }

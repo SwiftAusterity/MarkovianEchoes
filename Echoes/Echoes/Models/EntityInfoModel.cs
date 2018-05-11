@@ -1,5 +1,6 @@
 ﻿using Echoes.DataStructure.System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Echoes.Web.Models
 {
@@ -12,5 +13,13 @@ namespace Echoes.Web.Models
         public IEnumerable<string> Personas { get; set; }
         public IEnumerable<string> Adjectives { get; set; }
         public IEnumerable<string> Actions { get; set; }
+
+        public EntityInfoModel()
+        {
+            Things = Enumerable.Empty<string>();
+            Personas = Enumerable.Empty<string>();
+            Adjectives = Enumerable.Empty<string>();
+            Actions = Enumerable.Empty<string>();
+        }
     }
 }

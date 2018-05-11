@@ -49,12 +49,12 @@ namespace Echoes.Data.Interp
             {
                 var words = IsolateIndividuals(sentence, observer, actor);
 
-                //can't parse nothing man
+                //can't parse nothing
                 if (words.Count == 0)
                     return returnList;
 
                 //Get rid of the imperative self declaration
-                if (words.First().Equals("i") || words.First().Equals("me"))
+                if (words.First().Item1.Equals("i") || words.First().Item1.Equals("me"))
                     words.RemoveAt(0);
 
                 if (acting)
@@ -73,7 +73,21 @@ namespace Echoes.Data.Interp
         /// <param name="newContext">The new context</param>
         public IEnumerable<IContext> Merge(List<IContext> originContext, IEnumerable<IContext> newContext)
         {
-            originContext.AddRange(newContext);
+            foreach(var item in newContext)
+            {
+                item.Strength++;
+
+                if (originContext.Contains(item))
+                {
+                    var value = originContext.First(ctx => ctx == item);
+                    item.Strength += value.Strength;
+
+                    originContext.Remove(value);
+                    originContext.Add(item);
+                }
+                else
+                    originContext.Add(item);
+            }
 
             return originContext;
         }
@@ -81,7 +95,7 @@ namespace Echoes.Data.Interp
         /*
          * TODO: Wow this is inefficient, maybe clean up how many loops we do
          */
-        private IEnumerable<IContext> ParseAction(IEntity observer, IEntity actor, IList<string> words)
+        private IEnumerable<IContext> ParseAction(IEntity observer, IEntity actor, IList<Tuple<string, bool>> words)
         {
             /*
              * I kick the can 
@@ -188,7 +202,7 @@ namespace Echoes.Data.Interp
          * Second pass: search for places in the world to make links
          * Third pass: More robust logic to avoid extra merging later
          */
-        private IEnumerable<IContext> ParseSpeech(IEntity observer, IEntity actor, IList<string> words)
+        private IEnumerable<IContext> ParseSpeech(IEntity observer, IEntity actor, IList<Tuple<string, bool>> words)
         {
             /*
              * hello
@@ -261,20 +275,20 @@ namespace Echoes.Data.Interp
             return returnList;
         }
 
-        private Dictionary<string, IContext> BrandWords(IEntity observer, IEntity actor, IList<string> words, IPlace currentPlace)
+        private Dictionary<string, IContext> BrandWords(IEntity observer, IEntity actor, IList<Tuple<string, bool>> words, IPlace currentPlace)
         {
             var brandedWords = new Dictionary<string, IContext>();
 
             //Brand all the words with their current meaning. Continues are in there because the listword inflation might cause collision
             foreach (var word in words.Distinct())
             {
-                if (brandedWords.ContainsKey(word))
+                if (brandedWords.ContainsKey(word.Item1))
                     continue;
 
-                //We have a comma list, kind of cheaty not marking it as a list with a bit flag somewhere but eh maybe later
-                if (word.Contains(",") || (word.Contains(" and ") && word != "and"))
+                //We have a comma/and list
+                if (word.Item2)
                 {
-                    var listWords = word.Split(new string[] { "and", ",", " " }, StringSplitOptions.RemoveEmptyEntries);
+                    var listWords = word.Item1.Split(new string[] { "and", ",", " " }, StringSplitOptions.RemoveEmptyEntries);
 
                     IContext listMeaning = null;
                     foreach (var listWord in listWords)
@@ -300,7 +314,7 @@ namespace Echoes.Data.Interp
                     continue;
                 }
 
-                brandedWords.Add(word, GetExistingMeaning(word, observer, actor, currentPlace));
+                brandedWords.Add(word.Item1, GetExistingMeaning(word.Item1, observer, actor, currentPlace));
             }
 
             return brandedWords;
@@ -339,7 +353,7 @@ namespace Echoes.Data.Interp
             return existingMeaning;
         }
 
-        private IList<string> IsolateIndividuals(string baseString, IEntity observer, IEntity actor)
+        private IList<Tuple<string, bool>> IsolateIndividuals(string baseString, IEntity observer, IEntity actor)
         {
             int iterator = 0;
             baseString = baseString.ToLower();
@@ -355,15 +369,15 @@ namespace Echoes.Data.Interp
 
             //So thanks to the commalist puller potentially adding replacement strings to the found collection we have to do a pass there first
             var cleanerList = new List<Tuple<int, string>>();
-            foreach (var dirtyString in foundStrings.Where(str => str.Contains("%%")))
+            foreach (var dirtyString in foundStrings.Where(str => str.Item1.Contains("%%")))
             {
                 var dirtyIndex = foundStrings.IndexOf(dirtyString);
-                var cleanString = dirtyString;
+                var cleanString = dirtyString.Item1;
 
                 while (cleanString.Contains("%%"))
                 {
                     var i = TypeUtility.TryConvert<int>(cleanString.Substring(cleanString.IndexOf("%%") + 2, 1));
-                    cleanString = cleanString.Replace(String.Format("%%{0}%%", i), foundStrings[i]);
+                    cleanString = cleanString.Replace(String.Format("%%{0}%%", i), foundStrings[i].Item1);
                 }
 
                 cleanerList.Add(new Tuple<int, string>(dirtyIndex, cleanString));
@@ -374,11 +388,11 @@ namespace Echoes.Data.Interp
                 var dirtyIndex = cleaner.Item1;
                 var cleanString = cleaner.Item2;
 
-                foundStrings[dirtyIndex] = cleanString;
+                foundStrings[dirtyIndex] = new Tuple<string, bool>(cleanString, foundStrings[dirtyIndex].Item2);
             }
 
             //Either add the modified one or add the normal one
-            var returnStrings = new List<string>();
+            var returnStrings = new List<Tuple<string, bool>>();
             foreach (var returnString in originalStrings)
             {
                 if (returnString.StartsWith("%%") && returnString.EndsWith("%%"))
@@ -387,7 +401,7 @@ namespace Echoes.Data.Interp
                     returnStrings.Add(foundStrings[i]);
                 }
                 else
-                    returnStrings.Add(returnString);
+                    returnStrings.Add(new Tuple<string, bool>(returnString, false));
             }
 
             return returnStrings;
@@ -399,9 +413,9 @@ namespace Echoes.Data.Interp
          * word, word, word, and word ([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+(,\sand\s)([a-zA-Z0-9_.-|(%%\d%%)]+)
          * word and word and word and word- ([a-zA-Z0-9_.-|(%%\d%%)]+)((\sand\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+
          */
-        private IList<string> ParseCommaListsOut(ref int iterator, ref string baseString)
+        private IList<Tuple<string, bool>> ParseCommaListsOut(ref int iterator, ref string baseString)
         {
-            var foundStrings = new List<string>();
+            var foundStrings = new List<Tuple<string, bool>>();
             var cccPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+", RegexOptions.IgnorePatternWhitespace);
             var ccaPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+(\sand\s)([a-zA-Z0-9_.-|(%%\d%%)]+)", RegexOptions.IgnorePatternWhitespace);
             var ccacPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+(,\sand\s)([a-zA-Z0-9_.-|(%%\d%%)]+)", RegexOptions.IgnorePatternWhitespace);
@@ -415,9 +429,9 @@ namespace Echoes.Data.Interp
             return foundStrings;
         }
 
-        private IList<string> RunListPattern(Regex capturePattern, ref int iterator, ref string baseString)
+        private IList<Tuple<string, bool>> RunListPattern(Regex capturePattern, ref int iterator, ref string baseString)
         {
-            var foundStrings = new List<string>();
+            var foundStrings = new List<Tuple<string, bool>>();
 
             var cccMatches = capturePattern.Matches(baseString);
             for (var i = 0; i < cccMatches.Count; i++)
@@ -437,7 +451,7 @@ namespace Echoes.Data.Interp
 
                     var commaList = currentCapture.Value;
 
-                    foundStrings.Add(commaList);
+                    foundStrings.Add(new Tuple<string, bool>(commaList, true));
                     baseString = baseString.Replace(commaList, "%%" + iterator.ToString() + "%%");
                     iterator++;
                 }
@@ -446,9 +460,9 @@ namespace Echoes.Data.Interp
             return foundStrings;
         }
 
-        private IList<string> ParseEntitiesOut(IEntity observer, IEntity actor, ref int iterator, ref string baseString)
+        private IList<Tuple<string, bool>> ParseEntitiesOut(IEntity observer, IEntity actor, ref int iterator, ref string baseString)
         {
-            var foundStrings = new List<string>();
+            var foundStrings = new List<Tuple<string, bool>>();
             var allContext = new List<string>();
 
             allContext.AddRange(actor.Position.GetThings().Select(thing => thing.Name));
@@ -463,7 +477,7 @@ namespace Echoes.Data.Interp
             {
                 if (baseString.Contains(word))
                 {
-                    foundStrings.Add(word);
+                    foundStrings.Add(new Tuple<string, bool>(word, false));
                     baseString = baseString.Replace(word, "%%" + iterator.ToString() + "%%");
                     iterator++;
                 }
@@ -476,9 +490,9 @@ namespace Echoes.Data.Interp
         /// Scrubs "s and 's out and figures out what the parameters really are
         /// </summary>
         /// <returns>the right parameters</returns>
-        private List<string> ParseQuotesOut(ref string baseString, ref int iterator)
+        private List<Tuple<string, bool>> ParseQuotesOut(ref string baseString, ref int iterator)
         {
-            var foundStrings = new List<string>();
+            var foundStrings = new List<Tuple<string, bool>>();
 
             baseString = IsolateStrings(baseString, "\"", foundStrings, ref iterator);
             baseString = IsolateStrings(baseString, "'", foundStrings, ref iterator);
@@ -487,7 +501,7 @@ namespace Echoes.Data.Interp
         }
 
         //Do we have magic string collectors? quotation marks demarcate a single parameter being passed in
-        private string IsolateStrings(string baseString, string closure, IList<string> foundStrings, ref int foundStringIterator)
+        private string IsolateStrings(string baseString, string closure, List<Tuple<string, bool>> foundStrings, ref int foundStringIterator)
         {
             while (baseString.Contains("\""))
             {
@@ -507,7 +521,7 @@ namespace Echoes.Data.Interp
 
                 var foundString = baseString.Substring(firstQuoteIndex + 1, secondQuoteIndex - firstQuoteIndex - 1);
 
-                foundStrings.Add(foundString);
+                foundStrings.Add(new Tuple<string, bool>(foundString, false));
                 baseString = baseString.Replace(string.Format("\"{0}\"", foundString), "%%" + foundStringIterator.ToString() + "%%");
                 foundStringIterator++;
             }

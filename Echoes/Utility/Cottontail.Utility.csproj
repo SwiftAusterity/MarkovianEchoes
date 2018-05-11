@@ -50,6 +50,7 @@
     <Compile Include="Data\EnumUtility.cs" />
     <Compile Include="Data\SerializableDataPartial.cs" />
     <Compile Include="Data\Serialization.cs" />
+    <Compile Include="Data\SplitListType.cs" />
     <Compile Include="Data\StringUtility.cs" />
     <Compile Include="Data\TypeUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

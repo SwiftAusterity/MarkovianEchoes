@@ -3,7 +3,6 @@ using Cottontail.FileSystem;
 using Cottontail.FileSystem.Logging;
 using Echoes.Data.Contextual;
 using Echoes.Data.Entity;
-using Echoes.DataStructure.Contextual;
 using Echoes.DataStructure.Entity;
 using Echoes.DataStructure.System;
 using Echoes.Web.Models;
@@ -123,8 +122,14 @@ namespace Echoes.Web.Controllers
             {
                 vModel.Entity = entity;
 
-                vModel.Things = entity.FullContext.Where(ctx => ctx.GetType() == typeof(Thing)).Select(ctx => ctx.Name);
-                vModel.Personas = entity.FullContext.Where(ctx => ctx.GetType() == typeof(Persona)).Select(ctx => ctx.Name);
+                if (type.Equals("place", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var thisPlace = (IPlace)entity;
+
+                    vModel.Things = thisPlace.GetThings().Select(thing => thing.Name);
+                    vModel.Personas = thisPlace.GetPersonas().Select(thing => thing.Name);
+                }
+
                 vModel.Actions = entity.FullContext.Where(ctx => ctx.GetType() == typeof(Verb)).Select(ctx => ctx.Name);
                 vModel.Adjectives = entity.FullContext.Where(ctx => ctx.GetType() == typeof(Descriptor)).Select(ctx => ctx.Name);
             }

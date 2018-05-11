@@ -1,1 +1,1 @@
-{"FullContext":[{"$type":"Echoes.Data.Contextual.Descriptor, Echoes.Data","Applied":true,"Opposite":null,"Name":"red"}],"ID":0,"Created":"2018-05-09T10:33:04.0662669-05:00","LastRevised":"2018-05-10T14:37:00.2574643-05:00","Name":"can","Position":0}
+{"FullContext":[{"$type":"Echoes.Data.Contextual.Descriptor, Echoes.Data","Applied":true,"Opposite":null,"Name":"red","Strength":0}],"ID":0,"Created":"2018-05-09T10:33:04.0662669-05:00","LastRevised":"2018-05-11T10:51:44.7694521-05:00","Name":"can","Position":0}

@@ -16,9 +16,11 @@ namespace Echoes.Data.Contextual
         public Dictionary<string, HashSet<Tuple<ActionType, string>>> Affects { get; set; }
 
         public string Name { get; set; }
+        public int Strength { get; set; }
 
         public Verb()
         {
+            Strength = 0;
             Affects = new Dictionary<string, HashSet<Tuple<ActionType, string>>>();
         }
     }

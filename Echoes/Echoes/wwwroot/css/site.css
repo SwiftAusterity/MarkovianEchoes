@@ -12,6 +12,8 @@ body {
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    width: 1340px;
+    max-width: 1340px;
 }
 
 /* Carousel */
@@ -35,14 +37,41 @@ body {
     background-clip: content-box;
 }
 
-.textParserClient {
-    height: 750px;
-    width: 910px;
-    margin-top: 50px;
+.parserClient {
     position: relative;
-    overflow-y: hidden;
-    overflow-x: hidden;
+    padding-bottom: 10px;
+    height: 750px;
+    width: 100%;
+    margin-top: 50px;
 }
+
+    .parserClient .textParserClient {
+        height: 100%;
+        width: 910px;
+        position: relative;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        float: left;
+        padding-bottom: 10px;
+    }
+
+    .parserClient .parserClientLeft {
+        position: relative;
+        float: left;
+        padding: 10px;
+        max-width: 220px;
+        overflow-wrap: break-word;
+        overflow-x: hidden;
+    }
+
+    .parserClient .parserClientRight {
+        position: relative;
+        float: right;
+        padding: 10px;
+        max-width: 220px;
+        overflow-wrap: break-word;
+        overflow-x: hidden;
+    }
 
 .text-output {
     position: absolute;
@@ -69,35 +98,28 @@ body {
     font-family: Courier New, Courier, monospace
 }
 
-#parserControls a {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
+.parserControls {
+    position: relative;
+    left: 220px;
+    padding-bottom: 10px;
+    width: 910px;
 }
 
-    #parserControls a img {
+    .parserControls a {
+        display: inline-block;
         width: 32px;
         height: 32px;
-        padding-top: 5px;
     }
 
-div.parserClientLeft {
-    left: 25px;
-    top: 75px;
-    position: absolute;
-    max-width: 200px;
-    overflow-wrap: break-word;
-    overflow-x: hidden;
-}
+        .parserControls a img {
+            width: 32px;
+            height: 32px;
+            padding-top: 5px;
+        }
 
-div.parserClientRight {
-    left: 1300px;
-    top: 75px;
-    position: absolute;
-    max-width: 200px;
-    overflow-wrap: break-word;
-    overflow-x: hidden;
-}
+    .parserControls #clientReload {
+        float: right;
+    }
 
 ul.nav li a img {
     width: 28px;

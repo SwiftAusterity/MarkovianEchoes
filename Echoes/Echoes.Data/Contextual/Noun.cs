@@ -10,5 +10,11 @@ namespace Echoes.Data.Contextual
     public class Noun : INoun
     {
         public string Name { get; set; }
+        public int Strength { get; set; }
+
+        public Noun()
+        {
+            Strength = 0;
+        }
     }
 }

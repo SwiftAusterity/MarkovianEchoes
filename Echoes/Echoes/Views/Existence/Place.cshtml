@@ -6,42 +6,44 @@
     var newRecords = Model.NewToYou;
 }
 
-<div class="parserClientLeft">
-    <div>
-        <h3>@Model.CurrentPlace.Name<sup><a href="#" entityType="place" entityName="@Model.CurrentPlace.Name" class="entityInfo">?</a></sup></h3>
+<div class="parserClient">
+    <div class="parserClientLeft">
         <div>
-            <p>@Html.Raw(String.Join(" ", Model.CurrentPlace.RenderToLook()))</p>
-        </div>
-        <div>
-            @foreach (var thing in Model.CurrentPlace.ThingInventory)
-            {
-                <p>
-                    @Html.Raw(String.Join(" ", thing.RenderToLocation()))
-                </p>
-            }
-        </div>
-    </div>
-</div>
-<div class="parserClientRight">
-    <div>
-        <h3>Whomst</h3>
-        <div>
-            @foreach (var persona in Model.CurrentPlace.GetPersonas())
-            {
-            <p>
-                @Html.Raw(String.Join(" ", persona.RenderToLocation()))
-            </p>
-            }
+            <h3>@Model.CurrentPlace.Name<sup><a href="#" entityType="place" entityName="@Model.CurrentPlace.Name" class="entityInfo">?</a></sup></h3>
+            <div>
+                <p>@Html.Raw(String.Join(" ", Model.CurrentPlace.RenderToLook()))</p>
+            </div>
+            <div>
+                @foreach (var thing in Model.CurrentPlace.ThingInventory)
+                {
+                    <p>
+                        @Html.Raw(String.Join(" ", thing.RenderToLocation()))
+                    </p>
+                }
+            </div>
         </div>
     </div>
+    <div class="parserClientRight">
+        <div>
+            <h3>Whomst</h3>
+            <div>
+                @foreach (var persona in Model.CurrentPlace.GetPersonas())
+                {
+                    <p>
+                        @Html.Raw(String.Join(" ", persona.RenderToLocation()))
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="textParserClient">
+        <div id="OutputArea" class="parserOutput"></div>
+        <form method="post" id="inputForm" name="inputForm">
+            <input type="text" id="Input" name="Input" class="parserInput" />
+        </form>
+    </div>
 </div>
-<div class="textParserClient">
-    <div id="OutputArea" class="parserOutput"></div>
-    <form method="post" id="inputForm" name="inputForm">
-        <input type="text" id="Input" name="Input" class="parserInput" />
-    </form>
-</div>
-<div id="parserControls">
+<div class="parserControls">
     <a href="#" id="switchAct"><img src="~/images/hatch_tap.svg" title="Act" /></a>
     <a href="#" id="switchSpeech"><img src="~/images/hatch_broadcast.svg" title="Speak" /></a>
     <a href="#" id="clientReload" style="float: right;"><img src="~/images/hatch_hide.svg" title="Blink" /></a>
