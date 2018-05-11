@@ -162,8 +162,7 @@ namespace Echoes.Data.Interp
                     descriptors.Add(new Descriptor() { Name = adjective.Key });
             }
 
-            returnList.AddRange(descriptors);
-            returnList.Add(currentVerb);
+            returnList.AddRange(brandedWords.Select(bws => bws.Value));
 
             //Don't add things unless we're in the place itself
             if (observer == currentPlace)

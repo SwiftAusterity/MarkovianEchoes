@@ -91,8 +91,11 @@ namespace Echoes.Data.Entity
         { 
             var returnContext = base.WriteTo(input, originator, acting);
 
+            foreach (var entity in GetThings())
+                entity.ConveyMeaning(returnContext);
+
             foreach (var entity in GetPersonas())
-                entity.WriteTo(input, originator, acting);
+                entity.ConveyMeaning(returnContext);
 
             return returnContext;
         }

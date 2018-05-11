@@ -137,6 +137,7 @@
     <Compile Include="Contextual\Descriptor.cs" />
     <Compile Include="Contextual\Noun.cs" />
     <Compile Include="Contextual\Verb.cs" />
+    <Compile Include="Interp\GrammaticalReconstructor.cs" />
     <Compile Include="Interp\MarkovianEngine.cs" />
     <Compile Include="Entity\Persona.cs" />
     <Compile Include="Entity\Place.cs" />
