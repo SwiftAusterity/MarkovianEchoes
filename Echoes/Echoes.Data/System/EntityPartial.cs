@@ -87,7 +87,7 @@ namespace Echoes.Data.System
         {
             var newContext = MarkovEngine.Experience(this, originator, input, acting);
 
-            FullContext = MarkovEngine.Merge(FullContext.ToList(), newContext);
+            FullContext = MarkovEngine.Merge(FullContext, newContext);
 
             Save();
 
@@ -153,7 +153,7 @@ namespace Echoes.Data.System
 
         public bool ConveyMeaning(IEnumerable<IContext> context)
         {
-            FullContext = MarkovEngine.Merge(FullContext.ToList(), context);
+            FullContext = MarkovEngine.Merge(FullContext, context);
 
             Save();
 

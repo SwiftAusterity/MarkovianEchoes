@@ -71,8 +71,10 @@ namespace Echoes.Data.Interp
         /// </summary>
         /// <param name="originContext">The existing context</param>
         /// <param name="newContext">The new context</param>
-        public IEnumerable<IContext> Merge(List<IContext> originContext, IEnumerable<IContext> newContext)
+        public IEnumerable<IContext> Merge(IEnumerable<IContext> originContext, IEnumerable<IContext> newContext)
         {
+            var returnContext = new List<IContext>(originContext);
+
             foreach (var item in newContext)
             {
                 item.Strength++;
@@ -81,7 +83,7 @@ namespace Echoes.Data.Interp
                 {
                     foreach (var currentContext in originContext.Where(ctx => ctx.Name.Equals(item.Name)))
                     {
-                        originContext.Remove(currentContext);
+                        returnContext.Remove(currentContext);
 
                         if (currentContext.GetType() != item.GetType())
                         {
@@ -90,23 +92,23 @@ namespace Echoes.Data.Interp
                             if (currentContext.Strength <= 0)
                             {
                                 item.Strength = 1;
-                                originContext.Add(item);
+                                returnContext.Add(item);
                             }
                             else
-                                originContext.Add(currentContext);
+                                returnContext.Add(currentContext);
                         }
                         else
                         {
                             item.Strength += currentContext.Strength;
-                            originContext.Add(item);
+                            returnContext.Add(item);
                         }
                     }
                 }
                 else
-                    originContext.Add(item);
+                    returnContext.Add(item);
             }
 
-            return originContext;
+            return returnContext;
         }
 
         /*
@@ -137,7 +139,7 @@ namespace Echoes.Data.Interp
                 brandedWords[verbWord] = currentVerb;
             }
             else
-                currentVerb = (IVerb)brandedWords.FirstOrDefault(ctx => ctx.Value.GetType() == typeof(Verb)).Value;
+                currentVerb = (IVerb)brandedWords.FirstOrDefault(ctx => ctx.Value?.GetType() == typeof(Verb)).Value;
 
             //We might have nouns already
             if (!brandedWords.Any(ctx => ctx.Value?.GetType() == typeof(Noun)))
@@ -154,22 +156,21 @@ namespace Echoes.Data.Interp
             }
 
             var descriptors = new List<Descriptor>();
-            foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null || ctx.Value?.GetType() == typeof(Descriptor)))
+            foreach (var adjective in brandedWords.Where(ctx => ctx.Value == null))
             {
-                if (adjective.Value != null)
-                    descriptors.Add((Descriptor)adjective.Value);
-                else
-                    descriptors.Add(new Descriptor() { Name = adjective.Key });
+                descriptors.Add(new Descriptor() { Name = adjective.Key });
             }
 
-            returnList.AddRange(brandedWords.Select(bws => bws.Value));
+            //Add the nonadjectives and the adjectives
+            returnList.AddRange(brandedWords.Where(bws => bws.Value != null).Select(bws => bws.Value));
+            returnList.AddRange(descriptors.Select(desc => desc));
 
             //Don't add things unless we're in the place itself
             if (observer == currentPlace)
             {
                 var contextList = new List<IContext>();
 
-                foreach (var item in returnList.Where(it => it.GetType() == typeof(Descriptor)))
+                foreach (var item in returnList.Where(it => it?.GetType() == typeof(Descriptor)))
                 {
                     var desc = (Descriptor)item;
 
@@ -194,11 +195,11 @@ namespace Echoes.Data.Interp
                             Name = noun.Key
                         };
 
-                        currentPlace.MoveInto(newThing);
-
                         newThing.FullContext = contextList;
 
                         newThing.Create();
+
+                        currentPlace.MoveInto(newThing);
                     }
                     else
                     {
@@ -437,10 +438,10 @@ namespace Echoes.Data.Interp
             var ccacPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((,|,\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+(,\sand\s)([a-zA-Z0-9_.-|(%%\d%%)]+)", RegexOptions.IgnorePatternWhitespace);
             var aaaPattern = new Regex(@"([a-zA-Z0-9_.-|(%%\d%%)]+)((\sand\s)[a-zA-Z0-9_.-|(%%\d%%)]+)+", RegexOptions.IgnorePatternWhitespace);
 
-            foundStrings.AddRange(RunListPattern(cccPattern, ref iterator, ref baseString));
-            foundStrings.AddRange(RunListPattern(ccaPattern, ref iterator, ref baseString));
             foundStrings.AddRange(RunListPattern(ccacPattern, ref iterator, ref baseString));
+            foundStrings.AddRange(RunListPattern(ccaPattern, ref iterator, ref baseString));
             foundStrings.AddRange(RunListPattern(aaaPattern, ref iterator, ref baseString));
+            foundStrings.AddRange(RunListPattern(cccPattern, ref iterator, ref baseString));
 
             return foundStrings;
         }

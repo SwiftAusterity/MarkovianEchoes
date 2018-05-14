@@ -1,0 +1,13 @@
+[2018/05/14 10:04:34]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Interp.MarkovianEngine.<>c.<ParseAction>b__15_8(IContext it) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Interp\MarkovianEngine.cs:line 174
+   at System.Linq.Enumerable.WhereListIterator`1.MoveNext()
+   at Echoes.Data.Interp.MarkovianEngine.ParseAction(IEntity observer, IEntity actor, IList`1 words) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Interp\MarkovianEngine.cs:line 174
+   at Echoes.Data.Interp.MarkovianEngine.Experience(IEntity observer, IEntity actor, String observance, Boolean acting) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Interp\MarkovianEngine.cs:line 61
+   at Echoes.Data.System.EntityPartial.WriteTo(String input, IPersona originator, Boolean acting) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 88
+   at Echoes.Data.Entity.Place.WriteTo(String input, IPersona originator, Boolean acting) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 92
+   at Echoes.Web.Controllers.ExistenceController.Input(String place, String input) in C:\Dev\MarkovianEchoes\Echoes\Echoes\Controllers\ExistenceController.cs:line 86
+[2018/05/14 10:15:52]:  NullReferenceException: Object reference not set to an instance of an object.
+   at Echoes.Data.Interp.MarkovianEngine.Merge(IEnumerable`1 originContext, IEnumerable`1 newContext) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Interp\MarkovianEngine.cs:line 80
+   at Echoes.Data.System.EntityPartial.WriteTo(String input, IPersona originator, Boolean acting) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\System\EntityPartial.cs:line 90
+   at Echoes.Data.Entity.Place.WriteTo(String input, IPersona originator, Boolean acting) in C:\Dev\MarkovianEchoes\Echoes\Echoes.Data\Entity\Place.cs:line 92
+   at Echoes.Web.Controllers.ExistenceController.Input(String place, String input) in C:\Dev\MarkovianEchoes\Echoes\Echoes\Controllers\ExistenceController.cs:line 86

@@ -29,3 +29,23 @@
 [2018/05/11 15:12:20]:  World restored from current live.
 [2018/05/11 15:14:45]:  World restored from current live INITIATED.
 [2018/05/11 15:14:46]:  World restored from current live.
+[2018/05/11 15:21:01]:  World restored from current live INITIATED.
+[2018/05/11 15:21:02]:  World restored from current live.
+[2018/05/14 10:03:03]:  World restored from current live INITIATED.
+[2018/05/14 10:03:05]:  World restored from current live.
+[2018/05/14 10:06:47]:  World restored from current live INITIATED.
+[2018/05/14 10:06:48]:  World restored from current live.
+[2018/05/14 10:08:09]:  World restored from current live INITIATED.
+[2018/05/14 10:08:10]:  World restored from current live.
+[2018/05/14 10:09:00]:  World restored from current live INITIATED.
+[2018/05/14 10:09:01]:  World restored from current live.
+[2018/05/14 10:11:19]:  World restored from current live INITIATED.
+[2018/05/14 10:11:20]:  World restored from current live.
+[2018/05/14 10:13:56]:  World restored from current live INITIATED.
+[2018/05/14 10:13:57]:  World restored from current live.
+[2018/05/14 10:15:06]:  World restored from current live INITIATED.
+[2018/05/14 10:15:07]:  World restored from current live.
+[2018/05/14 10:17:27]:  World restored from current live INITIATED.
+[2018/05/14 10:17:28]:  World restored from current live.
+[2018/05/14 10:21:32]:  World restored from current live INITIATED.
+[2018/05/14 10:21:33]:  World restored from current live.
